@@ -23,7 +23,15 @@ namespace Barcode_Application
         }
 
         #region Welcome
+        private void btnWelGenerate_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 1;
+        }
 
+        private void btnWelScan_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 2;
+        }
         #endregion
 
         #region Generate QR Code
@@ -33,6 +41,11 @@ namespace Barcode_Application
             QRCodeData data = qr.CreateQrCode(txtGenQRCode.Text, QRCodeGenerator.ECCLevel.Q);
             QRCode code = new QRCode(data);
             picbxGenImage.Image = code.GetGraphic(5);
+        }
+
+        private void btnGenBack_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 0;
         }
         #endregion
 
@@ -50,9 +63,6 @@ namespace Barcode_Application
                 cbbScanCameraList.SelectedIndex = 0;
             }
         }
-
-
-        #endregion
 
         private void btnScan_Click(object sender, EventArgs e)
         {
@@ -87,5 +97,13 @@ namespace Barcode_Application
                 }
             }
         }
+
+        private void btnScanBack_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 0;
+        }
+        #endregion
+
+
     }
 }
