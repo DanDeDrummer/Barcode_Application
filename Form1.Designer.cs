@@ -207,6 +207,7 @@ namespace Barcode_Application
             this.btnScan.TabIndex = 12;
             this.btnScan.Text = "Scan";
             this.btnScan.UseVisualStyleBackColor = true;
+            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
             // frmBarcodeApplication
             // 
@@ -217,6 +218,8 @@ namespace Barcode_Application
             this.Name = "frmBarcodeApplication";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Barcode Application";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmBarcodeApplication_FormClosing);
+            this.Load += new System.EventHandler(this.frmBarcodeApplication_Load);
             this.tabsheet1.ResumeLayout(false);
             this.tbsGenerateQR.ResumeLayout(false);
             this.tbsGenerateQR.PerformLayout();

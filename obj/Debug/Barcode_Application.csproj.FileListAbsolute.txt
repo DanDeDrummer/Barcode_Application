@@ -10,3 +10,13 @@ C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\De
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\QRCoder.dll
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.frmBarcodeApplication.resources
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.csproj.CopyComplete
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\AForge.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\AForge.Video.DirectShow.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\AForge.Video.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\zxing.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\zxing.presentation.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\AForge.xml
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\AForge.Video.xml
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\AForge.Video.DirectShow.xml
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\zxing.xml
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\zxing.presentation.xml
