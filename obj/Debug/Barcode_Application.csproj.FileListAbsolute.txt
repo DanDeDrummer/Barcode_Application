@@ -1,0 +1,12 @@
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Barcode_Application.exe.config
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Barcode_Application.exe
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Barcode_Application.pdb
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.csproj.AssemblyReference.cache
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.Properties.Resources.resources
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.csproj.GenerateResource.cache
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.csproj.CoreCompileInputs.cache
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.exe
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.pdb
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\QRCoder.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.frmBarcodeApplication.resources
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\obj\Debug\Barcode_Application.csproj.CopyComplete
