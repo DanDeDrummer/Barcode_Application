@@ -23,9 +23,9 @@ namespace Barcode_Application
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             QRCodeGenerator qr = new QRCodeGenerator();
-            QRCodeData data = qr.CreateQrCode(txtQRCode.Text, QRCodeGenerator.ECCLevel.Q);
+            QRCodeData data = qr.CreateQrCode(txtGenQRCode.Text, QRCodeGenerator.ECCLevel.Q);
             QRCode code = new QRCode(data);
-            picbxImage.Image = code.GetGraphic(5);
+            picbxGenImage.Image = code.GetGraphic(5);
         }
     }
 }
