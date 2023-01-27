@@ -1,0 +1,2 @@
+DropBox that chooses sold/On Hold
+if sold remove item from stock. If on hold add "On Hold" in the "Comments" Column

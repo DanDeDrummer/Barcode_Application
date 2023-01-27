@@ -23,6 +23,11 @@ namespace Barcode_Application
         }
 
         #region Welcome
+        private void btnWelSale_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 3;
+        }
+
         private void btnWelGenerate_Click(object sender, EventArgs e)
         {
             tabControl.SelectedIndex = 1;
@@ -37,10 +42,17 @@ namespace Barcode_Application
         #region Generate QR Code
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            QRCodeGenerator qr = new QRCodeGenerator();
-            QRCodeData data = qr.CreateQrCode(txtGenQRCode.Text, QRCodeGenerator.ECCLevel.Q);
-            QRCode code = new QRCode(data);
-            picbxGenImage.Image = code.GetGraphic(5);
+            if ((MessageBox.Show("Are you sure you want to create a QR Code for : " /*MAKE TEXT BOLD*/+ txtGenQRCode.Text, "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            {
+                QRCodeGenerator qr = new QRCodeGenerator();
+                QRCodeData data = qr.CreateQrCode(txtGenQRCode.Text, QRCodeGenerator.ECCLevel.Q);
+                QRCode code = new QRCode(data);
+                picbxGenImage.Image = code.GetGraphic(5);
+            }
+            else 
+            {
+                MessageBox.Show("QR Code was not generated.", "Caption", MessageBoxButtons.OK);
+            }
         }
 
         private void btnGenBack_Click(object sender, EventArgs e)
@@ -102,8 +114,12 @@ namespace Barcode_Application
         {
             tabControl.SelectedIndex = 0;
         }
+
         #endregion
 
+        #region Sale
 
+
+        #endregion
     }
 }

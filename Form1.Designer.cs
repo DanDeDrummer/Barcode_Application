@@ -31,6 +31,9 @@ namespace Barcode_Application
         {
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tbsWelcome = new System.Windows.Forms.TabPage();
+            this.btnWelScan = new System.Windows.Forms.Button();
+            this.lblWelHead = new System.Windows.Forms.Label();
+            this.btnWelGenerate = new System.Windows.Forms.Button();
             this.tbsGenerateQR = new System.Windows.Forms.TabPage();
             this.btnGenBack = new System.Windows.Forms.Button();
             this.lblGenProductCode = new System.Windows.Forms.Label();
@@ -46,15 +49,19 @@ namespace Barcode_Application
             this.picbxScanImage = new System.Windows.Forms.PictureBox();
             this.lblScanCameraHead = new System.Windows.Forms.Label();
             this.btnScanScan = new System.Windows.Forms.Button();
-            this.btnWelGenerate = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnWelScan = new System.Windows.Forms.Button();
+            this.btnWelSale = new System.Windows.Forms.Button();
+            this.tbsSale = new System.Windows.Forms.TabPage();
+            this.cbbSaleHold = new System.Windows.Forms.ComboBox();
+            this.lblSaleHold = new System.Windows.Forms.Label();
+            this.btnConfirm = new System.Windows.Forms.Button();
+            this.lblTODO = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picbxGenImage)).BeginInit();
             this.tbsScanQR.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picbxScanImage)).BeginInit();
+            this.tbsSale.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -62,6 +69,7 @@ namespace Barcode_Application
             this.tabControl.Controls.Add(this.tbsWelcome);
             this.tabControl.Controls.Add(this.tbsGenerateQR);
             this.tabControl.Controls.Add(this.tbsScanQR);
+            this.tabControl.Controls.Add(this.tbsSale);
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -70,8 +78,9 @@ namespace Barcode_Application
             // 
             // tbsWelcome
             // 
+            this.tbsWelcome.Controls.Add(this.btnWelSale);
             this.tbsWelcome.Controls.Add(this.btnWelScan);
-            this.tbsWelcome.Controls.Add(this.label1);
+            this.tbsWelcome.Controls.Add(this.lblWelHead);
             this.tbsWelcome.Controls.Add(this.btnWelGenerate);
             this.tbsWelcome.Location = new System.Drawing.Point(4, 22);
             this.tbsWelcome.Name = "tbsWelcome";
@@ -80,6 +89,37 @@ namespace Barcode_Application
             this.tbsWelcome.TabIndex = 0;
             this.tbsWelcome.Text = "Welcome";
             this.tbsWelcome.UseVisualStyleBackColor = true;
+            // 
+            // btnWelScan
+            // 
+            this.btnWelScan.Location = new System.Drawing.Point(19, 112);
+            this.btnWelScan.Name = "btnWelScan";
+            this.btnWelScan.Size = new System.Drawing.Size(345, 30);
+            this.btnWelScan.TabIndex = 13;
+            this.btnWelScan.Text = "Scan QR";
+            this.btnWelScan.UseVisualStyleBackColor = true;
+            this.btnWelScan.Click += new System.EventHandler(this.btnWelScan_Click);
+            // 
+            // lblWelHead
+            // 
+            this.lblWelHead.AutoSize = true;
+            this.lblWelHead.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWelHead.Location = new System.Drawing.Point(15, 13);
+            this.lblWelHead.Name = "lblWelHead";
+            this.lblWelHead.Size = new System.Drawing.Size(224, 22);
+            this.lblWelHead.TabIndex = 10;
+            this.lblWelHead.Text = "NORKEM OPTOMETRIST";
+            this.lblWelHead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnWelGenerate
+            // 
+            this.btnWelGenerate.Location = new System.Drawing.Point(19, 174);
+            this.btnWelGenerate.Name = "btnWelGenerate";
+            this.btnWelGenerate.Size = new System.Drawing.Size(345, 30);
+            this.btnWelGenerate.TabIndex = 9;
+            this.btnWelGenerate.Text = "Generate QR";
+            this.btnWelGenerate.UseVisualStyleBackColor = true;
+            this.btnWelGenerate.Click += new System.EventHandler(this.btnWelGenerate_Click);
             // 
             // tbsGenerateQR
             // 
@@ -240,35 +280,67 @@ namespace Barcode_Application
             this.btnScanScan.UseVisualStyleBackColor = true;
             this.btnScanScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
-            // btnWelGenerate
+            // btnWelSale
             // 
-            this.btnWelGenerate.Location = new System.Drawing.Point(19, 50);
-            this.btnWelGenerate.Name = "btnWelGenerate";
-            this.btnWelGenerate.Size = new System.Drawing.Size(345, 30);
-            this.btnWelGenerate.TabIndex = 9;
-            this.btnWelGenerate.Text = "Generate";
-            this.btnWelGenerate.UseVisualStyleBackColor = true;
-            this.btnWelGenerate.Click += new System.EventHandler(this.btnWelGenerate_Click);
+            this.btnWelSale.Location = new System.Drawing.Point(19, 50);
+            this.btnWelSale.Name = "btnWelSale";
+            this.btnWelSale.Size = new System.Drawing.Size(345, 30);
+            this.btnWelSale.TabIndex = 14;
+            this.btnWelSale.Text = "Sale";
+            this.btnWelSale.UseVisualStyleBackColor = true;
+            this.btnWelSale.Click += new System.EventHandler(this.btnWelSale_Click);
             // 
-            // label1
+            // tbsSale
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(15, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(241, 22);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Generate Or Scan QR Code:";
+            this.tbsSale.Controls.Add(this.lblTODO);
+            this.tbsSale.Controls.Add(this.btnConfirm);
+            this.tbsSale.Controls.Add(this.lblSaleHold);
+            this.tbsSale.Controls.Add(this.cbbSaleHold);
+            this.tbsSale.Location = new System.Drawing.Point(4, 22);
+            this.tbsSale.Name = "tbsSale";
+            this.tbsSale.Padding = new System.Windows.Forms.Padding(3);
+            this.tbsSale.Size = new System.Drawing.Size(385, 580);
+            this.tbsSale.TabIndex = 3;
+            this.tbsSale.Text = "Sale";
+            this.tbsSale.UseVisualStyleBackColor = true;
             // 
-            // btnWelScan
+            // cbbSaleHold
             // 
-            this.btnWelScan.Location = new System.Drawing.Point(19, 112);
-            this.btnWelScan.Name = "btnWelScan";
-            this.btnWelScan.Size = new System.Drawing.Size(345, 30);
-            this.btnWelScan.TabIndex = 13;
-            this.btnWelScan.Text = "Scan";
-            this.btnWelScan.UseVisualStyleBackColor = true;
-            this.btnWelScan.Click += new System.EventHandler(this.btnWelScan_Click);
+            this.cbbSaleHold.FormattingEnabled = true;
+            this.cbbSaleHold.Items.AddRange(new object[] {
+            "Sale",
+            "On Hold"});
+            this.cbbSaleHold.Location = new System.Drawing.Point(134, 18);
+            this.cbbSaleHold.Name = "cbbSaleHold";
+            this.cbbSaleHold.Size = new System.Drawing.Size(231, 21);
+            this.cbbSaleHold.TabIndex = 0;
+            // 
+            // lblSaleHold
+            // 
+            this.lblSaleHold.AutoSize = true;
+            this.lblSaleHold.Location = new System.Drawing.Point(17, 18);
+            this.lblSaleHold.Name = "lblSaleHold";
+            this.lblSaleHold.Size = new System.Drawing.Size(102, 13);
+            this.lblSaleHold.TabIndex = 1;
+            this.lblSaleHold.Text = "Made Sale/On Hold";
+            // 
+            // btnConfirm
+            // 
+            this.btnConfirm.Location = new System.Drawing.Point(134, 537);
+            this.btnConfirm.Name = "btnConfirm";
+            this.btnConfirm.Size = new System.Drawing.Size(75, 23);
+            this.btnConfirm.TabIndex = 2;
+            this.btnConfirm.Text = "Confirm";
+            this.btnConfirm.UseVisualStyleBackColor = true;
+            // 
+            // lblTODO
+            // 
+            this.lblTODO.Location = new System.Drawing.Point(17, 63);
+            this.lblTODO.Name = "lblTODO";
+            this.lblTODO.Size = new System.Drawing.Size(348, 50);
+            this.lblTODO.TabIndex = 3;
+            this.lblTODO.Text = "Functionality: Scan QR Code, Search DB for ItemCode, Remove/Mark as on Hold accor" +
+    "ding to combobox selection optimax system";
             // 
             // frmBarcodeApplication
             // 
@@ -290,6 +362,8 @@ namespace Barcode_Application
             this.tbsScanQR.ResumeLayout(false);
             this.tbsScanQR.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picbxScanImage)).EndInit();
+            this.tbsSale.ResumeLayout(false);
+            this.tbsSale.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -313,9 +387,15 @@ namespace Barcode_Application
         private System.Windows.Forms.Button btnScanScan;
         private System.Windows.Forms.Button btnGenBack;
         private System.Windows.Forms.Button btnScanBack;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblWelHead;
         private System.Windows.Forms.Button btnWelGenerate;
         private System.Windows.Forms.Button btnWelScan;
+        private System.Windows.Forms.Button btnWelSale;
+        private System.Windows.Forms.TabPage tbsSale;
+        private System.Windows.Forms.Label lblSaleHold;
+        private System.Windows.Forms.ComboBox cbbSaleHold;
+        private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.Label lblTODO;
     }
 }
 
