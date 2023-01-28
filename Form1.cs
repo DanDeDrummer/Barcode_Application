@@ -17,6 +17,8 @@ namespace Barcode_Application
     //Scan QR Code: https://www.youtube.com/watch?v=pKjct-DXL0w
     public partial class frmBarcodeApplication : Form
     {
+        List<Image> QRImages = new List<Image>();
+        List<String> QRCodes = new List<String>();
         public frmBarcodeApplication()
         {
             InitializeComponent();
@@ -31,6 +33,9 @@ namespace Barcode_Application
         private void btnWelGenerate_Click(object sender, EventArgs e)
         {
             tabControl.SelectedIndex = 1;
+            //Clear QR Lists
+            QRImages.Clear();
+            QRCodes.Clear();
         }
 
         private void btnWelScan_Click(object sender, EventArgs e)
@@ -48,10 +53,26 @@ namespace Barcode_Application
                 QRCodeData data = qr.CreateQrCode(txtGenQRCode.Text, QRCodeGenerator.ECCLevel.Q);
                 QRCode code = new QRCode(data);
                 picbxGenImage.Image = code.GetGraphic(5);
+                AddToPrintQueue(picbxGenImage.Image, txtGenQRCode.Text); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
             }
             else 
             {
                 MessageBox.Show("QR Code was not generated.", "Caption", MessageBoxButtons.OK);
+            }
+        }
+
+        private void AddToPrintQueue(Image image, String code)
+        {
+            QRImages.Add(image);
+            QRCodes.Add(code);
+        }
+
+        private void btnGenPrint_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < QRImages.Count - 1; i++)
+            {
+                //Print QRImages[i]
+                //Print QRCodes[i]
             }
         }
 
