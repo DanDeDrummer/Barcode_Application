@@ -29,6 +29,7 @@ namespace Barcode_Application
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBarcodeApplication));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tbsWelcome = new System.Windows.Forms.TabPage();
             this.btnWelSale = new System.Windows.Forms.Button();
@@ -36,6 +37,7 @@ namespace Barcode_Application
             this.lblWelHead = new System.Windows.Forms.Label();
             this.btnWelGenerate = new System.Windows.Forms.Button();
             this.tbsGenerateQR = new System.Windows.Forms.TabPage();
+            this.btnGenPrint = new System.Windows.Forms.Button();
             this.btnGenBack = new System.Windows.Forms.Button();
             this.lblGenProductCode = new System.Windows.Forms.Label();
             this.picbxGenImage = new System.Windows.Forms.PictureBox();
@@ -55,7 +57,8 @@ namespace Barcode_Application
             this.btnConfirm = new System.Windows.Forms.Button();
             this.lblSaleHold = new System.Windows.Forms.Label();
             this.cbbSaleHold = new System.Windows.Forms.ComboBox();
-            this.btnGenPrint = new System.Windows.Forms.Button();
+            this.prntDoc = new System.Drawing.Printing.PrintDocument();
+            this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -148,6 +151,16 @@ namespace Barcode_Application
             this.tbsGenerateQR.TabIndex = 1;
             this.tbsGenerateQR.Text = "Generate QR";
             this.tbsGenerateQR.UseVisualStyleBackColor = true;
+            // 
+            // btnGenPrint
+            // 
+            this.btnGenPrint.Location = new System.Drawing.Point(264, 397);
+            this.btnGenPrint.Name = "btnGenPrint";
+            this.btnGenPrint.Size = new System.Drawing.Size(100, 23);
+            this.btnGenPrint.TabIndex = 14;
+            this.btnGenPrint.Text = "Print QR Code(s)";
+            this.btnGenPrint.UseVisualStyleBackColor = true;
+            this.btnGenPrint.Click += new System.EventHandler(this.btnGenPrint_Click);
             // 
             // btnGenBack
             // 
@@ -344,15 +357,20 @@ namespace Barcode_Application
             this.cbbSaleHold.Size = new System.Drawing.Size(231, 21);
             this.cbbSaleHold.TabIndex = 0;
             // 
-            // btnGenPrint
+            // prntDoc
             // 
-            this.btnGenPrint.Location = new System.Drawing.Point(264, 397);
-            this.btnGenPrint.Name = "btnGenPrint";
-            this.btnGenPrint.Size = new System.Drawing.Size(100, 23);
-            this.btnGenPrint.TabIndex = 14;
-            this.btnGenPrint.Text = "Print QR Code(s)";
-            this.btnGenPrint.UseVisualStyleBackColor = true;
-            this.btnGenPrint.Click += new System.EventHandler(this.btnGenPrint_Click);
+            this.prntDoc.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.prntDoc_PrintPage);
+            // 
+            // prntPrvDlg
+            // 
+            this.prntPrvDlg.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.prntPrvDlg.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.prntPrvDlg.ClientSize = new System.Drawing.Size(400, 300);
+            this.prntPrvDlg.Document = this.prntDoc;
+            this.prntPrvDlg.Enabled = true;
+            this.prntPrvDlg.Icon = ((System.Drawing.Icon)(resources.GetObject("prntPrvDlg.Icon")));
+            this.prntPrvDlg.Name = "prntPrvDlg";
+            this.prntPrvDlg.Visible = false;
             // 
             // frmBarcodeApplication
             // 
@@ -409,6 +427,8 @@ namespace Barcode_Application
         private System.Windows.Forms.Button btnConfirm;
         private System.Windows.Forms.Label lblTODO;
         private System.Windows.Forms.Button btnGenPrint;
+        private System.Drawing.Printing.PrintDocument prntDoc;
+        private System.Windows.Forms.PrintPreviewDialog prntPrvDlg;
     }
 }
 

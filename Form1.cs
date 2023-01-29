@@ -57,7 +57,7 @@ namespace Barcode_Application
             }
             else 
             {
-                MessageBox.Show("QR Code was not generated.", "Caption", MessageBoxButtons.OK);
+                MessageBox.Show("QR Code was not generated.", "Abort Generate", MessageBoxButtons.OK);
             }
         }
 
@@ -65,15 +65,6 @@ namespace Barcode_Application
         {
             QRImages.Add(image);
             QRCodes.Add(code);
-        }
-
-        private void btnGenPrint_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < QRImages.Count - 1; i++)
-            {
-                //Print QRImages[i]
-                //Print QRCodes[i]
-            }
         }
 
         private void btnGenBack_Click(object sender, EventArgs e)
@@ -141,6 +132,42 @@ namespace Barcode_Application
         #region Sale
 
 
+        #endregion
+        #region Printing
+        Bitmap bmp;
+        private void prntDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            e.Graphics.DrawImage(bmp, 0, 0);
+        }
+
+        private void btnGenPrint_Click(object sender, EventArgs e)
+        {
+            //FoxLearnCode
+            Graphics g = this.CreateGraphics();
+            bmp = new Bitmap(this.Size.Height, this.Size.Width, g);
+            Graphics mg = Graphics.FromImage(bmp);
+            mg.CopyFromScreen(this.Location.X, this.Location.Y, 0, 0, this.Size);
+            prntPrvDlg.ShowDialog();
+            /*if(QRImages.Count > 0) 
+            {
+                for (int i = 0; i < QRImages.Count - 1; i++)
+                {
+                    //Print QRImages[i]
+                    //Print QRCodes[i]
+
+                    //FoxLearnCode
+                    Graphics g = this.CreateGraphics();
+                    bmp = new Bitmap(this.Size.Height, this.Size.Width, g);
+                    Graphics mg = Graphics.FromImage(bmp);
+                    mg.CopyFromScreen(this.Location.X, this.Location.Y, 0, 0, this.Size);
+                    prntPrvDlg.ShowDialog();
+                }
+            }
+            else 
+            {
+                MessageBox.Show("QR Code(s) was not printed.", "Abort Print", MessageBoxButtons.OK);
+            }*/
+        }
         #endregion
     }
 }
