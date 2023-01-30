@@ -59,6 +59,7 @@ namespace Barcode_Application
             this.cbbSaleHold = new System.Windows.Forms.ComboBox();
             this.prntDoc = new System.Drawing.Printing.PrintDocument();
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
+            this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -372,6 +373,10 @@ namespace Barcode_Application
             this.prntPrvDlg.Name = "prntPrvDlg";
             this.prntPrvDlg.Visible = false;
             // 
+            // prntDlg
+            // 
+            this.prntDlg.UseEXDialog = true;
+            // 
             // frmBarcodeApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -429,6 +434,7 @@ namespace Barcode_Application
         private System.Windows.Forms.Button btnGenPrint;
         private System.Drawing.Printing.PrintDocument prntDoc;
         private System.Windows.Forms.PrintPreviewDialog prntPrvDlg;
+        private System.Windows.Forms.PrintDialog prntDlg;
     }
 }
 

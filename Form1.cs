@@ -135,38 +135,53 @@ namespace Barcode_Application
         #endregion
         #region Printing
         Bitmap bmp;
+        Image printedImage;
         private void prntDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            e.Graphics.DrawImage(bmp, 0, 0);
+            //e.Graphics.DrawImage(bmp, 0, 0)
+            e.Graphics.DrawImageUnscaled(printedImage, 10, 10);//Print QR Image
+            e.Graphics.DrawString(QRCodes[0], new Font("Arial", 40, FontStyle.Regular), Brushes.Black, 150, 125);
+
         }
 
         private void btnGenPrint_Click(object sender, EventArgs e)
         {
+            prntDlg.Document = prntDoc;
+            printedImage = QRImages[0];
+            if(prntDlg.ShowDialog() == DialogResult.OK) 
+            {
+                prntDoc.Print();
+            }
             //FoxLearnCode
-            Graphics g = this.CreateGraphics();
-            bmp = new Bitmap(this.Size.Height, this.Size.Width, g);
+            /*Graphics g = picbxGenImage.CreateGraphics();
+            bmp = new Bitmap(picbxGenImage.Size.Height, picbxGenImage.Size.Width, g);
             Graphics mg = Graphics.FromImage(bmp);
-            mg.CopyFromScreen(this.Location.X, this.Location.Y, 0, 0, this.Size);
-            prntPrvDlg.ShowDialog();
-            /*if(QRImages.Count > 0) 
+            mg.CopyFromScreen(picbxGenImage.Location.X, picbxGenImage.Location.Y, 0, 0, picbxGenImage.Size);
+            prntPrvDlg.ShowDialog();*/
+            return;
+            if(QRImages.Count > 0) 
             {
                 for (int i = 0; i < QRImages.Count - 1; i++)
                 {
                     //Print QRImages[i]
+                    printedImage = QRImages[i];
+                    prntPrvDlg.ShowDialog();
                     //Print QRCodes[i]
 
-                    //FoxLearnCode
-                    Graphics g = this.CreateGraphics();
-                    bmp = new Bitmap(this.Size.Height, this.Size.Width, g);
-                    Graphics mg = Graphics.FromImage(bmp);
-                    mg.CopyFromScreen(this.Location.X, this.Location.Y, 0, 0, this.Size);
-                    prntPrvDlg.ShowDialog();
+
                 }
             }
             else 
             {
                 MessageBox.Show("QR Code(s) was not printed.", "Abort Print", MessageBoxButtons.OK);
-            }*/
+            }
+
+            /*//FoxLearnCode
+            Graphics g = this.CreateGraphics();
+            bmp = new Bitmap(this.Size.Height, this.Size.Width, g);
+            Graphics mg = Graphics.FromImage(bmp);
+            mg.CopyFromScreen(this.Location.X, this.Location.Y, 0, 0, this.Size);
+            prntPrvDlg.ShowDialog(); */
         }
         #endregion
     }
