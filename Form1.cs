@@ -18,7 +18,7 @@ namespace Barcode_Application
     public partial class frmBarcodeApplication : Form
     {
         List<Image> QRImages = new List<Image>();
-        List<String> QRCodes = new List<String>();
+        List<String> ItemCodes = new List<String>();
         public frmBarcodeApplication()
         {
             InitializeComponent();
@@ -35,7 +35,7 @@ namespace Barcode_Application
             tabControl.SelectedIndex = 1;
             //Clear QR Lists
             QRImages.Clear();
-            QRCodes.Clear();
+            ItemCodes.Clear();
         }
 
         private void btnWelScan_Click(object sender, EventArgs e)
@@ -47,13 +47,14 @@ namespace Barcode_Application
         #region Generate QR Code
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            if ((MessageBox.Show("Are you sure you want to create a QR Code for : " /*MAKE TEXT BOLD*/+ txtGenQRCode.Text, "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            if ((MessageBox.Show("Are you sure you want to create a QR Code for : " /*MAKE TEXT BOLD*/+ "\"" + txtGenQRCode.Text + "\"", "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
             {
                 QRCodeGenerator qr = new QRCodeGenerator();
                 QRCodeData data = qr.CreateQrCode(txtGenQRCode.Text, QRCodeGenerator.ECCLevel.Q);
                 QRCode code = new QRCode(data);
                 picbxGenImage.Image = code.GetGraphic(5);
                 AddToPrintQueue(picbxGenImage.Image, txtGenQRCode.Text); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
+                btnGenPrint.Enabled = true;
             }
             else 
             {
@@ -64,7 +65,8 @@ namespace Barcode_Application
         private void AddToPrintQueue(Image image, String code)
         {
             QRImages.Add(image);
-            QRCodes.Add(code);
+            ItemCodes.Add(code);
+            MessageBox.Show("\"" + code + "\"" + " added to ItemCode, now " + ItemCodes.Count + " items.");
         }
 
         private void btnGenBack_Click(object sender, EventArgs e)
@@ -136,45 +138,47 @@ namespace Barcode_Application
         #region Printing
         Bitmap bmp;
         Image printedImage;
+        String drawnString;
         private void prntDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            //e.Graphics.DrawImage(bmp, 0, 0)
-            e.Graphics.DrawImageUnscaled(printedImage, 10, 10);//Print QR Image
-            e.Graphics.DrawString(QRCodes[0], new Font("Arial", 40, FontStyle.Regular), Brushes.Black, 150, 125);
+            int printedImageX = 0;
+            int printedImageY = 0;
+            int ItemCodesX = 0;
+            int ItemCodesY = 0;
+            int codeCounter = 0;
+            for (int i = 0; i < QRImages.Count; i++)
+            {
+                //Print QRImages[i]
+                printedImage = QRImages[i];
+                drawnString = ItemCodes[i];
+                //e.Graphics.DrawImage(bmp, 0, 0)
+                e.Graphics.DrawImageUnscaled(printedImage, printedImageX + 1, printedImageY + 1);//Print QR Image
+                //e.Graphics.DrawString(drawnString, new Font("Arial", 40, FontStyle.Regular), Brushes.Black, ItemCodesX + 150, ItemCodesY + 125);
+                codeCounter++;
+            }
+
+            MessageBox.Show("Printed " + codeCounter + " QR code(s) and the corresponding Item code(s)", "Printing Complete", MessageBoxButtons.OK);
 
         }
 
         private void btnGenPrint_Click(object sender, EventArgs e)
         {
             prntDlg.Document = prntDoc;
-            printedImage = QRImages[0];
-            if(prntDlg.ShowDialog() == DialogResult.OK) 
-            {
-                prntDoc.Print();
-            }
-            //FoxLearnCode
-            /*Graphics g = picbxGenImage.CreateGraphics();
-            bmp = new Bitmap(picbxGenImage.Size.Height, picbxGenImage.Size.Width, g);
-            Graphics mg = Graphics.FromImage(bmp);
-            mg.CopyFromScreen(picbxGenImage.Location.X, picbxGenImage.Location.Y, 0, 0, picbxGenImage.Size);
-            prntPrvDlg.ShowDialog();*/
-            return;
+            //printedImage = QRImages[0];
+
             if(QRImages.Count > 0) 
             {
-                for (int i = 0; i < QRImages.Count - 1; i++)
+                if (prntDlg.ShowDialog() == DialogResult.OK)
                 {
-                    //Print QRImages[i]
-                    printedImage = QRImages[i];
-                    prntPrvDlg.ShowDialog();
-                    //Print QRCodes[i]
-
-
+                    prntDoc.Print();
                 }
             }
             else 
             {
-                MessageBox.Show("QR Code(s) was not printed.", "Abort Print", MessageBoxButtons.OK);
+                MessageBox.Show(QRImages.Count + " QR Code(s) were not printed.", "Aborted Print", MessageBoxButtons.OK);
             }
+
+
 
             /*//FoxLearnCode
             Graphics g = this.CreateGraphics();

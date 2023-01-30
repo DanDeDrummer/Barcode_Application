@@ -155,6 +155,7 @@ namespace Barcode_Application
             // 
             // btnGenPrint
             // 
+            this.btnGenPrint.Enabled = false;
             this.btnGenPrint.Location = new System.Drawing.Point(264, 397);
             this.btnGenPrint.Name = "btnGenPrint";
             this.btnGenPrint.Size = new System.Drawing.Size(100, 23);
@@ -200,6 +201,8 @@ namespace Barcode_Application
             this.txtGenQRCode.Name = "txtGenQRCode";
             this.txtGenQRCode.Size = new System.Drawing.Size(345, 61);
             this.txtGenQRCode.TabIndex = 10;
+            this.txtGenQRCode.Text = "Add a second text box after QR Code: that shows the product code after generation" +
+    ". Clear this box when btnGenerate clicked";
             // 
             // lblGenQRCodeHead
             // 
