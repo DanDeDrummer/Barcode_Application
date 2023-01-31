@@ -181,27 +181,32 @@ namespace Barcode_Application
                 {
                     //This block pf code is causing the second and further rows to start 1 cell to the left.
                     printedImageX = itemCodesX + printedImage.Width + 100;
-                    MessageBox.Show("Image " + i + " Code bigger.");
+                    //MessageBox.Show("Image " + i + " Code bigger.");
                 }
 
-                if (((e.MarginBounds.X + printedImageX > 650) || (e.MarginBounds.X + itemCodesX > 650))) 
+                if (((e.MarginBounds.X + printedImageX >= 650) || (e.MarginBounds.X + itemCodesX >= 650))) 
                 {
-                    MessageBox.Show("Incresing Y value.");
+                    //MessageBox.Show("Incresing Y value.");
                     printedImageX = 0;
                     itemCodesX = 0;
                     printedImageY += printedImage.Height + Convert.ToInt32(stringSize.Height);
                 }
-                else if((e.MarginBounds.Y + printedImageY <= 900) || (e.MarginBounds.Y + itemCodesY <= 900)) 
+                if((e.MarginBounds.Y + printedImageY >= 900) || (e.MarginBounds.Y + itemCodesY >= 900)) 
                 {
                     //Add new pdf page
                     MessageBox.Show("Add new page.");
+                    e.HasMorePages = true;
+                    printedImageX = 0;
+                    printedImageY = 0;
+                    itemCodesX = 0;
+                    itemCodesY = 0;
                 }
                    
                 codeCounter++;
                 // MessageBox.Show("QR Code Width: " + printedImage.Width + "\nQR Code Height: " + printedImage.Height);
 
             }
-
+            //e.HasMorePages = false;
             MessageBox.Show("Printed " + codeCounter + " QR code(s) and the corresponding Item code(s)", "Printing Complete", MessageBoxButtons.OK);
 
 
@@ -241,10 +246,21 @@ namespace Barcode_Application
             //Generate QR
             for (int i = 0; i < numericUpDown1.Value; i++)
             {
-                QRCodeGenerator qr = new QRCodeGenerator();
-                QRCodeData data = qr.CreateQrCode("T-FRA-AHI-1431-07A", QRCodeGenerator.ECCLevel.Q);
-                QRCode code = new QRCode(data);
-                AddToPrintQueue(code.GetGraphic(5), "T-FRA-AHI-1431-07A");
+                if(i > 12) 
+                {
+                    QRCodeGenerator qr = new QRCodeGenerator();
+                    QRCodeData data = qr.CreateQrCode("T-FRA-AHI-1431-07A", QRCodeGenerator.ECCLevel.Q);
+                    QRCode code = new QRCode(data);
+                    AddToPrintQueue(code.GetGraphic(5), "T-FRA-AHI-1431-07A");
+                }
+                else 
+                {
+                    QRCodeGenerator qr = new QRCodeGenerator();
+                    QRCodeData data = qr.CreateQrCode("T-FRA-CUB-3127-002", QRCodeGenerator.ECCLevel.Q);
+                    QRCode code = new QRCode(data);
+                    AddToPrintQueue(code.GetGraphic(5), "T-FRA-CUB-3127-002");
+                }
+
             }
             MessageBox.Show("Quick created QR. Length: " + QRImages.Count);
             btnGenPrint.Enabled = true;
