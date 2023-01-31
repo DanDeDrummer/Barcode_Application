@@ -47,14 +47,24 @@ namespace Barcode_Application
         #region Generate QR Code
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            if ((MessageBox.Show("Are you sure you want to create a QR Code for : " /*MAKE TEXT BOLD*/+ "\"" + txtGenQRCode.Text + "\"", "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            lblGenQRCodeOut.Text = "";
+            picbxGenImage.Image = null;
+            lblGenQRCodeOut.Visible = false;
+            string qrCodeInput = txtGenQRCode.Text;
+            if ((MessageBox.Show("Are you sure you want to create a QR Code for : " /*MAKE TEXT BOLD*/+ "\"" + qrCodeInput + "\"", "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
             {
                 QRCodeGenerator qr = new QRCodeGenerator();
-                QRCodeData data = qr.CreateQrCode(txtGenQRCode.Text, QRCodeGenerator.ECCLevel.Q);
+                QRCodeData data = qr.CreateQrCode(qrCodeInput, QRCodeGenerator.ECCLevel.Q);
                 QRCode code = new QRCode(data);
                 picbxGenImage.Image = code.GetGraphic(5);
-                AddToPrintQueue(picbxGenImage.Image, txtGenQRCode.Text); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
+                AddToPrintQueue(picbxGenImage.Image, qrCodeInput); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
+
+                //Display QRCode Above picture
+                lblGenQRCodeOut.Visible = true;
+                lblGenQRCodeOut.Text = qrCodeInput;
+
                 btnGenPrint.Enabled = true;
+                txtGenQRCode.Clear();
             }
             else 
             {
@@ -66,7 +76,7 @@ namespace Barcode_Application
         {
             QRImages.Add(image);
             ItemCodes.Add(code);
-            MessageBox.Show("\"" + code + "\"" + " added to ItemCode, now " + ItemCodes.Count + " items.");
+            //MessageBox.Show("\"" + code + "\"" + " added to ItemCode, now " + ItemCodes.Count + " items.");
         }
 
         private void btnGenBack_Click(object sender, EventArgs e)
@@ -141,23 +151,59 @@ namespace Barcode_Application
         String drawnString;
         private void prntDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
+            //MessageBox.Show("Start Margins are: " + e.MarginBounds/*x=100, y=100, width=650, height=900*/);
             int printedImageX = 0;
             int printedImageY = 0;
-            int ItemCodesX = 0;
-            int ItemCodesY = 0;
+            int itemCodesX = 0;
+            int itemCodesY = 0;
             int codeCounter = 0;
             for (int i = 0; i < QRImages.Count; i++)
             {
                 //Print QRImages[i]
                 printedImage = QRImages[i];
                 drawnString = ItemCodes[i];
-                //e.Graphics.DrawImage(bmp, 0, 0)
-                e.Graphics.DrawImageUnscaled(printedImage, printedImageX + 1, printedImageY + 1);//Print QR Image
-                //e.Graphics.DrawString(drawnString, new Font("Arial", 40, FontStyle.Regular), Brushes.Black, ItemCodesX + 150, ItemCodesY + 125);
+                e.Graphics.DrawImage(printedImage, printedImageX, printedImageY);//Print QR Image
+                itemCodesX = printedImageX;
+                printedImageX += 150;
+
+                itemCodesY = printedImageY + printedImage.Height;
+                e.Graphics.DrawString(drawnString, new Font("Arial", 16, FontStyle.Regular), Brushes.Black, itemCodesX, itemCodesY);//150,125
+
+                //Get Size of string in pixels, calculate new position based on the length
+                SizeF stringSize = e.Graphics.MeasureString(drawnString, new Font("Arial", 16, FontStyle.Regular));
+
+                if (printedImage.Width > stringSize.Width)
+                {
+                    itemCodesX = printedImageX;
+                    //MessageBox.Show("Image bigger.");
+                }
+                else if (stringSize.Width > printedImage.Width)
+                {
+                    //This block pf code is causing the second and further rows to start 1 cell to the left.
+                    printedImageX = itemCodesX + printedImage.Width + 100;
+                    MessageBox.Show("Image " + i + " Code bigger.");
+                }
+
+                if (((e.MarginBounds.X + printedImageX > 650) || (e.MarginBounds.X + itemCodesX > 650))) 
+                {
+                    MessageBox.Show("Incresing Y value.");
+                    printedImageX = 0;
+                    itemCodesX = 0;
+                    printedImageY += printedImage.Height + Convert.ToInt32(stringSize.Height);
+                }
+                else if((e.MarginBounds.Y + printedImageY <= 900) || (e.MarginBounds.Y + itemCodesY <= 900)) 
+                {
+                    //Add new pdf page
+                    MessageBox.Show("Add new page.");
+                }
+                   
                 codeCounter++;
+                // MessageBox.Show("QR Code Width: " + printedImage.Width + "\nQR Code Height: " + printedImage.Height);
+
             }
 
             MessageBox.Show("Printed " + codeCounter + " QR code(s) and the corresponding Item code(s)", "Printing Complete", MessageBoxButtons.OK);
+
 
         }
 
@@ -165,10 +211,10 @@ namespace Barcode_Application
         {
             prntDlg.Document = prntDoc;
             //printedImage = QRImages[0];
-
+           
             if(QRImages.Count > 0) 
             {
-                if (prntDlg.ShowDialog() == DialogResult.OK)
+                if (prntDlg.ShowDialog() == DialogResult.OK && prntPrvDlg.ShowDialog() == DialogResult.OK)
                 {
                     prntDoc.Print();
                 }
@@ -188,5 +234,20 @@ namespace Barcode_Application
             prntPrvDlg.ShowDialog(); */
         }
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //T-FRA-AHI-1431-07A
+            //Generate QR
+            for (int i = 0; i < numericUpDown1.Value; i++)
+            {
+                QRCodeGenerator qr = new QRCodeGenerator();
+                QRCodeData data = qr.CreateQrCode("T-FRA-AHI-1431-07A", QRCodeGenerator.ECCLevel.Q);
+                QRCode code = new QRCode(data);
+                AddToPrintQueue(code.GetGraphic(5), "T-FRA-AHI-1431-07A");
+            }
+            MessageBox.Show("Quick created QR. Length: " + QRImages.Count);
+            btnGenPrint.Enabled = true;
+        }
     }
 }

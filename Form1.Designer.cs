@@ -37,6 +37,8 @@ namespace Barcode_Application
             this.lblWelHead = new System.Windows.Forms.Label();
             this.btnWelGenerate = new System.Windows.Forms.Button();
             this.tbsGenerateQR = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.lblGenQRCodeOut = new System.Windows.Forms.Label();
             this.btnGenPrint = new System.Windows.Forms.Button();
             this.btnGenBack = new System.Windows.Forms.Button();
             this.lblGenProductCode = new System.Windows.Forms.Label();
@@ -60,6 +62,7 @@ namespace Barcode_Application
             this.prntDoc = new System.Drawing.Printing.PrintDocument();
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -67,6 +70,7 @@ namespace Barcode_Application
             this.tbsScanQR.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picbxScanImage)).BeginInit();
             this.tbsSale.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -138,6 +142,9 @@ namespace Barcode_Application
             // 
             // tbsGenerateQR
             // 
+            this.tbsGenerateQR.Controls.Add(this.numericUpDown1);
+            this.tbsGenerateQR.Controls.Add(this.button1);
+            this.tbsGenerateQR.Controls.Add(this.lblGenQRCodeOut);
             this.tbsGenerateQR.Controls.Add(this.btnGenPrint);
             this.tbsGenerateQR.Controls.Add(this.btnGenBack);
             this.tbsGenerateQR.Controls.Add(this.lblGenProductCode);
@@ -152,6 +159,25 @@ namespace Barcode_Application
             this.tbsGenerateQR.TabIndex = 1;
             this.tbsGenerateQR.Text = "Generate QR";
             this.tbsGenerateQR.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(183, 397);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(43, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Quick Generate";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // lblGenQRCodeOut
+            // 
+            this.lblGenQRCodeOut.AutoSize = true;
+            this.lblGenQRCodeOut.Location = new System.Drawing.Point(102, 18);
+            this.lblGenQRCodeOut.Name = "lblGenQRCodeOut";
+            this.lblGenQRCodeOut.Size = new System.Drawing.Size(0, 13);
+            this.lblGenQRCodeOut.TabIndex = 15;
+            this.lblGenQRCodeOut.Visible = false;
             // 
             // btnGenPrint
             // 
@@ -201,8 +227,6 @@ namespace Barcode_Application
             this.txtGenQRCode.Name = "txtGenQRCode";
             this.txtGenQRCode.Size = new System.Drawing.Size(345, 61);
             this.txtGenQRCode.TabIndex = 10;
-            this.txtGenQRCode.Text = "Add a second text box after QR Code: that shows the product code after generation" +
-    ". Clear this box when btnGenerate clicked";
             // 
             // lblGenQRCodeHead
             // 
@@ -380,6 +404,18 @@ namespace Barcode_Application
             // 
             this.prntDlg.UseEXDialog = true;
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(227, 400);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(38, 20);
+            this.numericUpDown1.TabIndex = 17;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
             // frmBarcodeApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -402,6 +438,7 @@ namespace Barcode_Application
             ((System.ComponentModel.ISupportInitialize)(this.picbxScanImage)).EndInit();
             this.tbsSale.ResumeLayout(false);
             this.tbsSale.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -438,6 +475,9 @@ namespace Barcode_Application
         private System.Drawing.Printing.PrintDocument prntDoc;
         private System.Windows.Forms.PrintPreviewDialog prntPrvDlg;
         private System.Windows.Forms.PrintDialog prntDlg;
+        private System.Windows.Forms.Label lblGenQRCodeOut;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 
