@@ -191,7 +191,8 @@ namespace Barcode_Application
                     itemCodesX = 0;
                     printedImageY += printedImage.Height + Convert.ToInt32(stringSize.Height);
                 }
-                if((e.MarginBounds.Y + printedImageY >= 900) || (e.MarginBounds.Y + itemCodesY >= 900)) 
+
+                if((e.MarginBounds.Y + printedImageY >= 900) || (e.MarginBounds.Y + itemCodesY >= 900) && (i < QRImages.Count)) 
                 {
                     //Add new pdf page
                     MessageBox.Show("Add new page.");
@@ -200,6 +201,10 @@ namespace Barcode_Application
                     printedImageY = 0;
                     itemCodesX = 0;
                     itemCodesY = 0;
+                }
+                else 
+                {
+                    e.HasMorePages = false;
                 }
                    
                 codeCounter++;
