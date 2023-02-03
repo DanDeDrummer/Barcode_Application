@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AForge.Video.DirectShow;
+using Demo_Library;
 using QRCoder;
 using ZXing;
 
@@ -19,10 +20,52 @@ namespace Barcode_Application
     {
         List<Image> QRImages = new List<Image>();
         List<String> ItemCodes = new List<String>();
+
+        List<InventoryItemModel> inventoryItems = new List<InventoryItemModel>();
         public frmBarcodeApplication()
         {
             InitializeComponent();
+
+            LoadInventoryItemsList();
         }
+
+
+        #region Database Code
+        //https://www.youtube.com/watch?v=ayp3tHEkRc0 31:55
+
+        private void LoadInventoryItemsList()
+        {
+            inventoryItems = SqliteDataAcess.LoadInventoryStockItems();
+            WireUpInventoryItemListBox();
+        }
+
+        private void WireUpInventoryItemListBox()
+        {
+            /*listItemsListBox.DataSource = null;
+            listItemsListBox.DataSource = inventoryItems;
+            listItemsListBox.DisplayMember = "ItemName";*/
+        }
+
+        //Add Inventory Item Button
+        /*InventoryItemModel inventoryItemModel = new InventoryItemModel();
+
+            inventoryItemModel.ItemName = txtItemName.Text;
+            inventoryItemModel.ItemColor = ItemColor.Text;
+            inventoryItemModel.ItemType = cbbItemType.SelectedIndex.Text;
+            inventoryItemModel.ItemQuantity = Convert.ToInt32(numUDItemQuantity.Value);
+            inventoryItemModel.ItemCode = "";//GenerateItemCode(type, name, color);
+
+            SqliteDataAcess.SaveInventoryStockItem(inventoryItemModel);
+
+            //Clear TextBoxes
+            txtItemName.Text = "";
+            ItemColor.Text = "";
+            cbbItemType.SelectedIndex = -1;
+            numUDItemQuantity.Value = 0;
+
+            MessageBox.Show("Item " + inventoryItemModel.ItemCode + "\"" + inventoryItemModel.ItemName + "\"" + " was added to the Database.");*/
+
+        #endregion
 
         #region Welcome
         private void btnWelSale_Click(object sender, EventArgs e)
@@ -145,6 +188,7 @@ namespace Barcode_Application
 
 
         #endregion
+
         #region Printing
         Bitmap bmp;
         Image printedImage;
@@ -245,20 +289,21 @@ namespace Barcode_Application
         }
         #endregion
 
+        #region Debugging
         private void button1_Click(object sender, EventArgs e)
         {
             //T-FRA-AHI-1431-07A
             //Generate QR
             for (int i = 0; i < numericUpDown1.Value; i++)
             {
-                if(i > 12) 
+                if (i > 12)
                 {
                     QRCodeGenerator qr = new QRCodeGenerator();
                     QRCodeData data = qr.CreateQrCode("T-FRA-AHI-1431-07A", QRCodeGenerator.ECCLevel.Q);
                     QRCode code = new QRCode(data);
                     AddToPrintQueue(code.GetGraphic(5), "T-FRA-AHI-1431-07A");
                 }
-                else 
+                else
                 {
                     QRCodeGenerator qr = new QRCodeGenerator();
                     QRCodeData data = qr.CreateQrCode("T-FRA-CUB-3127-002", QRCodeGenerator.ECCLevel.Q);
@@ -270,5 +315,8 @@ namespace Barcode_Application
             MessageBox.Show("Quick created QR. Length: " + QRImages.Count);
             btnGenPrint.Enabled = true;
         }
+
+        #endregion
+
     }
 }
