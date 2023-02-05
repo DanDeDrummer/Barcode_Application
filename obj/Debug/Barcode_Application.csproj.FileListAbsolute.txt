@@ -20,3 +20,10 @@ C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\De
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\AForge.Video.DirectShow.xml
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\zxing.xml
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\zxing.presentation.xml
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Inventory_Database.db
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Demo_Library.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\System.Data.SQLite.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Dapper.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Demo_Library.pdb
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\System.Data.SQLite.xml
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Dapper.xml

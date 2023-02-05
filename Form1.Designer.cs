@@ -49,6 +49,7 @@ namespace Barcode_Application
             this.lblGenQRCodeHead = new System.Windows.Forms.Label();
             this.btnGenGenerate = new System.Windows.Forms.Button();
             this.tbsScanQR = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
             this.btnScanBack = new System.Windows.Forms.Button();
             this.cbbScanCameraList = new System.Windows.Forms.ComboBox();
             this.lblScanProductCode = new System.Windows.Forms.Label();
@@ -62,6 +63,17 @@ namespace Barcode_Application
             this.lblSaleHold = new System.Windows.Forms.Label();
             this.cbbSaleHold = new System.Windows.Forms.ComboBox();
             this.tbsAddRemoveFromDatabase = new System.Windows.Forms.TabPage();
+            this.btnARGenerateItemCode = new System.Windows.Forms.Button();
+            this.numUDARItemQuantity = new System.Windows.Forms.NumericUpDown();
+            this.tbxARItemColor = new System.Windows.Forms.TextBox();
+            this.tbxARItemName = new System.Windows.Forms.TextBox();
+            this.cbbARItemBrand = new System.Windows.Forms.ComboBox();
+            this.cbbARItemType = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblARItemQuantity = new System.Windows.Forms.Label();
+            this.lblARItemColor = new System.Windows.Forms.Label();
+            this.lblARItemName = new System.Windows.Forms.Label();
+            this.lblARItemBrand = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblARItemType = new System.Windows.Forms.Label();
             this.btnARAddToDB = new System.Windows.Forms.Button();
@@ -80,18 +92,6 @@ namespace Barcode_Application
             this.prntDoc = new System.Drawing.Printing.PrintDocument();
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
-            this.lblARItemBrand = new System.Windows.Forms.Label();
-            this.lblARItemName = new System.Windows.Forms.Label();
-            this.lblARItemColor = new System.Windows.Forms.Label();
-            this.lblARItemQuantity = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbbARItemType = new System.Windows.Forms.ComboBox();
-            this.cbbARItemBrand = new System.Windows.Forms.ComboBox();
-            this.tbxARItemName = new System.Windows.Forms.TextBox();
-            this.tbxARItemColor = new System.Windows.Forms.TextBox();
-            this.numUDARItemQuantity = new System.Windows.Forms.NumericUpDown();
-            this.btnARGenerateItemCode = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -101,8 +101,8 @@ namespace Barcode_Application
             ((System.ComponentModel.ISupportInitialize)(this.picbxScanImage)).BeginInit();
             this.tbsSale.SuspendLayout();
             this.tbsAddRemoveFromDatabase.SuspendLayout();
-            this.pnlARSerialBack.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUDARItemQuantity)).BeginInit();
+            this.pnlARSerialBack.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -322,6 +322,16 @@ namespace Barcode_Application
             this.tbsScanQR.Text = "Scan QR";
             this.tbsScanQR.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(51, 312);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(402, 13);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Drag spreadsheet in. Search Spreadsheet vir QR Code as text, increase count table" +
+    "";
+            // 
             // btnScanBack
             // 
             this.btnScanBack.Location = new System.Drawing.Point(19, 539);
@@ -470,6 +480,200 @@ namespace Barcode_Application
             this.tbsAddRemoveFromDatabase.Text = "Add/Remove from Database";
             this.tbsAddRemoveFromDatabase.UseVisualStyleBackColor = true;
             // 
+            // btnARGenerateItemCode
+            // 
+            this.btnARGenerateItemCode.Location = new System.Drawing.Point(100, 200);
+            this.btnARGenerateItemCode.Name = "btnARGenerateItemCode";
+            this.btnARGenerateItemCode.Size = new System.Drawing.Size(75, 23);
+            this.btnARGenerateItemCode.TabIndex = 25;
+            this.btnARGenerateItemCode.Text = "Generate Item Code";
+            this.btnARGenerateItemCode.UseVisualStyleBackColor = true;
+            this.btnARGenerateItemCode.Click += new System.EventHandler(this.btnARGenerateItemCode_Click);
+            // 
+            // numUDARItemQuantity
+            // 
+            this.numUDARItemQuantity.Location = new System.Drawing.Point(100, 160);
+            this.numUDARItemQuantity.Name = "numUDARItemQuantity";
+            this.numUDARItemQuantity.Size = new System.Drawing.Size(100, 20);
+            this.numUDARItemQuantity.TabIndex = 24;
+            // 
+            // tbxARItemColor
+            // 
+            this.tbxARItemColor.Location = new System.Drawing.Point(100, 130);
+            this.tbxARItemColor.Name = "tbxARItemColor";
+            this.tbxARItemColor.Size = new System.Drawing.Size(100, 20);
+            this.tbxARItemColor.TabIndex = 23;
+            // 
+            // tbxARItemName
+            // 
+            this.tbxARItemName.Location = new System.Drawing.Point(100, 100);
+            this.tbxARItemName.Name = "tbxARItemName";
+            this.tbxARItemName.Size = new System.Drawing.Size(260, 20);
+            this.tbxARItemName.TabIndex = 22;
+            // 
+            // cbbARItemBrand
+            // 
+            this.cbbARItemBrand.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbbARItemBrand.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbbARItemBrand.FormattingEnabled = true;
+            this.cbbARItemBrand.Items.AddRange(new object[] {
+            "Perrier Gun",
+            "Adrian Silver",
+            "Ana Hickmann",
+            "Barbie",
+            "Bavino",
+            "Bcando",
+            "Beyond",
+            "BluBay",
+            "Cando",
+            "Carrera",
+            "Centrostyle",
+            "CEO",
+            "Carolina Herrera",
+            "Charles Stone",
+            "Charmant",
+            "Chelsea",
+            "Chloe",
+            "Cooper",
+            "Cube",
+            "Daniel Hechter",
+            "De Panther",
+            "Disney",
+            "Dolce & Gabana",
+            "Dutz",
+            "Emporio Armani",
+            "Eco",
+            "Essikids",
+            "Etnia",
+            "Fede",
+            "Fossil",
+            "Fysh",
+            "Grant",
+            "Guess",
+            "Hello Kitty",
+            "Hugo Boss",
+            "Humphreys",
+            "Invu",
+            "Jean",
+            "Jeep",
+            "Knex",
+            "Koali",
+            "Lacoste",
+            "Lady Art",
+            "Lamatta",
+            "Laura Ashley",
+            "Levi\'s",
+            "Mango",
+            "Max Mara",
+            "Modo",
+            "Moleskin",
+            "Nano",
+            "NHI",
+            "Nickelodeon Kiddies",
+            "Nike",
+            "Nomad",
+            "Oakly",
+            "Oliviero",
+            "Outspoken",
+            "Pierre Cardin",
+            "Polaroid",
+            "Polo",
+            "Prada",
+            "Pro Design",
+            "Pull&Bear",
+            "Quicksilver",
+            "RayBan",
+            "Raydon",
+            "Ripple",
+            "Rudy",
+            "Safilo",
+            "Seventh Street",
+            "Silhouette",
+            "Sightique",
+            "SOS",
+            "Soviet",
+            "Splash",
+            "Star Wars",
+            "Stone Cherrie",
+            "Superflex",
+            "Ted Baker",
+            "Tom Tailor",
+            "Tomato",
+            "Tommy Hilfiger",
+            "Tommy Jeans",
+            "Tokyo Tek",
+            "Trend",
+            "United Colours of Benetton",
+            "Under Armour",
+            "Vogue",
+            "WOOW",
+            "",
+            ""});
+            this.cbbARItemBrand.Location = new System.Drawing.Point(100, 70);
+            this.cbbARItemBrand.Name = "cbbARItemBrand";
+            this.cbbARItemBrand.Size = new System.Drawing.Size(121, 21);
+            this.cbbARItemBrand.TabIndex = 21;
+            // 
+            // cbbARItemType
+            // 
+            this.cbbARItemType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbbARItemType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbbARItemType.FormattingEnabled = true;
+            this.cbbARItemType.Items.AddRange(new object[] {
+            "FRAME",
+            "SUNGLASSES",
+            "SOLUTIONS"});
+            this.cbbARItemType.Location = new System.Drawing.Point(100, 40);
+            this.cbbARItemType.Name = "cbbARItemType";
+            this.cbbARItemType.Size = new System.Drawing.Size(121, 21);
+            this.cbbARItemType.TabIndex = 20;
+            this.cbbARItemType.SelectedIndexChanged += new System.EventHandler(this.cbbARItemType_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(76, 486);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(182, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Search functionality by name or code";
+            // 
+            // lblARItemQuantity
+            // 
+            this.lblARItemQuantity.AutoSize = true;
+            this.lblARItemQuantity.Location = new System.Drawing.Point(22, 164);
+            this.lblARItemQuantity.Name = "lblARItemQuantity";
+            this.lblARItemQuantity.Size = new System.Drawing.Size(72, 13);
+            this.lblARItemQuantity.TabIndex = 18;
+            this.lblARItemQuantity.Text = "Item Quantity:";
+            // 
+            // lblARItemColor
+            // 
+            this.lblARItemColor.AutoSize = true;
+            this.lblARItemColor.Location = new System.Drawing.Point(22, 134);
+            this.lblARItemColor.Name = "lblARItemColor";
+            this.lblARItemColor.Size = new System.Drawing.Size(57, 13);
+            this.lblARItemColor.TabIndex = 17;
+            this.lblARItemColor.Text = "Item Color:";
+            // 
+            // lblARItemName
+            // 
+            this.lblARItemName.AutoSize = true;
+            this.lblARItemName.Location = new System.Drawing.Point(22, 104);
+            this.lblARItemName.Name = "lblARItemName";
+            this.lblARItemName.Size = new System.Drawing.Size(61, 13);
+            this.lblARItemName.TabIndex = 16;
+            this.lblARItemName.Text = "Item Name:";
+            // 
+            // lblARItemBrand
+            // 
+            this.lblARItemBrand.AutoSize = true;
+            this.lblARItemBrand.Location = new System.Drawing.Point(22, 74);
+            this.lblARItemBrand.Name = "lblARItemBrand";
+            this.lblARItemBrand.Size = new System.Drawing.Size(61, 13);
+            this.lblARItemBrand.TabIndex = 15;
+            this.lblARItemBrand.Text = "Item Brand:";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -502,6 +706,7 @@ namespace Barcode_Application
             // 
             // pnlARSerialBack
             // 
+            this.pnlARSerialBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlARSerialBack.Controls.Add(this.lblARDash4);
             this.pnlARSerialBack.Controls.Add(this.lblARDash2);
             this.pnlARSerialBack.Controls.Add(this.lblARDash3);
@@ -635,206 +840,6 @@ namespace Barcode_Application
             // 
             this.prntDlg.UseEXDialog = true;
             // 
-            // lblARItemBrand
-            // 
-            this.lblARItemBrand.AutoSize = true;
-            this.lblARItemBrand.Location = new System.Drawing.Point(22, 74);
-            this.lblARItemBrand.Name = "lblARItemBrand";
-            this.lblARItemBrand.Size = new System.Drawing.Size(61, 13);
-            this.lblARItemBrand.TabIndex = 15;
-            this.lblARItemBrand.Text = "Item Brand:";
-            // 
-            // lblARItemName
-            // 
-            this.lblARItemName.AutoSize = true;
-            this.lblARItemName.Location = new System.Drawing.Point(22, 104);
-            this.lblARItemName.Name = "lblARItemName";
-            this.lblARItemName.Size = new System.Drawing.Size(61, 13);
-            this.lblARItemName.TabIndex = 16;
-            this.lblARItemName.Text = "Item Name:";
-            // 
-            // lblARItemColor
-            // 
-            this.lblARItemColor.AutoSize = true;
-            this.lblARItemColor.Location = new System.Drawing.Point(22, 134);
-            this.lblARItemColor.Name = "lblARItemColor";
-            this.lblARItemColor.Size = new System.Drawing.Size(57, 13);
-            this.lblARItemColor.TabIndex = 17;
-            this.lblARItemColor.Text = "Item Color:";
-            // 
-            // lblARItemQuantity
-            // 
-            this.lblARItemQuantity.AutoSize = true;
-            this.lblARItemQuantity.Location = new System.Drawing.Point(22, 164);
-            this.lblARItemQuantity.Name = "lblARItemQuantity";
-            this.lblARItemQuantity.Size = new System.Drawing.Size(72, 13);
-            this.lblARItemQuantity.TabIndex = 18;
-            this.lblARItemQuantity.Text = "Item Quantity:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(76, 486);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(182, 13);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "Search functionality by name or code";
-            // 
-            // cbbARItemType
-            // 
-            this.cbbARItemType.FormattingEnabled = true;
-            this.cbbARItemType.Items.AddRange(new object[] {
-            "FRAME",
-            "SUNGLASSES",
-            "SOLUTIONS"});
-            this.cbbARItemType.Location = new System.Drawing.Point(100, 40);
-            this.cbbARItemType.Name = "cbbARItemType";
-            this.cbbARItemType.Size = new System.Drawing.Size(121, 21);
-            this.cbbARItemType.TabIndex = 20;
-            this.cbbARItemType.SelectedIndexChanged += new System.EventHandler(this.cbbARItemType_SelectedIndexChanged);
-            // 
-            // cbbARItemBrand
-            // 
-            this.cbbARItemBrand.FormattingEnabled = true;
-            this.cbbARItemBrand.Items.AddRange(new object[] {
-            "Perrier Gun",
-            "Adrian Silver",
-            "Ana Hickmann",
-            "Barbie",
-            "Bavino",
-            "Bcando",
-            "Beyond",
-            "BluBay",
-            "Cando",
-            "Carrera",
-            "Centrostyle",
-            "CEO",
-            "Carolina Herrera",
-            "Charles Stone",
-            "Charmant",
-            "Chelsea",
-            "Chloe",
-            "Cooper",
-            "Cube",
-            "Daniel Hechter",
-            "De Panther",
-            "Disney",
-            "Dolce & Gabana",
-            "Dutz",
-            "Emporio Armani",
-            "Eco",
-            "Essikids",
-            "Etnia",
-            "Fede",
-            "Fossil",
-            "Fysh",
-            "Grant",
-            "Guess",
-            "Hello Kitty",
-            "Hugo Boss",
-            "Humphreys",
-            "Invu",
-            "Jean",
-            "Jeep",
-            "Knex",
-            "Koali",
-            "Lacoste",
-            "Lady Art",
-            "Lamatta",
-            "Laura Ashley",
-            "Levi\'s",
-            "Mango",
-            "Max Mara",
-            "Modo",
-            "Moleskin",
-            "Nano",
-            "NHI",
-            "Nickelodeon Kiddies",
-            "Nike",
-            "Nomad",
-            "Oakly",
-            "Oliviero",
-            "Outspoken",
-            "Pierre Cardin",
-            "Polaroid",
-            "Polo",
-            "Prada",
-            "Pro Design",
-            "Pull&Bear",
-            "Quicksilver",
-            "RayBan",
-            "Raydon",
-            "Ripple",
-            "Rudy",
-            "Safilo",
-            "Seventh Street",
-            "Silhouette",
-            "Sightique",
-            "SOS",
-            "Soviet",
-            "Splash",
-            "Star Wars",
-            "Stone Cherrie",
-            "Superflex",
-            "Ted Baker",
-            "Tom Tailor",
-            "Tomato",
-            "Tommy Hilfiger",
-            "Tommy Jeans",
-            "Tokyo Tek",
-            "Trend",
-            "United Colours of Benetton",
-            "Under Armour",
-            "Vogue",
-            "WOOW",
-            "",
-            ""});
-            this.cbbARItemBrand.Location = new System.Drawing.Point(100, 70);
-            this.cbbARItemBrand.Name = "cbbARItemBrand";
-            this.cbbARItemBrand.Size = new System.Drawing.Size(121, 21);
-            this.cbbARItemBrand.TabIndex = 21;
-            // 
-            // tbxARItemName
-            // 
-            this.tbxARItemName.Location = new System.Drawing.Point(100, 100);
-            this.tbxARItemName.Name = "tbxARItemName";
-            this.tbxARItemName.Size = new System.Drawing.Size(260, 20);
-            this.tbxARItemName.TabIndex = 22;
-            // 
-            // tbxARItemColor
-            // 
-            this.tbxARItemColor.Location = new System.Drawing.Point(100, 130);
-            this.tbxARItemColor.Name = "tbxARItemColor";
-            this.tbxARItemColor.Size = new System.Drawing.Size(100, 20);
-            this.tbxARItemColor.TabIndex = 23;
-            // 
-            // numUDARItemQuantity
-            // 
-            this.numUDARItemQuantity.Location = new System.Drawing.Point(100, 160);
-            this.numUDARItemQuantity.Name = "numUDARItemQuantity";
-            this.numUDARItemQuantity.Size = new System.Drawing.Size(100, 20);
-            this.numUDARItemQuantity.TabIndex = 24;
-            // 
-            // btnARGenerateItemCode
-            // 
-            this.btnARGenerateItemCode.Location = new System.Drawing.Point(100, 200);
-            this.btnARGenerateItemCode.Name = "btnARGenerateItemCode";
-            this.btnARGenerateItemCode.Size = new System.Drawing.Size(75, 23);
-            this.btnARGenerateItemCode.TabIndex = 25;
-            this.btnARGenerateItemCode.Text = "Generate Item Code";
-            this.btnARGenerateItemCode.UseVisualStyleBackColor = true;
-            this.btnARGenerateItemCode.Click += new System.EventHandler(this.btnARGenerateItemCode_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(51, 312);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(402, 13);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "Drag spreadsheet in. Search Spreadsheet vir QR Code as text, increase count table" +
-    "";
-            // 
             // frmBarcodeApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -860,9 +865,9 @@ namespace Barcode_Application
             this.tbsSale.PerformLayout();
             this.tbsAddRemoveFromDatabase.ResumeLayout(false);
             this.tbsAddRemoveFromDatabase.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numUDARItemQuantity)).EndInit();
             this.pnlARSerialBack.ResumeLayout(false);
             this.pnlARSerialBack.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numUDARItemQuantity)).EndInit();
             this.ResumeLayout(false);
 
         }
