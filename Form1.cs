@@ -20,8 +20,127 @@ namespace Barcode_Application
     {
         List<Image> QRImages = new List<Image>();
         List<String> ItemCodes = new List<String>();
+        List<String> GLASSES = new List<string> { "Adidas",
+"Adrian Silver",
+"Ana Hickmann",
+"Barbie",
+"Bavino",
+"Bcando",
+"Beyond",
+"BluBay",
+"Cando",
+"Carrera",
+"Centrostyle",
+"CEO",
+"Carolina Herrera",
+"Charles Stone",
+"Charmant",
+"Chelsea",
+"Chloe",
+"Cooper",
+"Cube",
+"Daniel Hechter",
+"De Panther",
+"Disney",
+"Dolce & Gabana",
+"Dutz",
+"Emporio Armani",
+"Eco",
+"Essikids",
+"Etnia",
+"Fede",
+"Fossil",
+"Fysh",
+"Grant",
+"Guess",
+"Hello Kitty",
+"Hugo Boss",
+"Humphreys",
+"Invu",
+"Jean",
+"Jeep",
+"Knex",
+"Koali",
+"Lacoste",
+"Lady Art",
+"Lamatta",
+"Laura Ashley",
+"Levi's",
+"Mango",
+"Max Mara",
+"Modo",
+"Moleskin",
+"Nano",
+"NHI",
+"Nickelodeon Kiddies",
+"Nike",
+"New York",
+"Nomad",
+"Oakly",
+"Oliviero",
+"Outspoken",
+"Perrier Gun",
+"Pierre Cardin",
+"Polaroid",
+"Polo",
+"Prada",
+"Pro Design",
+"Pull&Bear",
+"Puma",
+"Quicksilver",
+"RayBan",
+"Raydon",
+"Ripple",
+"Rondenstock",
+"Rudy",
+"Safilo",
+"Seventh Street",
+"Silhouette",
+"Sightique",
+"SOS",
+"Soviet",
+"Splash",
+"Star Wars",
+"Stone Cherrie",
+"Superflex",
+"Ted Baker",
+"Tom Tailor",
+"Tomato",
+"Tommy Hilfiger",
+"Tommy Jeans",
+"Tokyo Tek",
+"Trend",
+"United Colours of Benetton",
+"Under Armour",
+"Vogue",
+"WOOW"};
 
-        List<InventoryItemModel> inventoryItems = new List<InventoryItemModel>();
+        List<String> SOLUTIONS = new List<string>
+        {
+            "Aosept",
+            "Artelac",
+            "BioTrue",
+            "Boston",
+            "Delta",
+            "Derma",
+            "Easysept",
+            "Eye Cleanse Foam",
+            "Lid & Lash",
+            "Naviblef",
+            "Optive",
+            "Oxysept",
+            "Polyrinse",
+            "Purilense",
+            "Renu",
+            "Sabax",
+            "Systane",
+            "Ultra",
+            "Visu",
+            "Vitasight",
+            "Xailin",
+        };
+
+            List <InventoryItemModel> inventoryItems = new List<InventoryItemModel>();
         public frmBarcodeApplication()
         {
             InitializeComponent();
@@ -46,24 +165,110 @@ namespace Barcode_Application
             listItemsListBox.DisplayMember = "ItemName";*/
         }
 
-        //Add Inventory Item Button
-        /*InventoryItemModel inventoryItemModel = new InventoryItemModel();
+        private void cbbARItemType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cbbARItemType.SelectedIndex)
+            {
+                //Frame
+                case 0:
+                    //Empty Existing cbb
+                    cbbARItemBrand.Items.Clear();
+                    for (int i = 0; i < GLASSES.Count; i++)
+                    {
+                        //Populate from list
+                        cbbARItemBrand.Items.Add(GLASSES[i]);
+                    }
+                    //Add bottom text
+                    cbbARItemBrand.Items.Add("Add a new Brand");
+                    break;
 
-            inventoryItemModel.ItemName = txtItemName.Text;
-            inventoryItemModel.ItemColor = ItemColor.Text;
-            inventoryItemModel.ItemType = cbbItemType.SelectedIndex.Text;
-            inventoryItemModel.ItemQuantity = Convert.ToInt32(numUDItemQuantity.Value);
-            inventoryItemModel.ItemCode = "";//GenerateItemCode(type, name, color);
+                //Sunglass
+                case 1:
+                    //Empty Existing cbb
+                    cbbARItemBrand.Items.Clear();
+                    for (int i = 0; i < GLASSES.Count; i++)
+                    {
+                        //Populate from list
+                        cbbARItemBrand.Items.Add(GLASSES[i]);
+                    }
+                    //Add bottom text
+                    cbbARItemBrand.Items.Add("Add a new Brand");
+                    break;
 
-            SqliteDataAcess.SaveInventoryStockItem(inventoryItemModel);
+                //Solution
+                case 2:
+                    //Empty Existing cbb
+                    cbbARItemBrand.Items.Clear();
+                    for (int i = 0; i < SOLUTIONS.Count; i++)
+                    {
+                        //Populate from list
+                        cbbARItemBrand.Items.Add(SOLUTIONS[i]);
+                    }
+                    //Add bottom text
+                    cbbARItemBrand.Items.Add("Add a new Brand");
+                    break;
 
-            //Clear TextBoxes
-            txtItemName.Text = "";
-            ItemColor.Text = "";
-            cbbItemType.SelectedIndex = -1;
-            numUDItemQuantity.Value = 0;
+                default:
+                    MessageBox.Show("Invalid Item Type Selected.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+        }
 
-            MessageBox.Show("Item " + inventoryItemModel.ItemCode + "\"" + inventoryItemModel.ItemName + "\"" + " was added to the Database.");*/
+        string generatedItemCode;
+        private void btnARGenerateItemCode_Click(object sender, EventArgs e)
+        {
+            /*T*/
+            tbxARItemCodeT.Text = "T";
+            /*FRA/SUN/SOL*/
+            tbxARItemCodeType.Text = cbbARItemType.Text.Substring(0, 1) + cbbARItemType.Text.Substring(1, 1) + cbbARItemType.Text.Substring(2, 1);
+            /*RAY*/
+            tbxARItemCodeBrand.Text = cbbARItemType.Text.Substring(0, 1) + cbbARItemType.Text.Substring(1, 1) + cbbARItemType.Text.Substring(2, 1);
+            /*DESCRIPTION*/
+            tbxARItemCodeName.Text = tbxARItemName.Text;
+            /*COLOR*/
+            tbxARItemCodeColor.Text = tbxARItemColor.Text;
+
+            generatedItemCode = tbxARItemCodeT.Text + "-" + tbxARItemCodeType.Text + "-" + tbxARItemCodeBrand.Text + "-" + tbxARItemCodeName.Text + "-" + tbxARItemCodeColor.Text;
+
+            btnARAddToDB.Enabled = true;
+        }
+
+        private void btnARAddToDB_Click(object sender, EventArgs e)
+        {
+            string confirmMessage = "Are you sure you want to add the item " + "\"" + generatedItemCode + "\"" + " to the database?"
+                + "\n" + "\n" + lblARItemType.Text + " " + cbbARItemType.Text
+                + "\n" + lblARItemBrand.Text + " " + cbbARItemBrand.Text
+                + "\n" + lblARItemName.Text + " " + tbxARItemName.Text
+                + "\n" + lblARItemColor.Text + " " + tbxARItemColor.Text
+                + "\n" + lblARItemQuantity.Text + " " + numUDARItemQuantity.Value.ToString();
+
+            if ((MessageBox.Show(confirmMessage, "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            {
+                //Add to SQL Database
+                InventoryItemModel inventoryItemModel = new InventoryItemModel();
+
+                inventoryItemModel.ItemName = tbxARItemName.Text;
+                inventoryItemModel.ItemColor = tbxARItemColor.Text;
+                inventoryItemModel.ItemType = cbbARItemType.Text;
+                inventoryItemModel.ItemQuantity = Convert.ToInt32(numUDARItemQuantity.Value);
+                inventoryItemModel.ItemCode = generatedItemCode;//GenerateItemCode(type, name, color);
+
+                SqliteDataAcess.SaveInventoryStockItem(inventoryItemModel);
+
+                //Clear TextBoxes
+                tbxARItemName.Text = "";
+                tbxARItemColor.Text = "";
+                cbbARItemType.SelectedIndex = -1;
+                numUDARItemQuantity.Value = 0;
+
+                MessageBox.Show("Item " + inventoryItemModel.ItemCode + "\"" + inventoryItemModel.ItemName + "\"" + " was added to the Database.");
+                btnARAddToDB.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Item was not added to the database.", "Abort Generate", MessageBoxButtons.OK);
+            }
+        }
 
         #endregion
 
@@ -84,6 +289,11 @@ namespace Barcode_Application
         private void btnWelScan_Click(object sender, EventArgs e)
         {
             tabControl.SelectedIndex = 2;
+        }
+
+        private void btnWelAddRemoveDB_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 4;
         }
         #endregion
 
@@ -161,6 +371,8 @@ namespace Barcode_Application
                 txtScanQRCode.Invoke(new MethodInvoker(delegate ()
                 {
                     txtScanQRCode.Text = result.ToString();
+
+                    //Search DB for code
                 }));
             }
             picbxScanImage.Image = bitmap;
@@ -318,5 +530,6 @@ namespace Barcode_Application
 
         #endregion
 
+        
     }
 }
