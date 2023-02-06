@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AForge.Video.DirectShow;
 using Demo_Library;
+using OfficeOpenXml;
 using QRCoder;
 using ZXing;
 
@@ -140,12 +141,12 @@ namespace Barcode_Application
             "Xailin",
         };
 
-            List <InventoryItemModel> inventoryItems = new List<InventoryItemModel>();
+            //List <InventoryItemModel> inventoryItems = new List<InventoryItemModel>();
         public frmBarcodeApplication()
         {
             InitializeComponent();
 
-            LoadInventoryItemsList();
+            //LoadInventoryItemsList();
         }
 
 
@@ -154,8 +155,8 @@ namespace Barcode_Application
 
         private void LoadInventoryItemsList()
         {
-            inventoryItems = SqliteDataAcess.LoadInventoryStockItems();
-            WireUpInventoryItemListBox();
+            /*inventoryItems = SqliteDataAccess.LoadInventoryStockItems();
+            WireUpInventoryItemListBox();*/
         }
 
         private void WireUpInventoryItemListBox()
@@ -167,7 +168,7 @@ namespace Barcode_Application
 
         private void cbbARItemType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (cbbARItemType.SelectedIndex)
+            /*switch (cbbARItemType.SelectedIndex)
             {
                 //Frame
                 case 0:
@@ -211,31 +212,31 @@ namespace Barcode_Application
                 default:
                     MessageBox.Show("Invalid Item Type Selected.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
-            }
+            }*/
         }
 
         string generatedItemCode;
         private void btnARGenerateItemCode_Click(object sender, EventArgs e)
         {
             /*T*/
-            tbxARItemCodeT.Text = "T";
+            //tbxARItemCodeT.Text = "T";
             /*FRA/SUN/SOL*/
-            tbxARItemCodeType.Text = cbbARItemType.Text.Substring(0, 1) + cbbARItemType.Text.Substring(1, 1) + cbbARItemType.Text.Substring(2, 1);
+            //tbxARItemCodeType.Text = cbbARItemType.Text.Substring(0, 1) + cbbARItemType.Text.Substring(1, 1) + cbbARItemType.Text.Substring(2, 1);
             /*RAY*/
-            tbxARItemCodeBrand.Text = cbbARItemType.Text.Substring(0, 1) + cbbARItemType.Text.Substring(1, 1) + cbbARItemType.Text.Substring(2, 1);
+            //tbxARItemCodeBrand.Text = cbbARItemType.Text.Substring(0, 1) + cbbARItemType.Text.Substring(1, 1) + cbbARItemType.Text.Substring(2, 1);
             /*DESCRIPTION*/
-            tbxARItemCodeName.Text = tbxARItemName.Text;
+            //tbxARItemCodeName.Text = tbxARItemName.Text;
             /*COLOR*/
-            tbxARItemCodeColor.Text = tbxARItemColor.Text;
+            //tbxARItemCodeColor.Text = tbxARItemColor.Text;
 
-            generatedItemCode = tbxARItemCodeT.Text + "-" + tbxARItemCodeType.Text + "-" + tbxARItemCodeBrand.Text + "-" + tbxARItemCodeName.Text + "-" + tbxARItemCodeColor.Text;
+            //generatedItemCode = tbxARItemCodeT.Text + "-" + tbxARItemCodeType.Text + "-" + tbxARItemCodeBrand.Text + "-" + tbxARItemCodeName.Text + "-" + tbxARItemCodeColor.Text;
 
-            btnARAddToDB.Enabled = true;
+            //btnARAddToDB.Enabled = true;
         }
 
         private void btnARAddToDB_Click(object sender, EventArgs e)
         {
-            string confirmMessage = "Are you sure you want to add the item " + "\"" + generatedItemCode + "\"" + " to the database?"
+            /*string confirmMessage = "Are you sure you want to add the item " + "\"" + generatedItemCode + "\"" + " to the database?"
                 + "\n" + "\n" + lblARItemType.Text + " " + cbbARItemType.Text
                 + "\n" + lblARItemBrand.Text + " " + cbbARItemBrand.Text
                 + "\n" + lblARItemName.Text + " " + tbxARItemName.Text
@@ -253,7 +254,7 @@ namespace Barcode_Application
                 inventoryItemModel.ItemQuantity = Convert.ToInt32(numUDARItemQuantity.Value);
                 inventoryItemModel.ItemCode = generatedItemCode;//GenerateItemCode(type, name, color);
 
-                SqliteDataAcess.SaveInventoryStockItem(inventoryItemModel);
+                SqliteDataAccess.SaveInventoryStockItem(inventoryItemModel);
 
                 //Clear TextBoxes
                 tbxARItemName.Text = "";
@@ -267,7 +268,7 @@ namespace Barcode_Application
             else
             {
                 MessageBox.Show("Item was not added to the database.", "Abort Generate", MessageBoxButtons.OK);
-            }
+            }*/
         }
 
         #endregion
@@ -294,6 +295,11 @@ namespace Barcode_Application
         private void btnWelAddRemoveDB_Click(object sender, EventArgs e)
         {
             tabControl.SelectedIndex = 4;
+        }
+
+        private void btnWelStocktake_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 5;
         }
         #endregion
 
@@ -501,6 +507,7 @@ namespace Barcode_Application
         }
         #endregion
 
+
         #region Debugging
         private void button1_Click(object sender, EventArgs e)
         {
@@ -528,8 +535,7 @@ namespace Barcode_Application
             btnGenPrint.Enabled = true;
         }
 
-        #endregion
 
-        
+        #endregion
     }
 }

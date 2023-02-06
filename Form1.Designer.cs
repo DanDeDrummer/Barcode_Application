@@ -32,6 +32,7 @@ namespace Barcode_Application
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBarcodeApplication));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tbsWelcome = new System.Windows.Forms.TabPage();
+            this.btnWelStocktake = new System.Windows.Forms.Button();
             this.btnWelAddRemoveDB = new System.Windows.Forms.Button();
             this.btnWelSale = new System.Windows.Forms.Button();
             this.btnWelScan = new System.Windows.Forms.Button();
@@ -89,9 +90,12 @@ namespace Barcode_Application
             this.tbxARItemCodeT = new System.Windows.Forms.TextBox();
             this.lblARItemCodeHead = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.tbsStockTake = new System.Windows.Forms.TabPage();
             this.prntDoc = new System.Drawing.Printing.PrintDocument();
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.btnSTOpenFile = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -103,6 +107,7 @@ namespace Barcode_Application
             this.tbsAddRemoveFromDatabase.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUDARItemQuantity)).BeginInit();
             this.pnlARSerialBack.SuspendLayout();
+            this.tbsStockTake.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -112,6 +117,7 @@ namespace Barcode_Application
             this.tabControl.Controls.Add(this.tbsScanQR);
             this.tabControl.Controls.Add(this.tbsSale);
             this.tabControl.Controls.Add(this.tbsAddRemoveFromDatabase);
+            this.tabControl.Controls.Add(this.tbsStockTake);
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -120,6 +126,7 @@ namespace Barcode_Application
             // 
             // tbsWelcome
             // 
+            this.tbsWelcome.Controls.Add(this.btnWelStocktake);
             this.tbsWelcome.Controls.Add(this.btnWelAddRemoveDB);
             this.tbsWelcome.Controls.Add(this.btnWelSale);
             this.tbsWelcome.Controls.Add(this.btnWelScan);
@@ -133,8 +140,19 @@ namespace Barcode_Application
             this.tbsWelcome.Text = "Welcome";
             this.tbsWelcome.UseVisualStyleBackColor = true;
             // 
+            // btnWelStocktake
+            // 
+            this.btnWelStocktake.Location = new System.Drawing.Point(20, 284);
+            this.btnWelStocktake.Name = "btnWelStocktake";
+            this.btnWelStocktake.Size = new System.Drawing.Size(345, 30);
+            this.btnWelStocktake.TabIndex = 16;
+            this.btnWelStocktake.Text = "Stock Take";
+            this.btnWelStocktake.UseVisualStyleBackColor = true;
+            this.btnWelStocktake.Click += new System.EventHandler(this.btnWelStocktake_Click);
+            // 
             // btnWelAddRemoveDB
             // 
+            this.btnWelAddRemoveDB.Enabled = false;
             this.btnWelAddRemoveDB.Location = new System.Drawing.Point(22, 224);
             this.btnWelAddRemoveDB.Name = "btnWelAddRemoveDB";
             this.btnWelAddRemoveDB.Size = new System.Drawing.Size(345, 30);
@@ -145,6 +163,7 @@ namespace Barcode_Application
             // 
             // btnWelSale
             // 
+            this.btnWelSale.Enabled = false;
             this.btnWelSale.Location = new System.Drawing.Point(22, 44);
             this.btnWelSale.Name = "btnWelSale";
             this.btnWelSale.Size = new System.Drawing.Size(345, 30);
@@ -155,6 +174,7 @@ namespace Barcode_Application
             // 
             // btnWelScan
             // 
+            this.btnWelScan.Enabled = false;
             this.btnWelScan.Location = new System.Drawing.Point(22, 104);
             this.btnWelScan.Name = "btnWelScan";
             this.btnWelScan.Size = new System.Drawing.Size(345, 30);
@@ -821,6 +841,17 @@ namespace Barcode_Application
             this.label5.Text = "-";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tbsStockTake
+            // 
+            this.tbsStockTake.Controls.Add(this.btnSTOpenFile);
+            this.tbsStockTake.Location = new System.Drawing.Point(4, 22);
+            this.tbsStockTake.Name = "tbsStockTake";
+            this.tbsStockTake.Padding = new System.Windows.Forms.Padding(3);
+            this.tbsStockTake.Size = new System.Drawing.Size(385, 580);
+            this.tbsStockTake.TabIndex = 5;
+            this.tbsStockTake.Text = "Stock Take";
+            this.tbsStockTake.UseVisualStyleBackColor = true;
+            // 
             // prntDoc
             // 
             this.prntDoc.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.prntDoc_PrintPage);
@@ -839,6 +870,16 @@ namespace Barcode_Application
             // prntDlg
             // 
             this.prntDlg.UseEXDialog = true;
+            // 
+            // btnSTOpenFile
+            // 
+            this.btnSTOpenFile.Location = new System.Drawing.Point(134, 33);
+            this.btnSTOpenFile.Name = "btnSTOpenFile";
+            this.btnSTOpenFile.Size = new System.Drawing.Size(75, 23);
+            this.btnSTOpenFile.TabIndex = 0;
+            this.btnSTOpenFile.Text = "Open File";
+            this.btnSTOpenFile.UseVisualStyleBackColor = true;
+            this.btnSTOpenFile.Click += new System.EventHandler(this.btnSTOpenFile_Click);
             // 
             // frmBarcodeApplication
             // 
@@ -868,6 +909,7 @@ namespace Barcode_Application
             ((System.ComponentModel.ISupportInitialize)(this.numUDARItemQuantity)).EndInit();
             this.pnlARSerialBack.ResumeLayout(false);
             this.pnlARSerialBack.PerformLayout();
+            this.tbsStockTake.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -936,6 +978,10 @@ namespace Barcode_Application
         private System.Windows.Forms.Label lblARItemColor;
         private System.Windows.Forms.Button btnARGenerateItemCode;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnWelStocktake;
+        private System.Windows.Forms.TabPage tbsStockTake;
+        private System.Windows.Forms.Button btnSTOpenFile;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 
