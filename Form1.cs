@@ -19,6 +19,8 @@ namespace Barcode_Application
     //Scan QR Code: https://www.youtube.com/watch?v=pKjct-DXL0w
     public partial class frmBarcodeApplication : Form
     {
+        List<String> Months = new List<string> { "j", "f", "m", "a", "m", "jun", "jul", "aug", "Septem", "Oct", "Nov", "Dec"};
+        List<ExcelWorksheet> worksheets = new List<ExcelWorksheet>();
         List<Image> QRImages = new List<Image>();
         List<String> ItemCodes = new List<String>();
         List<String> GLASSES = new List<string> { "Adidas",
@@ -141,7 +143,7 @@ namespace Barcode_Application
             "Xailin",
         };
 
-            //List <InventoryItemModel> inventoryItems = new List<InventoryItemModel>();
+        //List <InventoryItemModel> inventoryItems = new List<InventoryItemModel>();
         public frmBarcodeApplication()
         {
             InitializeComponent();
@@ -276,12 +278,12 @@ namespace Barcode_Application
         #region Welcome
         private void btnWelSale_Click(object sender, EventArgs e)
         {
-            tabControl.SelectedIndex = 3;
+            tabControl.SelectedTab = tbsSale;
         }
 
         private void btnWelGenerate_Click(object sender, EventArgs e)
         {
-            tabControl.SelectedIndex = 1;
+            tabControl.SelectedTab = tbsGenerateQR;
             //Clear QR Lists
             QRImages.Clear();
             ItemCodes.Clear();
@@ -289,17 +291,22 @@ namespace Barcode_Application
 
         private void btnWelScan_Click(object sender, EventArgs e)
         {
-            tabControl.SelectedIndex = 2;
+            tabControl.SelectedTab = tbsScanQR;
         }
 
         private void btnWelAddRemoveDB_Click(object sender, EventArgs e)
         {
-            tabControl.SelectedIndex = 4;
+            tabControl.SelectedTab = tbsAddRemoveFromDatabase;
         }
 
         private void btnWelStocktake_Click(object sender, EventArgs e)
         {
-            tabControl.SelectedIndex = 5;
+            tabControl.SelectedTab = tbsStockTake;
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 0;
         }
         #endregion
 
@@ -325,7 +332,7 @@ namespace Barcode_Application
                 btnGenPrint.Enabled = true;
                 txtGenQRCode.Clear();
             }
-            else 
+            else
             {
                 MessageBox.Show("QR Code was not generated.", "Abort Generate", MessageBoxButtons.OK);
             }
@@ -352,11 +359,15 @@ namespace Barcode_Application
         {
             filterInfoCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
 
-            foreach(FilterInfo device in filterInfoCollection) 
+            foreach (FilterInfo device in filterInfoCollection)
             {
                 cbbScanCameraList.Items.Add(device.Name);
                 cbbScanCameraList.SelectedIndex = 0;
             }
+
+            //Hide Unnessisary Tabsheets
+            tabControl.TabPages.Remove(tbsAddRemoveFromDatabase);
+            tabControl.TabPages.Remove(tbsSale);
         }
 
         private void btnScan_Click(object sender, EventArgs e)
@@ -372,13 +383,14 @@ namespace Barcode_Application
             BarcodeReader reader = new BarcodeReader();
             var result = reader.Decode(bitmap);
 
-            if(result != null) 
+            if (result != null)
             {
                 txtScanQRCode.Invoke(new MethodInvoker(delegate ()
                 {
                     txtScanQRCode.Text = result.ToString();
 
                     //Search DB for code
+                    DoStocktake(false, worksheets, result.ToString());
                 }));
             }
             picbxScanImage.Image = bitmap;
@@ -386,9 +398,9 @@ namespace Barcode_Application
 
         private void frmBarcodeApplication_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(videoCaptureDevice != null) 
+            if (videoCaptureDevice != null)
             {
-                if(videoCaptureDevice.IsRunning)
+                if (videoCaptureDevice.IsRunning)
                 {
                     videoCaptureDevice.Stop();
                 }
@@ -446,7 +458,7 @@ namespace Barcode_Application
                     //MessageBox.Show("Image " + i + " Code bigger.");
                 }
 
-                if (((e.MarginBounds.X + printedImageX >= 650) || (e.MarginBounds.X + itemCodesX >= 650))) 
+                if (((e.MarginBounds.X + printedImageX >= 650) || (e.MarginBounds.X + itemCodesX >= 650)))
                 {
                     //MessageBox.Show("Incresing Y value.");
                     printedImageX = 0;
@@ -454,7 +466,7 @@ namespace Barcode_Application
                     printedImageY += printedImage.Height + Convert.ToInt32(stringSize.Height);
                 }
 
-                if((e.MarginBounds.Y + printedImageY >= 900) || (e.MarginBounds.Y + itemCodesY >= 900) && (i < QRImages.Count)) 
+                if ((e.MarginBounds.Y + printedImageY >= 900) || (e.MarginBounds.Y + itemCodesY >= 900) && (i < QRImages.Count))
                 {
                     //Add new pdf page
                     MessageBox.Show("Add new page.");
@@ -464,11 +476,11 @@ namespace Barcode_Application
                     itemCodesX = 0;
                     itemCodesY = 0;
                 }
-                else 
+                else
                 {
                     e.HasMorePages = false;
                 }
-                   
+
                 codeCounter++;
                 // MessageBox.Show("QR Code Width: " + printedImage.Width + "\nQR Code Height: " + printedImage.Height);
 
@@ -483,15 +495,15 @@ namespace Barcode_Application
         {
             prntDlg.Document = prntDoc;
             //printedImage = QRImages[0];
-           
-            if(QRImages.Count > 0) 
+
+            if (QRImages.Count > 0)
             {
                 if (prntDlg.ShowDialog() == DialogResult.OK && prntPrvDlg.ShowDialog() == DialogResult.OK)
                 {
                     prntDoc.Print();
                 }
             }
-            else 
+            else
             {
                 MessageBox.Show(QRImages.Count + " QR Code(s) were not printed.", "Aborted Print", MessageBoxButtons.OK);
             }
@@ -507,6 +519,225 @@ namespace Barcode_Application
         }
         #endregion
 
+        #region Stock Take
+        private void btnSTOpenFile_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                //Select the correct excell File
+                string fileName = openFileDialog1.FileName;
+
+                int k = fileName.Length;
+                string fileExtension = "";
+
+                while (fileName[k] != '.')
+                {
+                    fileExtension = fileExtension + fileName[k];
+                }
+
+                if (fileExtension == ".xlsx")
+                {
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileName))
+                    {
+                        //Set Excel Variables
+                        ExcelWorkbook excelWorkBook = excelPackage.Workbook;
+                        ExcelWorksheet excelWorksheetInventoryItemSummary = excelWorkBook.Worksheets[0];
+                        ExcelWorksheet excelWorksheetFrames = excelWorkBook.Worksheets[1];
+                        ExcelWorksheet excelWorksheetSunglasses = excelWorkBook.Worksheets[2];
+                        ExcelWorksheet excelWorksheetSolutions = excelWorkBook.Worksheets[3];
+
+                        MessageBox.Show("Worksheet 0 : " + excelWorksheetInventoryItemSummary.Name + "\n" + "Worksheet 1 : " + excelWorksheetFrames.Name
+                            + "\n" + "Worksheet 2 : " + excelWorksheetSunglasses.Name + "\n" + "Worksheet 3 : " + excelWorksheetSolutions.Name);
+
+                        if (MessageBox.Show("Is this the first stocktake this month?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes) //It is the first time this stocktake is happening
+                        {
+                            ExcelWorksheet stocktakeWorksheet = excelWorkBook.Worksheets.Add("Stocktake " + DateTime.Today);
+                            stocktakeWorksheet.Cells["A1"].Value = "Stocktake " + DateTime.Today;
+                        }
+                        //else
+                        //Set last sheet as active sheet
+
+                        //Scan with phone
+                        //Search 4 sheets for itemcode
+                        //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Wrong File Type only .xlsx allowed", "FileType Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+
+
+
+            }
+
+            /*
+             * OpenFileDialog openfileDialog1 = new OpenFileDialog();
+  if (openfileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+  {
+    this.btnChoose2.Text = openfileDialog1.FileName;
+    String filename = DialogResult.ToString();
+
+    var excelApp = new Excel.Application();
+    excelApp.Visible = true;
+    excelApp.Workbooks.Open(btnChoose2.Text);
+            //The excel does not show without excelApp.Visible = true. 
+  }
+             */
+        }
+
+        private void btnSTNewStocktake_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                //Select the correct excell File
+                string fileName = openFileDialog1.FileName;
+
+                int k = fileName.Length - 1;
+                string fileExtension = "";
+
+                while (fileName[k] != '.')
+                {
+                    //Saves it backwards
+                    fileExtension = fileExtension + fileName[k];
+                    k--;
+                }
+
+                fileExtension = "." + fileExtension;
+
+                fileExtension = ".xlsx"; //Debug
+
+                if (fileExtension == ".xlsx")
+                {
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileName))
+                    {
+                        //Set Excel Variables
+                        ExcelWorkbook excelWorkBook = excelPackage.Workbook;
+                        ExcelWorksheet excelWorksheetInventoryItemSummary = excelWorkBook.Worksheets[0];
+                        ExcelWorksheet excelWorksheetFrames = excelWorkBook.Worksheets[1];
+                        ExcelWorksheet excelWorksheetSunglasses = excelWorkBook.Worksheets[2];
+                        ExcelWorksheet excelWorksheetSolutions = excelWorkBook.Worksheets[3];
+                        ExcelWorksheet excelWorksheetStocktake;
+
+                        worksheets.Add(excelWorksheetInventoryItemSummary);
+                        worksheets.Add(excelWorksheetFrames);
+                        worksheets.Add(excelWorksheetSunglasses);
+                        worksheets.Add(excelWorksheetSolutions);
+
+
+                        MessageBox.Show("Worksheet 0 : " + excelWorksheetInventoryItemSummary.Name + "\n" + "Worksheet 1 : " + excelWorksheetFrames.Name
+                            + "\n" + "Worksheet 2 : " + excelWorksheetSunglasses.Name + "\n" + "Worksheet 3 : " + excelWorksheetSolutions.Name);
+
+                        if (MessageBox.Show("Is this the first stocktake this month?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes) //It is the first time this stocktake is happening
+                        {
+                            excelWorksheetStocktake = excelWorkBook.Worksheets.Add("Stocktake " + DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year);
+                            excelWorksheetStocktake.Cells["A1"].Value = "Stocktake " + DateTime.Today;
+                            excelWorksheetStocktake.Cells["A2"].Value = excelWorksheetFrames.Cells["A2"].Value;
+                            string periodStart = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
+                            string periodEnd = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
+                            excelWorksheetStocktake.Cells["A3"].Value = "For the period " + periodStart + " to " + periodEnd;
+                            excelWorksheetStocktake.Cells["A4"].Value = excelWorksheetFrames.Cells["A4"].Value;
+                            excelWorksheetStocktake.Cells["B4"].Value = excelWorksheetFrames.Cells["B4"].Value;
+                            excelWorksheetStocktake.Cells["C4"].Value = excelWorksheetFrames.Cells["C4"].Value;
+                            excelWorksheetStocktake.Cells["D4"].Value = "Counted/Shelf Number";
+
+                            worksheets.Add(excelWorksheetStocktake);
+
+                            MessageBox.Show("Stocktake will begin.");
+                            int startStockRow = 5;
+                            DoStocktake(true, worksheets, null);
+                        }
+                        else
+                        {
+                            //SetDate
+                            DateTime selectedDate = dtpSTPreviousStocktake.Value.Date;
+                            //Set last sheet as active sheet
+                            excelWorksheetStocktake = excelWorkBook.Worksheets["Stocktake " + selectedDate.Day + Months[selectedDate.Month - 1] + selectedDate.Year];
+
+                            worksheets.Add(excelWorksheetStocktake);
+
+                            MessageBox.Show(excelWorksheetStocktake.Name);
+                            return;
+                        }
+
+                        //string periodCellValue = stocktakeWorksheet.Cells["A3"].Value;
+                        
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("\"" + fileExtension + "\"" + "Wrong File Extension only .xlsx allowed", "FileType Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+            }
+        }
+
+        private void DoStocktake(bool fromStocktake, List<ExcelWorksheet> worksheets, string scannedQR)
+        {
+            int stockRow = 0; //worksheets[4].Cells.Last();
+            if (fromStocktake == true) 
+            {
+                //Navigating from stocktake tabsheet
+                TabPage previousTab = tabControl.SelectedTab;
+                tabControl.SelectedTab = tbsScanQR;  
+            }
+            else
+            {
+                int sheetCounter = 0;
+                string foundedSheets = "";
+                string itemName = "";
+                string closingQuantity = "";
+                bool foundOnStocktake = false;
+
+                //Search 4 sheets for itemcode
+                foreach (var item in worksheets)
+                {
+                    int rowCounter = 1;
+                    bool hasFoundQR = false;
+                    while (rowCounter < item.Rows.Count() || hasFoundQR == false)
+                    {
+                        string currentCell = "A" + rowCounter.ToString();
+                        string nameCell = "B" + rowCounter.ToString();
+                        string closingQuantityCell = "C" + rowCounter.ToString();
+                        //Have found the Item code
+                        if (item.Cells[currentCell].Value.ToString() == scannedQR )
+                        {
+                            hasFoundQR = true;
+                            itemName = item.Cells[nameCell].Value.ToString();
+                            closingQuantity = item.Cells[closingQuantityCell].Value.ToString();
+
+                            if (sheetCounter == 0) { foundedSheets = foundedSheets + "InventoryItemSummary" + ", "; }
+                            else if (sheetCounter == 1) { foundedSheets = foundedSheets + "Frames" + ", "; }
+                            else if (sheetCounter == 2) { foundedSheets = foundedSheets + "Sunglasses" + ", "; }
+                            else if (sheetCounter == 3) { foundedSheets = foundedSheets + "Solutions" + ", "; }
+
+                            //Found on Stocktake Sheet
+                            if(sheetCounter == 4) 
+                            {
+                                //Increase counted quantity
+                                worksheets[4].Cells["D" + stockRow].Value = Convert.ToInt32(worksheets[4].Cells["D" + stockRow].Value) + 1;//Counted Quantity
+                                foundOnStocktake = true;
+                            }
+                        }
+                        rowCounter++;
+                    }
+                }
+
+                if(foundOnStocktake == false) 
+                {
+                    //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
+                    worksheets[4].Cells["A" + stockRow].Value = scannedQR;//itemCode
+                    worksheets[4].Cells["B" + stockRow].Value = itemName;//ItemName
+                    worksheets[4].Cells["C" + stockRow].Value = closingQuantity;
+                    worksheets[4].Cells["D" + stockRow].Value = Convert.ToInt32(worksheets[4].Cells["D" + stockRow].Value) + 1;//Counted Quantity
+                    worksheets[4].Cells["E" + stockRow].Value = worksheets[4].Cells["E" + stockRow].Value /*+ InputBox "What rack was this found*/;//Rack/Shelf
+                    worksheets[4].Cells["F" + stockRow].Value = foundedSheets;//Found on other sheet
+                }
+            }
+        }
+
+        #endregion
 
         #region Debugging
         private void button1_Click(object sender, EventArgs e)
@@ -537,5 +768,10 @@ namespace Barcode_Application
 
 
         #endregion
+
+
+
+
+
     }
 }

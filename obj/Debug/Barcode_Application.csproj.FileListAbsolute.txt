@@ -27,3 +27,9 @@ C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\De
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Demo_Library.pdb
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\System.Data.SQLite.xml
 C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Dapper.xml
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\EPPlus.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\EPPlus.Interfaces.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\EPPlus.System.Drawing.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\EPPlus.xml
+C:\Users\User\Documents\Coding\C#\Barcode_Application\Barcode_Application\bin\Debug\Microsoft.IO.RecyclableMemoryStream.xml

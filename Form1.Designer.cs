@@ -50,7 +50,6 @@ namespace Barcode_Application
             this.lblGenQRCodeHead = new System.Windows.Forms.Label();
             this.btnGenGenerate = new System.Windows.Forms.Button();
             this.tbsScanQR = new System.Windows.Forms.TabPage();
-            this.label3 = new System.Windows.Forms.Label();
             this.btnScanBack = new System.Windows.Forms.Button();
             this.cbbScanCameraList = new System.Windows.Forms.ComboBox();
             this.lblScanProductCode = new System.Windows.Forms.Label();
@@ -91,11 +90,16 @@ namespace Barcode_Application
             this.lblARItemCodeHead = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tbsStockTake = new System.Windows.Forms.TabPage();
+            this.btnSTNewStocktake = new System.Windows.Forms.Button();
             this.prntDoc = new System.Drawing.Printing.PrintDocument();
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.btnSTOpenFile = new System.Windows.Forms.Button();
+            this.btnSTContinue = new System.Windows.Forms.Button();
+            this.dtpSTPreviousStocktake = new System.Windows.Forms.DateTimePicker();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -142,7 +146,7 @@ namespace Barcode_Application
             // 
             // btnWelStocktake
             // 
-            this.btnWelStocktake.Location = new System.Drawing.Point(20, 284);
+            this.btnWelStocktake.Location = new System.Drawing.Point(22, 44);
             this.btnWelStocktake.Name = "btnWelStocktake";
             this.btnWelStocktake.Size = new System.Drawing.Size(345, 30);
             this.btnWelStocktake.TabIndex = 16;
@@ -159,17 +163,19 @@ namespace Barcode_Application
             this.btnWelAddRemoveDB.TabIndex = 15;
             this.btnWelAddRemoveDB.Text = "Add/Remove From Database";
             this.btnWelAddRemoveDB.UseVisualStyleBackColor = true;
+            this.btnWelAddRemoveDB.Visible = false;
             this.btnWelAddRemoveDB.Click += new System.EventHandler(this.btnWelAddRemoveDB_Click);
             // 
             // btnWelSale
             // 
             this.btnWelSale.Enabled = false;
-            this.btnWelSale.Location = new System.Drawing.Point(22, 44);
+            this.btnWelSale.Location = new System.Drawing.Point(22, 284);
             this.btnWelSale.Name = "btnWelSale";
             this.btnWelSale.Size = new System.Drawing.Size(345, 30);
             this.btnWelSale.TabIndex = 14;
             this.btnWelSale.Text = "Sale";
             this.btnWelSale.UseVisualStyleBackColor = true;
+            this.btnWelSale.Visible = false;
             this.btnWelSale.Click += new System.EventHandler(this.btnWelSale_Click);
             // 
             // btnWelScan
@@ -274,7 +280,7 @@ namespace Barcode_Application
             this.btnGenBack.TabIndex = 13;
             this.btnGenBack.Text = "Back";
             this.btnGenBack.UseVisualStyleBackColor = true;
-            this.btnGenBack.Click += new System.EventHandler(this.btnGenBack_Click);
+            this.btnGenBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // lblGenProductCode
             // 
@@ -326,7 +332,6 @@ namespace Barcode_Application
             // 
             // tbsScanQR
             // 
-            this.tbsScanQR.Controls.Add(this.label3);
             this.tbsScanQR.Controls.Add(this.btnScanBack);
             this.tbsScanQR.Controls.Add(this.cbbScanCameraList);
             this.tbsScanQR.Controls.Add(this.lblScanProductCode);
@@ -342,16 +347,6 @@ namespace Barcode_Application
             this.tbsScanQR.Text = "Scan QR";
             this.tbsScanQR.UseVisualStyleBackColor = true;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(51, 312);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(402, 13);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "Drag spreadsheet in. Search Spreadsheet vir QR Code as text, increase count table" +
-    "";
-            // 
             // btnScanBack
             // 
             this.btnScanBack.Location = new System.Drawing.Point(19, 539);
@@ -360,7 +355,7 @@ namespace Barcode_Application
             this.btnScanBack.TabIndex = 19;
             this.btnScanBack.Text = "Back";
             this.btnScanBack.UseVisualStyleBackColor = true;
-            this.btnScanBack.Click += new System.EventHandler(this.btnScanBack_Click);
+            this.btnScanBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // cbbScanCameraList
             // 
@@ -424,6 +419,7 @@ namespace Barcode_Application
             // 
             // tbsSale
             // 
+            this.tbsSale.Controls.Add(this.button4);
             this.tbsSale.Controls.Add(this.lblTODO);
             this.tbsSale.Controls.Add(this.btnConfirm);
             this.tbsSale.Controls.Add(this.lblSaleHold);
@@ -447,7 +443,7 @@ namespace Barcode_Application
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Location = new System.Drawing.Point(134, 537);
+            this.btnConfirm.Location = new System.Drawing.Point(149, 510);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(75, 23);
             this.btnConfirm.TabIndex = 2;
@@ -476,6 +472,7 @@ namespace Barcode_Application
             // 
             // tbsAddRemoveFromDatabase
             // 
+            this.tbsAddRemoveFromDatabase.Controls.Add(this.button2);
             this.tbsAddRemoveFromDatabase.Controls.Add(this.btnARGenerateItemCode);
             this.tbsAddRemoveFromDatabase.Controls.Add(this.numUDARItemQuantity);
             this.tbsAddRemoveFromDatabase.Controls.Add(this.tbxARItemColor);
@@ -843,7 +840,10 @@ namespace Barcode_Application
             // 
             // tbsStockTake
             // 
-            this.tbsStockTake.Controls.Add(this.btnSTOpenFile);
+            this.tbsStockTake.Controls.Add(this.button3);
+            this.tbsStockTake.Controls.Add(this.dtpSTPreviousStocktake);
+            this.tbsStockTake.Controls.Add(this.btnSTContinue);
+            this.tbsStockTake.Controls.Add(this.btnSTNewStocktake);
             this.tbsStockTake.Location = new System.Drawing.Point(4, 22);
             this.tbsStockTake.Name = "tbsStockTake";
             this.tbsStockTake.Padding = new System.Windows.Forms.Padding(3);
@@ -851,6 +851,16 @@ namespace Barcode_Application
             this.tbsStockTake.TabIndex = 5;
             this.tbsStockTake.Text = "Stock Take";
             this.tbsStockTake.UseVisualStyleBackColor = true;
+            // 
+            // btnSTNewStocktake
+            // 
+            this.btnSTNewStocktake.Location = new System.Drawing.Point(19, 33);
+            this.btnSTNewStocktake.Name = "btnSTNewStocktake";
+            this.btnSTNewStocktake.Size = new System.Drawing.Size(165, 23);
+            this.btnSTNewStocktake.TabIndex = 0;
+            this.btnSTNewStocktake.Text = "New Stocktake";
+            this.btnSTNewStocktake.UseVisualStyleBackColor = true;
+            this.btnSTNewStocktake.Click += new System.EventHandler(this.btnSTNewStocktake_Click);
             // 
             // prntDoc
             // 
@@ -871,15 +881,52 @@ namespace Barcode_Application
             // 
             this.prntDlg.UseEXDialog = true;
             // 
-            // btnSTOpenFile
+            // btnSTContinue
             // 
-            this.btnSTOpenFile.Location = new System.Drawing.Point(134, 33);
-            this.btnSTOpenFile.Name = "btnSTOpenFile";
-            this.btnSTOpenFile.Size = new System.Drawing.Size(75, 23);
-            this.btnSTOpenFile.TabIndex = 0;
-            this.btnSTOpenFile.Text = "Open File";
-            this.btnSTOpenFile.UseVisualStyleBackColor = true;
-            this.btnSTOpenFile.Click += new System.EventHandler(this.btnSTOpenFile_Click);
+            this.btnSTContinue.Location = new System.Drawing.Point(21, 89);
+            this.btnSTContinue.Name = "btnSTContinue";
+            this.btnSTContinue.Size = new System.Drawing.Size(163, 23);
+            this.btnSTContinue.TabIndex = 1;
+            this.btnSTContinue.Text = "Continue Previous Stocktake";
+            this.btnSTContinue.UseVisualStyleBackColor = true;
+            // 
+            // dtpSTPreviousStocktake
+            // 
+            this.dtpSTPreviousStocktake.Location = new System.Drawing.Point(190, 92);
+            this.dtpSTPreviousStocktake.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
+            this.dtpSTPreviousStocktake.Name = "dtpSTPreviousStocktake";
+            this.dtpSTPreviousStocktake.Size = new System.Drawing.Size(189, 20);
+            this.dtpSTPreviousStocktake.TabIndex = 2;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(19, 539);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(345, 30);
+            this.button2.TabIndex = 26;
+            this.button2.Text = "Back";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.btnBack_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(19, 539);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(345, 30);
+            this.button3.TabIndex = 27;
+            this.button3.Text = "Back";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.btnBack_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(19, 539);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(345, 30);
+            this.button4.TabIndex = 27;
+            this.button4.Text = "Back";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // frmBarcodeApplication
             // 
@@ -977,11 +1024,15 @@ namespace Barcode_Application
         private System.Windows.Forms.Label lblARItemQuantity;
         private System.Windows.Forms.Label lblARItemColor;
         private System.Windows.Forms.Button btnARGenerateItemCode;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnWelStocktake;
         private System.Windows.Forms.TabPage tbsStockTake;
-        private System.Windows.Forms.Button btnSTOpenFile;
+        private System.Windows.Forms.Button btnSTNewStocktake;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button btnSTContinue;
+        private System.Windows.Forms.DateTimePicker dtpSTPreviousStocktake;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }
 
