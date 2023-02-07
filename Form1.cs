@@ -633,6 +633,7 @@ namespace Barcode_Application
             StockTake(stockWBName, "Added to Continued Sheet!");
         }
 
+        
         private void StockTake(string stockTakeWorkbookName, string recordAddedMessage)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -661,7 +662,8 @@ namespace Barcode_Application
 
                 if (fileExtension == ".xlsx")
                 {
-                    using (excelPackage = new ExcelPackage(fileName))
+                    excelPackage = new ExcelPackage(fileName);
+                    using (excelPackage)
                     {
                         //Set Excel Variables
                         ExcelWorkbook excelWorkBook = excelPackage.Workbook;
@@ -769,12 +771,34 @@ namespace Barcode_Application
             }
         }
 
-
+        
         ExcelWorksheet stockOrScanStocktakeWorksheet;
         string stockOrScanRecordAddedMessage;
-        private void FromStockTakeOrScanner(string location, string localScannedQR = "")
+        private void FromStockTakeOrScanner(string location,  string localScannedQR = "")
         {
-            if(location == "StockTake") 
+            if(excelPackage == null) { MessageBox.Show("ExcelPackage is null."); }
+            if (excelPackage.Workbook == null) { MessageBox.Show("ExcelWorkbook is null."); }
+            if (excelPackage.Workbook.Worksheets["Inventory Item Summary"] == null) { MessageBox.Show("ExcelSheet is null."); }
+            if (excelPackage.Workbook.Worksheets["FRAMES"] == null) { MessageBox.Show("ExcelSheet FRAMES is null."); }
+            if (excelPackage.Workbook.Worksheets["SUN"] == null) { MessageBox.Show("ExcelSheet SUN is null."); }
+            if (excelPackage.Workbook.Worksheets["SOLUTION"] == null) { MessageBox.Show("ExcelSheet SOLUTION is null."); }
+            if (excelPackage.Workbook.Worksheets[stockOrScanStocktakeWorksheet.Name] == null) { MessageBox.Show("ExcelSheet SOLUTION is null."); }
+
+            if (excelPackage.Workbook.Worksheets["Inventory Item Summary"] != null) { MessageBox.Show("ExcelSheet SUMMARY is NOT null."); }
+            if (excelPackage.Workbook.Worksheets["FRAMES"] != null) { MessageBox.Show("ExcelSheet FRAMES is NOT null."); }
+            if (excelPackage.Workbook.Worksheets["SUN"] != null) { MessageBox.Show("ExcelSheet SUN is NOT null."); }
+            if (excelPackage.Workbook.Worksheets["SOLUTION"] != null) { MessageBox.Show("ExcelSheet SOLUTION is NOT null."); }
+            if (excelPackage.Workbook.Worksheets[stockOrScanStocktakeWorksheet.Name] != null) { MessageBox.Show("ExcelSheet STOCKTAKE is NOT null."); }
+
+            worksheets.Clear();
+            worksheets.Add(excelPackage.Workbook.Worksheets["Inventory Item Summary"]);
+            worksheets.Add(excelPackage.Workbook.Worksheets["FRAMES"]);
+            worksheets.Add(excelPackage.Workbook.Worksheets["SUN"]);
+            worksheets.Add(excelPackage.Workbook.Worksheets["SOLUTION"]);
+            worksheets.Add(excelPackage.Workbook.Worksheets[stockOrScanStocktakeWorksheet.Name]);
+
+
+            if (location == "StockTake") 
             {
                 //Display the Scannerscreen
                 //Navigating from stocktake tabsheet
@@ -814,7 +838,7 @@ namespace Barcode_Application
                             rowCounter++;
                         }
                     }
-
+                    
                     rowCounter = 1;
                     while (rowCounter < totalRows && hasFoundQR == false)
                     {
