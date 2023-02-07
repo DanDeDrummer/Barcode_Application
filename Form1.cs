@@ -803,27 +803,32 @@ namespace Barcode_Application
                                             hasFoundQR = true;
                                             itemName = worksheets[i].Cells[nameCell].Value.ToString();
                                             closingQuantity = worksheets[i].Cells[closingQuantityCell].Value.ToString();
-                                            string seperator = "";
+                                            string seperator;
+
+                                            if(foundedSheets == "") 
+                                            {
+                                                seperator = "";
+                                            }
+                                            else 
+                                            {
+                                                seperator = ", ";
+                                            }
 
                                             if (sheetCounter == 0)
                                             {
-                                                foundedSheets = foundedSheets + "InventoryItemSummary" + seperator;
-                                                seperator = ", ";
+                                                foundedSheets = foundedSheets + seperator + "InventoryItemSummary";
                                             }
                                             else if (sheetCounter == 1)
                                             {
-                                                foundedSheets = foundedSheets + "Frames" + seperator;
-                                                seperator = ", ";
+                                                foundedSheets = foundedSheets + seperator + "Frames";
                                             }
                                             else if (sheetCounter == 2)
                                             {
-                                                foundedSheets = foundedSheets + "Sunglasses" + seperator;
-                                                seperator = ", ";
+                                                foundedSheets = foundedSheets + seperator + "Sunglasses";
                                             }
                                             else if (sheetCounter == 3)
                                             {
-                                                foundedSheets = foundedSheets + "Solutions" + seperator;
-                                                seperator = ", ";
+                                                foundedSheets = foundedSheets + seperator + "Solutions";
                                             }
 
                                             //Found on Stocktake Sheet
