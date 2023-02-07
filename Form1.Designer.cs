@@ -93,6 +93,7 @@ namespace Barcode_Application
             this.lblARItemCodeHead = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tbsStockTake = new System.Windows.Forms.TabPage();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.dtpSTPreviousStocktake = new System.Windows.Forms.DateTimePicker();
             this.btnSTContinue = new System.Windows.Forms.Button();
@@ -101,7 +102,7 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.cbxSTDebugMode = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -873,6 +874,7 @@ namespace Barcode_Application
             // 
             // tbsStockTake
             // 
+            this.tbsStockTake.Controls.Add(this.cbxSTDebugMode);
             this.tbsStockTake.Controls.Add(this.listBox1);
             this.tbsStockTake.Controls.Add(this.button3);
             this.tbsStockTake.Controls.Add(this.dtpSTPreviousStocktake);
@@ -885,6 +887,17 @@ namespace Barcode_Application
             this.tbsStockTake.TabIndex = 5;
             this.tbsStockTake.Text = "Stock Take";
             this.tbsStockTake.UseVisualStyleBackColor = true;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Items.AddRange(new object[] {
+            "Populate with sheet items.",
+            "Then set the selected ItemIndex to the stocktake sheet"});
+            this.listBox1.Location = new System.Drawing.Point(34, 136);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(120, 95);
+            this.listBox1.TabIndex = 28;
             // 
             // button3
             // 
@@ -942,16 +955,17 @@ namespace Barcode_Application
             // 
             this.prntDlg.UseEXDialog = true;
             // 
-            // listBox1
+            // cbxSTDebugMode
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "Populate with sheet items.",
-            "Then set the selected ItemIndex to the stocktake sheet"});
-            this.listBox1.Location = new System.Drawing.Point(34, 136);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 95);
-            this.listBox1.TabIndex = 28;
+            this.cbxSTDebugMode.AutoSize = true;
+            this.cbxSTDebugMode.Checked = true;
+            this.cbxSTDebugMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxSTDebugMode.Location = new System.Drawing.Point(201, 37);
+            this.cbxSTDebugMode.Name = "cbxSTDebugMode";
+            this.cbxSTDebugMode.Size = new System.Drawing.Size(88, 17);
+            this.cbxSTDebugMode.TabIndex = 29;
+            this.cbxSTDebugMode.Text = "Debug Mode";
+            this.cbxSTDebugMode.UseVisualStyleBackColor = true;
             // 
             // frmBarcodeApplication
             // 
@@ -982,6 +996,7 @@ namespace Barcode_Application
             this.pnlARSerialBack.ResumeLayout(false);
             this.pnlARSerialBack.PerformLayout();
             this.tbsStockTake.ResumeLayout(false);
+            this.tbsStockTake.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1060,6 +1075,7 @@ namespace Barcode_Application
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button btnBugStockTake;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.CheckBox cbxSTDebugMode;
     }
 }
 
