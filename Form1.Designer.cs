@@ -353,7 +353,7 @@ namespace Barcode_Application
             // 
             // btnBugStockTake
             // 
-            this.btnBugStockTake.Location = new System.Drawing.Point(167, 397);
+            this.btnBugStockTake.Location = new System.Drawing.Point(289, 397);
             this.btnBugStockTake.Name = "btnBugStockTake";
             this.btnBugStockTake.Size = new System.Drawing.Size(75, 23);
             this.btnBugStockTake.TabIndex = 20;

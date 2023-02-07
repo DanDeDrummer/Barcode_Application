@@ -621,19 +621,31 @@ namespace Barcode_Application
         int stocktakeIndex, stockRow;
         private void btnSTNewStocktake_Click(object sender, EventArgs e)
         {
+            stockWBName = "Stocktake " + DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
+            StockTake(stockWBName, "Added to Sheet!");
+        }
+
+        private void btnSTContinue_Click(object sender, EventArgs e)
+        {
+            stockWBName = "Stocktake " + dtpSTPreviousStocktake.Value.Day + " " + Months[dtpSTPreviousStocktake.Value.Month - 1] + " " + dtpSTPreviousStocktake.Value.Year;
+            StockTake(stockWBName, "Added to Continued Sheet!");
+        }
+
+        private void StockTake(string stockTakeWorkbookName, string recordAddedMessage)
+        {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 //Select the correct excell File
                 fileName = openFileDialog1.FileName;
 
                 //CHECK IF THE FILE IS OPEN IF IT IS, CLOSE IT
-                
+
                 int k = fileName.Length - 1;
                 string fileExtension = "";
 
                 for (int i = 1; i < fileName.Length; i++)
                 {
-                    if(fileName[i] == '.') 
+                    if (fileName[i] == '.')
                     {
                         for (int extensionCount = i; extensionCount < fileName.Length; extensionCount++)
                         {
@@ -641,7 +653,7 @@ namespace Barcode_Application
                         }
                     }
                 }
-               
+
 
                 //fileExtension = ".xlsx"; //Debug
 
@@ -649,14 +661,13 @@ namespace Barcode_Application
                 {
                     using (excelPackage = new ExcelPackage(fileName))
                     {
-                        stockWBName = "Stocktake " + DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
                         //Set Excel Variables
                         ExcelWorkbook excelWorkBook = excelPackage.Workbook;
                         ExcelWorksheet excelWorksheetInventoryItemSummary = excelWorkBook.Worksheets["Inventory Item Summary"];
                         ExcelWorksheet excelWorksheetFrames = excelWorkBook.Worksheets["FRAMES"];
                         ExcelWorksheet excelWorksheetSunglasses = excelWorkBook.Worksheets["SUN"];
                         ExcelWorksheet excelWorksheetSolutions = excelWorkBook.Worksheets["SOLUTION"];
-                        ExcelWorksheet excelWorksheetStocktake = excelWorkBook.Worksheets[stockWBName];
+                        ExcelWorksheet excelWorksheetStocktake = excelWorkBook.Worksheets[stockTakeWorkbookName];
 
                         worksheets.Add(excelWorksheetInventoryItemSummary);
                         worksheets.Add(excelWorksheetFrames);
@@ -675,22 +686,22 @@ namespace Barcode_Application
                         if (MessageBox.Show("Is this the first stocktake this month?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes) //It is the first time this stocktake is happening
                         {
                             //If the sheet doesn't exist then add it.
-                            if (excelWorksheetStocktake == null) 
+                            if (excelWorksheetStocktake == null)
                             {
-                                excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockWBName);
+                                excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
                                 stocktakeIndex = excelWorkBook.Worksheets.Count() - 1;
                             }
-                            else 
+                            else
                             {
-                                if (cbxSTDebugMode.Checked) 
+                                if (cbxSTDebugMode.Checked)
                                 {
                                     //Remove the sheet
-                                    excelWorkBook.Worksheets.Delete(stockWBName);
+                                    excelWorkBook.Worksheets.Delete(stockTakeWorkbookName);
                                     MessageBox.Show("Sheet Deleted!");
-                                    excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockWBName);
+                                    excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
                                     stocktakeIndex = excelWorkBook.Worksheets.Count() - 1;
                                 }
-                                else 
+                                else
                                 {
                                     MessageBox.Show("A Stocktake sheet for that date already exists." + "\n" + "Use the " + "\"" + btnSTContinue.Text + "\"" + " button instead.");
                                     return;
@@ -782,7 +793,7 @@ namespace Barcode_Application
                                         string nameCell = "B" + rowCounter.ToString();
                                         string closingQuantityCell = "C" + rowCounter.ToString();
                                         //Have found the Item code
-                                        if (worksheets[i].Cells[currentCell].Value == null) 
+                                        if (worksheets[i].Cells[currentCell].Value == null)
                                         {
                                             rowCounter++;
                                             continue;
@@ -839,7 +850,7 @@ namespace Barcode_Application
                                     excelWorksheetStocktake.Cells["F" + stockRow].Value = foundedSheets;//Found on other sheet
                                 }
                                 excelPackage.Save();
-                                MessageBox.Show("Added to Sheet!");
+                                MessageBox.Show(recordAddedMessage);
                             }
                         }
                         else
@@ -848,7 +859,7 @@ namespace Barcode_Application
                         }
 
                         //string periodCellValue = stocktakeWorksheet.Cells["A3"].Value;
-                        
+
                     }
                 }
                 else
@@ -857,169 +868,6 @@ namespace Barcode_Application
                 }
 
             }
-        }
-
-        private void btnSTContinue_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                //Select the correct excell File
-                fileName = openFileDialog1.FileName;
-
-                //CHECK IF THE FILE IS OPEN IF IT IS, CLOSE IT
-
-                int k = fileName.Length - 1;
-                string fileExtension = "";
-
-                for (int i = 1; i < fileName.Length; i++)
-                {
-                    if (fileName[i] == '.')
-                    {
-                        for (int extensionCount = i; extensionCount < fileName.Length; extensionCount++)
-                        {
-                            fileExtension += fileName[extensionCount];
-                        }
-                    }
-                }
-
-
-                //fileExtension = ".xlsx"; //Debug
-
-                if (fileExtension == ".xlsx") 
-                {
-                    //"Stocktake " + DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
-                    stockWBName = "Stocktake " + dtpSTPreviousStocktake.Value.Day + " " + Months[dtpSTPreviousStocktake.Value.Month - 1] + " " + dtpSTPreviousStocktake.Value.Year;
-
-                    using (excelPackage = new ExcelPackage(fileName))
-                    {
-                        stockWBName = "Stocktake " + DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
-                        //Set Excel Variables
-                        ExcelWorkbook excelWorkBook = excelPackage.Workbook;
-                        ExcelWorksheet excelWorksheetInventoryItemSummary = excelWorkBook.Worksheets["Inventory Item Summary"];
-                        ExcelWorksheet excelWorksheetFrames = excelWorkBook.Worksheets["FRAMES"];
-                        ExcelWorksheet excelWorksheetSunglasses = excelWorkBook.Worksheets["SUN"];
-                        ExcelWorksheet excelWorksheetSolutions = excelWorkBook.Worksheets["SOLUTION"];
-                        ExcelWorksheet excelWorksheetStocktake = excelWorkBook.Worksheets[stockWBName];
-
-                        worksheets.Add(excelWorksheetInventoryItemSummary);
-                        worksheets.Add(excelWorksheetFrames);
-                        worksheets.Add(excelWorksheetSunglasses);
-                        worksheets.Add(excelWorksheetSolutions);
-
-                        worksheetsRows.Add(excelWorksheetInventoryItemSummary.Dimension.End.Row);
-                        worksheetsRows.Add(excelWorksheetFrames.Dimension.End.Row);
-                        worksheetsRows.Add(excelWorksheetSunglasses.Dimension.End.Row);
-                        worksheetsRows.Add(excelWorksheetSolutions.Dimension.End.Row);
-                        
-
-
-                        MessageBox.Show("Continue Worksheet 0 : " + excelWorksheetInventoryItemSummary.Name + "\n" + "ContinueWorksheet 1 : " + excelWorksheetFrames.Name
-                            + "\n" + "ContinueWorksheet 2 : " + excelWorksheetSunglasses.Name + "\n" + "ContinueWorksheet 3 : " + excelWorksheetSolutions.Name);
-
-                        int sheetCounter = 0;
-                        string foundedSheets = "";
-                        string itemName = "";
-                        string closingQuantity = "";
-                        bool foundOnStocktake = false;
-
-                        //Search 4 sheets for itemcode
-                        for (int i = 0; i < worksheets.Count; i++)
-                        {
-                            int rowCounter;
-                            bool hasFoundQR = false;
-                            bool isBlank = false;
-                            int totalRows = worksheetsRows[sheetCounter];
-                            string currentCell = "";
-
-                            if (i == stocktakeIndex)
-                            {
-                                rowCounter = 1;
-                                currentCell = "A" + rowCounter.ToString();
-                                while (rowCounter <= totalRows + 1 && isBlank == false)
-                                {
-                                    currentCell = "A" + rowCounter.ToString();
-                                    if (excelWorksheetStocktake.Cells[currentCell].Value == null && rowCounter > 4)
-                                    {
-                                        isBlank = true;
-                                        stockRow = rowCounter;
-                                        MessageBox.Show("Found blank Row at: " + stockRow);
-                                    }
-                                    rowCounter++;
-                                }
-                            }
-
-                            rowCounter = 1;
-                            while (rowCounter < totalRows && hasFoundQR == false)
-                            {
-                                currentCell = "A" + rowCounter.ToString();
-                                string nameCell = "B" + rowCounter.ToString();
-                                string closingQuantityCell = "C" + rowCounter.ToString();
-                                //Have found the Item code
-                                if (worksheets[i].Cells[currentCell].Value == null)
-                                {
-                                    rowCounter++;
-                                    continue;
-                                }
-                                if (worksheets[i].Cells[currentCell].Value.ToString() == scannedQR)
-                                {
-                                    hasFoundQR = true;
-                                    itemName = worksheets[i].Cells[nameCell].Value.ToString();
-                                    closingQuantity = worksheets[i].Cells[closingQuantityCell].Value.ToString();
-                                    string seperator = "";
-
-                                    if (sheetCounter == 0)
-                                    {
-                                        foundedSheets = foundedSheets + "InventoryItemSummary" + seperator;
-                                        seperator = ", ";
-                                    }
-                                    else if (sheetCounter == 1)
-                                    {
-                                        foundedSheets = foundedSheets + "Frames" + seperator;
-                                        seperator = ", ";
-                                    }
-                                    else if (sheetCounter == 2)
-                                    {
-                                        foundedSheets = foundedSheets + "Sunglasses" + seperator;
-                                        seperator = ", ";
-                                    }
-                                    else if (sheetCounter == 3)
-                                    {
-                                        foundedSheets = foundedSheets + "Solutions" + seperator;
-                                        seperator = ", ";
-                                    }
-
-                                    //Found on Stocktake Sheet
-                                    else if (sheetCounter == 4)
-                                    {
-                                        //Increase counted quantity
-                                        stocktakeWorksheet.Cells["D" + rowCounter].Value = Convert.ToInt32(stocktakeWorksheet.Cells["D" + rowCounter].Value) + 1;//Counted Quantity
-                                        foundOnStocktake = true;
-                                    }
-                                }
-                                rowCounter++;
-                            }
-                            sheetCounter++;
-                        }
-
-                        if (foundOnStocktake == false)
-                        {
-                            //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
-                            excelWorksheetStocktake.Cells["A" + stockRow].Value = scannedQR;//itemCode
-                            excelWorksheetStocktake.Cells["B" + stockRow].Value = itemName;//ItemName
-                            excelWorksheetStocktake.Cells["C" + stockRow].Value = closingQuantity;
-                            excelWorksheetStocktake.Cells["D" + stockRow].Value = Convert.ToInt32(worksheets[4].Cells["D" + stockRow].Value) + 1;//Counted Quantity
-                            excelWorksheetStocktake.Cells["E" + stockRow].Value = worksheets[4].Cells["E" + stockRow].Value /*+ InputBox "What rack was this found*/;//Rack/Shelf
-                            excelWorksheetStocktake.Cells["F" + stockRow].Value = foundedSheets;//Found on other sheet
-                        }
-                        excelPackage.Save();
-                        MessageBox.Show("Added to Continued Sheet!");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("\"" + fileExtension + "\"" + "Wrong File Extension only .xlsx allowed", "FileType Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            } 
         }
 
         /*private void DoStocktake(bool fromStocktake, List<ExcelWorksheet> worksheets, string scannedQR)
