@@ -395,6 +395,7 @@ namespace Barcode_Application
             this.txtScanQRCode.Location = new System.Drawing.Point(19, 426);
             this.txtScanQRCode.Multiline = true;
             this.txtScanQRCode.Name = "txtScanQRCode";
+            this.txtScanQRCode.ReadOnly = true;
             this.txtScanQRCode.Size = new System.Drawing.Size(345, 61);
             this.txtScanQRCode.TabIndex = 16;
             this.txtScanQRCode.Text = "Drag spreadsheet in. Search Spreadsheet vir QR Code as text, increase count table" +
