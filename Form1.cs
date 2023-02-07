@@ -817,7 +817,7 @@ namespace Barcode_Application
                                             else if (sheetCounter == 4)
                                             {
                                                 //Increase counted quantity
-                                                worksheets[4].Cells["D" + stockRow].Value = Convert.ToInt32(worksheets[4].Cells["D" + stockRow].Value) + 1;//Counted Quantity
+                                                stocktakeWorksheet.Cells["D" + rowCounter].Value = Convert.ToInt32(stocktakeWorksheet.Cells["D" + rowCounter].Value) + 1;//Counted Quantity
                                                 foundOnStocktake = true;
                                             }
                                         }
@@ -836,6 +836,8 @@ namespace Barcode_Application
                                     excelWorksheetStocktake.Cells["E" + stockRow].Value = worksheets[4].Cells["E" + stockRow].Value /*+ InputBox "What rack was this found*/;//Rack/Shelf
                                     excelWorksheetStocktake.Cells["F" + stockRow].Value = foundedSheets;//Found on other sheet
                                 }
+                                excelPackage.Save();
+                                MessageBox.Show("Added to Sheet!");
                             }
                         }
                         else
