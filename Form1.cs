@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -391,7 +392,7 @@ namespace Barcode_Application
                     txtScanQRCode.Text = result.ToString();
 
                     //Search DB for code
-                    DoStocktake(false, worksheets, result.ToString());
+                    //DoStocktake(false, worksheets, result.ToString());
                 }));
             }
             picbxScanImage.Image = bitmap;
@@ -521,6 +522,28 @@ namespace Barcode_Application
         #endregion
 
         #region Stock Take
+
+        protected virtual bool IsFileLocked(FileInfo file)
+        {
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+
+            //file is not locked
+            return false;
+        }
 
         private void btnSTOpenFile_Click(object sender, EventArgs e)
         {
@@ -727,26 +750,18 @@ namespace Barcode_Application
                                         while (rowCounter < totalRows && isBlank == false)
                                         {
 
-                                            if (worksheets[worksheets.Count].Cells[currentCell].Value.ToString() == "")
+                                            if (worksheets[stocktakeIndex].Cells[currentCell].Value.ToString() == "")
                                             {
                                                 isBlank = true;
                                                 MessageBox.Show("Found blank Row at: " + rowCounter);
                                             }
                                             rowCounter++;
                                         }
-
-                                        MessageBox.Show("End Row: " + totalRows.ToString());
-                                        return;
                                     }
 
                                     rowCounter = 1;
                                     while (rowCounter < totalRows && hasFoundQR == false)
                                     {
-                                        if (rowCounter == 1048577)
-                                        {
-                                            MessageBox.Show("Bad Row");
-                                        }
-
                                         currentCell = "A" + rowCounter.ToString();
                                         string nameCell = "B" + rowCounter.ToString();
                                         string closingQuantityCell = "C" + rowCounter.ToString();
@@ -837,7 +852,7 @@ namespace Barcode_Application
             }
         }
 
-        private void DoStocktake(bool fromStocktake, List<ExcelWorksheet> worksheets, string scannedQR)
+        /*private void DoStocktake(bool fromStocktake, List<ExcelWorksheet> worksheets, string scannedQR)
         {
             int stockRow = 5;//worksheets[4].Rows.Count() + 1;
             if (fromStocktake == true) 
@@ -912,11 +927,11 @@ namespace Barcode_Application
                     worksheets[4].Cells["B" + stockRow].Value = itemName;//ItemName
                     worksheets[4].Cells["C" + stockRow].Value = closingQuantity;
                     worksheets[4].Cells["D" + stockRow].Value = Convert.ToInt32(worksheets[4].Cells["D" + stockRow].Value) + 1;//Counted Quantity
-                    worksheets[4].Cells["E" + stockRow].Value = worksheets[4].Cells["E" + stockRow].Value /*+ InputBox "What rack was this found*/;//Rack/Shelf
-                    worksheets[4].Cells["F" + stockRow].Value = foundedSheets;//Found on other sheet
+                    worksheets[4].Cells["E" + stockRow].Value = worksheets[4].Cells["E" + stockRow].Value /*+ InputBox "What rack was this found*///Rack/Shelf
+                    /*worksheets[4].Cells["F" + stockRow].Value = foundedSheets;//Found on other sheet
                 }
             }
-        }
+        }*/
 
         #endregion
 
@@ -950,7 +965,7 @@ namespace Barcode_Application
         private void btnBugStockTake_Click(object sender, EventArgs e)
         {
             string result = "T-FRA-CUB-3127-002";
-            DoStocktake(false, worksheets, result);
+            //DoStocktake(false, worksheets, result);
         }
 
 

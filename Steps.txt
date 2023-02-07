@@ -1,0 +1,3 @@
+Scan the Barcode with a scanner
+Serch the sheets for the code.
+If the code is found, increase the amount.

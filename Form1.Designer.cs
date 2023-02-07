@@ -50,6 +50,7 @@ namespace Barcode_Application
             this.lblGenQRCodeHead = new System.Windows.Forms.Label();
             this.btnGenGenerate = new System.Windows.Forms.Button();
             this.tbsScanQR = new System.Windows.Forms.TabPage();
+            this.btnBugStockTake = new System.Windows.Forms.Button();
             this.btnScanBack = new System.Windows.Forms.Button();
             this.cbbScanCameraList = new System.Windows.Forms.ComboBox();
             this.lblScanProductCode = new System.Windows.Forms.Label();
@@ -100,7 +101,7 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.btnBugStockTake = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -348,6 +349,16 @@ namespace Barcode_Application
             this.tbsScanQR.TabIndex = 2;
             this.tbsScanQR.Text = "Scan QR";
             this.tbsScanQR.UseVisualStyleBackColor = true;
+            // 
+            // btnBugStockTake
+            // 
+            this.btnBugStockTake.Location = new System.Drawing.Point(167, 397);
+            this.btnBugStockTake.Name = "btnBugStockTake";
+            this.btnBugStockTake.Size = new System.Drawing.Size(75, 23);
+            this.btnBugStockTake.TabIndex = 20;
+            this.btnBugStockTake.Text = "Stocktake Test";
+            this.btnBugStockTake.UseVisualStyleBackColor = true;
+            this.btnBugStockTake.Click += new System.EventHandler(this.btnBugStockTake_Click);
             // 
             // btnScanBack
             // 
@@ -862,6 +873,7 @@ namespace Barcode_Application
             // 
             // tbsStockTake
             // 
+            this.tbsStockTake.Controls.Add(this.listBox1);
             this.tbsStockTake.Controls.Add(this.button3);
             this.tbsStockTake.Controls.Add(this.dtpSTPreviousStocktake);
             this.tbsStockTake.Controls.Add(this.btnSTContinue);
@@ -930,15 +942,16 @@ namespace Barcode_Application
             // 
             this.prntDlg.UseEXDialog = true;
             // 
-            // btnBugStockTake
+            // listBox1
             // 
-            this.btnBugStockTake.Location = new System.Drawing.Point(167, 397);
-            this.btnBugStockTake.Name = "btnBugStockTake";
-            this.btnBugStockTake.Size = new System.Drawing.Size(75, 23);
-            this.btnBugStockTake.TabIndex = 20;
-            this.btnBugStockTake.Text = "Stocktake Test";
-            this.btnBugStockTake.UseVisualStyleBackColor = true;
-            this.btnBugStockTake.Click += new System.EventHandler(this.btnBugStockTake_Click);
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Items.AddRange(new object[] {
+            "Populate with sheet items.",
+            "Then set the selected ItemIndex to the stocktake sheet"});
+            this.listBox1.Location = new System.Drawing.Point(34, 136);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(120, 95);
+            this.listBox1.TabIndex = 28;
             // 
             // frmBarcodeApplication
             // 
@@ -1046,6 +1059,7 @@ namespace Barcode_Application
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button btnBugStockTake;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 
