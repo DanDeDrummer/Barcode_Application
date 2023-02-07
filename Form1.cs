@@ -724,11 +724,28 @@ namespace Barcode_Application
                                             hasFoundQR = true;
                                             itemName = item.Cells[nameCell].Value.ToString();
                                             closingQuantity = item.Cells[closingQuantityCell].Value.ToString();
+                                            string seperator = "";
 
-                                            if (sheetCounter == 0) { foundedSheets = foundedSheets + "InventoryItemSummary" + ", "; }
-                                            else if (sheetCounter == 1) { foundedSheets = foundedSheets + "Frames" + ", "; }
-                                            else if (sheetCounter == 2) { foundedSheets = foundedSheets + "Sunglasses" + ", "; }
-                                            else if (sheetCounter == 3) { foundedSheets = foundedSheets + "Solutions" + ", "; }
+                                            if (sheetCounter == 0) 
+                                            { 
+                                                foundedSheets = foundedSheets + "InventoryItemSummary" + seperator;
+                                                seperator = ", ";
+                                            }
+                                            else if (sheetCounter == 1) 
+                                            { 
+                                                foundedSheets = foundedSheets + "Frames" + seperator;
+                                                seperator = ", ";
+                                            }
+                                            else if (sheetCounter == 2) 
+                                            { 
+                                                foundedSheets = foundedSheets + "Sunglasses" + seperator;
+                                                seperator = ", ";
+                                            }
+                                            else if (sheetCounter == 3) 
+                                            { 
+                                                foundedSheets = foundedSheets + "Solutions" + seperator;
+                                                seperator = ", ";
+                                            }
 
                                             //Found on Stocktake Sheet
                                             else if (sheetCounter == 4)
