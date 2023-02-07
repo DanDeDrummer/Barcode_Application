@@ -93,6 +93,7 @@ namespace Barcode_Application
             this.lblARItemCodeHead = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tbsStockTake = new System.Windows.Forms.TabPage();
+            this.cbxSTDebugMode = new System.Windows.Forms.CheckBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.dtpSTPreviousStocktake = new System.Windows.Forms.DateTimePicker();
@@ -102,7 +103,6 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.cbxSTDebugMode = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -888,6 +888,18 @@ namespace Barcode_Application
             this.tbsStockTake.Text = "Stock Take";
             this.tbsStockTake.UseVisualStyleBackColor = true;
             // 
+            // cbxSTDebugMode
+            // 
+            this.cbxSTDebugMode.AutoSize = true;
+            this.cbxSTDebugMode.Checked = true;
+            this.cbxSTDebugMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxSTDebugMode.Location = new System.Drawing.Point(201, 37);
+            this.cbxSTDebugMode.Name = "cbxSTDebugMode";
+            this.cbxSTDebugMode.Size = new System.Drawing.Size(88, 17);
+            this.cbxSTDebugMode.TabIndex = 29;
+            this.cbxSTDebugMode.Text = "Debug Mode";
+            this.cbxSTDebugMode.UseVisualStyleBackColor = true;
+            // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
@@ -925,6 +937,7 @@ namespace Barcode_Application
             this.btnSTContinue.TabIndex = 1;
             this.btnSTContinue.Text = "Continue Previous Stocktake";
             this.btnSTContinue.UseVisualStyleBackColor = true;
+            this.btnSTContinue.Click += new System.EventHandler(this.btnSTContinue_Click);
             // 
             // btnSTNewStocktake
             // 
@@ -954,18 +967,6 @@ namespace Barcode_Application
             // prntDlg
             // 
             this.prntDlg.UseEXDialog = true;
-            // 
-            // cbxSTDebugMode
-            // 
-            this.cbxSTDebugMode.AutoSize = true;
-            this.cbxSTDebugMode.Checked = true;
-            this.cbxSTDebugMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbxSTDebugMode.Location = new System.Drawing.Point(201, 37);
-            this.cbxSTDebugMode.Name = "cbxSTDebugMode";
-            this.cbxSTDebugMode.Size = new System.Drawing.Size(88, 17);
-            this.cbxSTDebugMode.TabIndex = 29;
-            this.cbxSTDebugMode.Text = "Debug Mode";
-            this.cbxSTDebugMode.UseVisualStyleBackColor = true;
             // 
             // frmBarcodeApplication
             // 
