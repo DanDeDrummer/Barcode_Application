@@ -21,6 +21,7 @@ namespace Barcode_Application
     {
         List<String> Months = new List<string> { "j", "f", "m", "a", "m", "jun", "jul", "aug", "Septem", "Oct", "Nov", "Dec"};
         List<ExcelWorksheet> worksheets = new List<ExcelWorksheet>();
+        List<int> worksheetsRows = new List<int>();
         List<Image> QRImages = new List<Image>();
         List<String> ItemCodes = new List<String>();
         List<String> GLASSES = new List<string> { "Adidas",
@@ -625,6 +626,12 @@ namespace Barcode_Application
                         worksheets.Add(excelWorksheetSunglasses);
                         worksheets.Add(excelWorksheetSolutions);
 
+                        worksheetsRows.Add(excelWorksheetInventoryItemSummary.Dimension.End.Row);
+                        worksheetsRows.Add(excelWorksheetFrames.Dimension.End.Row);
+                        worksheetsRows.Add(excelWorksheetSunglasses.Dimension.End.Row);
+                        worksheetsRows.Add(excelWorksheetSolutions.Dimension.End.Row);
+
+
 
                         MessageBox.Show("Worksheet 0 : " + excelWorksheetInventoryItemSummary.Name + "\n" + "Worksheet 1 : " + excelWorksheetFrames.Name
                             + "\n" + "Worksheet 2 : " + excelWorksheetSunglasses.Name + "\n" + "Worksheet 3 : " + excelWorksheetSolutions.Name);
@@ -643,9 +650,9 @@ namespace Barcode_Application
                             excelWorksheetStocktake.Cells["D4"].Value = "Counted/Shelf Number";
 
                             worksheets.Add(excelWorksheetStocktake);
+                            worksheetsRows.Add(excelWorksheetStocktake.Dimension.End.Row);
 
                             MessageBox.Show("Stocktake will begin.");
-                            int startStockRow = 5;
                             DoStocktake(true, worksheets, null);
                         }
                         else
@@ -656,6 +663,7 @@ namespace Barcode_Application
                             excelWorksheetStocktake = excelWorkBook.Worksheets["Stocktake " + selectedDate.Day + Months[selectedDate.Month - 1] + selectedDate.Year];
 
                             worksheets.Add(excelWorksheetStocktake);
+                            worksheetsRows.Add(excelWorksheetStocktake.Dimension.End.Row);
 
                             MessageBox.Show(excelWorksheetStocktake.Name);
                             return;
@@ -675,12 +683,12 @@ namespace Barcode_Application
 
         private void DoStocktake(bool fromStocktake, List<ExcelWorksheet> worksheets, string scannedQR)
         {
-            int stockRow = 0; //worksheets[4].Cells.Last();
+            int stockRow = 5;//worksheets[4].Rows.Count() + 1;
             if (fromStocktake == true) 
             {
                 //Navigating from stocktake tabsheet
                 TabPage previousTab = tabControl.SelectedTab;
-                tabControl.SelectedTab = tbsScanQR;  
+                tabControl.SelectedTab = tbsScanQR;
             }
             else
             {
@@ -695,7 +703,10 @@ namespace Barcode_Application
                 {
                     int rowCounter = 1;
                     bool hasFoundQR = false;
-                    while (rowCounter < item.Rows.Count() || hasFoundQR == false)
+                    int totalRows = worksheetsRows[sheetCounter];
+                    MessageBox.Show("End Row: " + totalRows.ToString());
+                    return;
+                    while (rowCounter < totalRows || hasFoundQR == false)
                     {
                         string currentCell = "A" + rowCounter.ToString();
                         string nameCell = "B" + rowCounter.ToString();
@@ -713,7 +724,7 @@ namespace Barcode_Application
                             else if (sheetCounter == 3) { foundedSheets = foundedSheets + "Solutions" + ", "; }
 
                             //Found on Stocktake Sheet
-                            if(sheetCounter == 4) 
+                            else if(sheetCounter == 4) 
                             {
                                 //Increase counted quantity
                                 worksheets[4].Cells["D" + stockRow].Value = Convert.ToInt32(worksheets[4].Cells["D" + stockRow].Value) + 1;//Counted Quantity
@@ -722,6 +733,7 @@ namespace Barcode_Application
                         }
                         rowCounter++;
                     }
+                    sheetCounter++;
                 }
 
                 if(foundOnStocktake == false) 
@@ -766,11 +778,16 @@ namespace Barcode_Application
             btnGenPrint.Enabled = true;
         }
 
+        private void btnBugStockTake_Click(object sender, EventArgs e)
+        {
+            string result = "T-FRA-CUB-3127-002";
+            DoStocktake(false, worksheets, result);
+        }
+
+
+
 
         #endregion
-
-
-
 
 
     }
