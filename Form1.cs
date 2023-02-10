@@ -384,6 +384,7 @@ namespace Barcode_Application
 
             //Enable the Scan button
             btnScanScan.Enabled = true;
+            btnPrimeScanner.Enabled = false;
         }
 
         bool isBusyScanning = false;//TODO Figure out how to incorperate this
@@ -395,12 +396,14 @@ namespace Barcode_Application
                 MessageBox.Show("No cameras active. Activate camera's to continue.", "Cannot locate camera", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }*/
-           // isBusyScanning = false;
+           
             videoCaptureDevice = new VideoCaptureDevice(filterInfoCollection[cbbScanCameraList.SelectedIndex].MonikerString);
             videoCaptureDevice.NewFrame += VideoCaptureDevice_NewFrame;
             
             videoCaptureDevice.Start();
-            //isBusyScanning = true;
+
+            btnScanScan.Enabled = false;
+            btnPrimeScanner.Enabled = true;
         }
 
         private void VideoCaptureDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)

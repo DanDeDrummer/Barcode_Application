@@ -437,11 +437,12 @@ namespace Barcode_Application
             // 
             // btnScanScan
             // 
+            this.btnScanScan.Enabled = false;
             this.btnScanScan.Location = new System.Drawing.Point(19, 527);
             this.btnScanScan.Name = "btnScanScan";
             this.btnScanScan.Size = new System.Drawing.Size(345, 30);
             this.btnScanScan.TabIndex = 12;
-            this.btnScanScan.Text = "Scan";
+            this.btnScanScan.Text = "Turn On Scanning Camera";
             this.btnScanScan.UseVisualStyleBackColor = true;
             this.btnScanScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
