@@ -50,6 +50,7 @@ namespace Barcode_Application
             this.lblGenQRCodeHead = new System.Windows.Forms.Label();
             this.btnGenGenerate = new System.Windows.Forms.Button();
             this.tbsScanQR = new System.Windows.Forms.TabPage();
+            this.btnPrimeScanner = new System.Windows.Forms.Button();
             this.btnBugStockTake = new System.Windows.Forms.Button();
             this.btnScanBack = new System.Windows.Forms.Button();
             this.cbbScanCameraList = new System.Windows.Forms.ComboBox();
@@ -128,7 +129,7 @@ namespace Barcode_Application
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(393, 606);
+            this.tabControl.Size = new System.Drawing.Size(393, 625);
             this.tabControl.TabIndex = 4;
             // 
             // tbsWelcome
@@ -142,7 +143,7 @@ namespace Barcode_Application
             this.tbsWelcome.Location = new System.Drawing.Point(4, 22);
             this.tbsWelcome.Name = "tbsWelcome";
             this.tbsWelcome.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsWelcome.Size = new System.Drawing.Size(385, 580);
+            this.tbsWelcome.Size = new System.Drawing.Size(385, 599);
             this.tbsWelcome.TabIndex = 0;
             this.tbsWelcome.Text = "Welcome";
             this.tbsWelcome.UseVisualStyleBackColor = true;
@@ -228,7 +229,7 @@ namespace Barcode_Application
             this.tbsGenerateQR.Location = new System.Drawing.Point(4, 22);
             this.tbsGenerateQR.Name = "tbsGenerateQR";
             this.tbsGenerateQR.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsGenerateQR.Size = new System.Drawing.Size(385, 580);
+            this.tbsGenerateQR.Size = new System.Drawing.Size(385, 599);
             this.tbsGenerateQR.TabIndex = 1;
             this.tbsGenerateQR.Text = "Generate QR";
             this.tbsGenerateQR.UseVisualStyleBackColor = true;
@@ -335,6 +336,7 @@ namespace Barcode_Application
             // 
             // tbsScanQR
             // 
+            this.tbsScanQR.Controls.Add(this.btnPrimeScanner);
             this.tbsScanQR.Controls.Add(this.btnBugStockTake);
             this.tbsScanQR.Controls.Add(this.btnScanBack);
             this.tbsScanQR.Controls.Add(this.cbbScanCameraList);
@@ -346,14 +348,25 @@ namespace Barcode_Application
             this.tbsScanQR.Location = new System.Drawing.Point(4, 22);
             this.tbsScanQR.Name = "tbsScanQR";
             this.tbsScanQR.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsScanQR.Size = new System.Drawing.Size(385, 580);
+            this.tbsScanQR.Size = new System.Drawing.Size(385, 599);
             this.tbsScanQR.TabIndex = 2;
             this.tbsScanQR.Text = "Scan QR";
             this.tbsScanQR.UseVisualStyleBackColor = true;
+            this.tbsScanQR.Enter += new System.EventHandler(this.tbsScanQR_Enter);
+            // 
+            // btnPrimeScanner
+            // 
+            this.btnPrimeScanner.Location = new System.Drawing.Point(19, 50);
+            this.btnPrimeScanner.Name = "btnPrimeScanner";
+            this.btnPrimeScanner.Size = new System.Drawing.Size(345, 23);
+            this.btnPrimeScanner.TabIndex = 21;
+            this.btnPrimeScanner.Text = "Prime Scanner";
+            this.btnPrimeScanner.UseVisualStyleBackColor = true;
+            this.btnPrimeScanner.Click += new System.EventHandler(this.btnPrimeScanner_Click);
             // 
             // btnBugStockTake
             // 
-            this.btnBugStockTake.Location = new System.Drawing.Point(289, 397);
+            this.btnBugStockTake.Location = new System.Drawing.Point(274, 425);
             this.btnBugStockTake.Name = "btnBugStockTake";
             this.btnBugStockTake.Size = new System.Drawing.Size(75, 23);
             this.btnBugStockTake.TabIndex = 20;
@@ -363,7 +376,7 @@ namespace Barcode_Application
             // 
             // btnScanBack
             // 
-            this.btnScanBack.Location = new System.Drawing.Point(19, 539);
+            this.btnScanBack.Location = new System.Drawing.Point(19, 563);
             this.btnScanBack.Name = "btnScanBack";
             this.btnScanBack.Size = new System.Drawing.Size(345, 30);
             this.btnScanBack.TabIndex = 19;
@@ -384,7 +397,7 @@ namespace Barcode_Application
             // 
             this.lblScanProductCode.AutoSize = true;
             this.lblScanProductCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblScanProductCode.Location = new System.Drawing.Point(15, 401);
+            this.lblScanProductCode.Location = new System.Drawing.Point(15, 425);
             this.lblScanProductCode.Name = "lblScanProductCode";
             this.lblScanProductCode.Size = new System.Drawing.Size(125, 22);
             this.lblScanProductCode.TabIndex = 17;
@@ -392,7 +405,7 @@ namespace Barcode_Application
             // 
             // txtScanQRCode
             // 
-            this.txtScanQRCode.Location = new System.Drawing.Point(19, 426);
+            this.txtScanQRCode.Location = new System.Drawing.Point(19, 450);
             this.txtScanQRCode.Multiline = true;
             this.txtScanQRCode.Name = "txtScanQRCode";
             this.txtScanQRCode.ReadOnly = true;
@@ -405,7 +418,7 @@ namespace Barcode_Application
             // 
             this.picbxScanImage.BackColor = System.Drawing.Color.White;
             this.picbxScanImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.picbxScanImage.Location = new System.Drawing.Point(22, 44);
+            this.picbxScanImage.Location = new System.Drawing.Point(19, 77);
             this.picbxScanImage.Name = "picbxScanImage";
             this.picbxScanImage.Size = new System.Drawing.Size(345, 345);
             this.picbxScanImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -424,7 +437,7 @@ namespace Barcode_Application
             // 
             // btnScanScan
             // 
-            this.btnScanScan.Location = new System.Drawing.Point(19, 503);
+            this.btnScanScan.Location = new System.Drawing.Point(19, 527);
             this.btnScanScan.Name = "btnScanScan";
             this.btnScanScan.Size = new System.Drawing.Size(345, 30);
             this.btnScanScan.TabIndex = 12;
@@ -442,7 +455,7 @@ namespace Barcode_Application
             this.tbsSale.Location = new System.Drawing.Point(4, 22);
             this.tbsSale.Name = "tbsSale";
             this.tbsSale.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsSale.Size = new System.Drawing.Size(385, 580);
+            this.tbsSale.Size = new System.Drawing.Size(385, 599);
             this.tbsSale.TabIndex = 3;
             this.tbsSale.Text = "Sale";
             this.tbsSale.UseVisualStyleBackColor = true;
@@ -517,7 +530,7 @@ namespace Barcode_Application
             this.tbsAddRemoveFromDatabase.Location = new System.Drawing.Point(4, 22);
             this.tbsAddRemoveFromDatabase.Name = "tbsAddRemoveFromDatabase";
             this.tbsAddRemoveFromDatabase.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsAddRemoveFromDatabase.Size = new System.Drawing.Size(385, 580);
+            this.tbsAddRemoveFromDatabase.Size = new System.Drawing.Size(385, 599);
             this.tbsAddRemoveFromDatabase.TabIndex = 4;
             this.tbsAddRemoveFromDatabase.Text = "Add/Remove from Database";
             this.tbsAddRemoveFromDatabase.UseVisualStyleBackColor = true;
@@ -884,7 +897,7 @@ namespace Barcode_Application
             this.tbsStockTake.Location = new System.Drawing.Point(4, 22);
             this.tbsStockTake.Name = "tbsStockTake";
             this.tbsStockTake.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsStockTake.Size = new System.Drawing.Size(385, 580);
+            this.tbsStockTake.Size = new System.Drawing.Size(385, 599);
             this.tbsStockTake.TabIndex = 5;
             this.tbsStockTake.Text = "Stock Take";
             this.tbsStockTake.UseVisualStyleBackColor = true;
@@ -973,7 +986,7 @@ namespace Barcode_Application
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(416, 630);
+            this.ClientSize = new System.Drawing.Size(416, 649);
             this.Controls.Add(this.tabControl);
             this.Name = "frmBarcodeApplication";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1078,6 +1091,7 @@ namespace Barcode_Application
         private System.Windows.Forms.Button btnBugStockTake;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.CheckBox cbxSTDebugMode;
+        private System.Windows.Forms.Button btnPrimeScanner;
     }
 }
 

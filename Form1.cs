@@ -359,28 +359,33 @@ namespace Barcode_Application
 
         private void frmBarcodeApplication_Load(object sender, EventArgs e)
         {
-            filterInfoCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-
-            foreach (FilterInfo device in filterInfoCollection)
-            {
-                cbbScanCameraList.Items.Add(device.Name);
-                cbbScanCameraList.SelectedIndex = 0;
-            }
+            RefreshCameraList();
 
             //Hide Unnessisary Tabsheets
             tabControl.TabPages.Remove(tbsAddRemoveFromDatabase);
             tabControl.TabPages.Remove(tbsSale);
         }
 
+        bool isBusyScanning = false;//TODO Figure out how to incorperate this
         private void btnScan_Click(object sender, EventArgs e)
         {
+            //If there is no camera in the dropdown, ask to enable camera
+            /*if (cbbScanCameraList.Items.Count <= 0)
+            {
+                MessageBox.Show("No cameras active. Activate camera's to continue.", "Cannot locate camera", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }*/
+           // isBusyScanning = false;
             videoCaptureDevice = new VideoCaptureDevice(filterInfoCollection[cbbScanCameraList.SelectedIndex].MonikerString);
             videoCaptureDevice.NewFrame += VideoCaptureDevice_NewFrame;
+            
             videoCaptureDevice.Start();
+            //isBusyScanning = true;
         }
 
         private void VideoCaptureDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
+            if (isBusyScanning == true) { return; }
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
             BarcodeReader reader = new BarcodeReader();
             var result = reader.Decode(bitmap);
@@ -397,7 +402,48 @@ namespace Barcode_Application
 
                 }));
             }
+            picbxScanImage.Image = null;
             picbxScanImage.Image = bitmap;
+        }
+
+        
+        private void tbsScanQR_Enter(object sender, EventArgs e)
+        {
+            //If there is no camera in the dropdown, ask to enable camera
+            if (cbbScanCameraList.Items.Count <= 0)
+            {
+                MessageBox.Show("No cameras active. Activate camera's to continue." + "\n" + "Then press the " + "\"" + "Prime Camera" + "\"" + " button.", "Cannot locate camera", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            //When combobox is populated and camera variable isn't null acttivate camera
+            //TODO how to set the image of a 
+        }
+
+        private void btnPrimeScanner_Click(object sender, EventArgs e)
+        {
+            //Refresh Camera List
+            RefreshCameraList();
+
+            //Check if there are cameras in the dropdown
+            if (cbbScanCameraList.Items.Count <= 0)
+            {
+                MessageBox.Show("No cameras active. Activate camera's to continue." + "\n" + "Then press the " + "\"" + "Prime Camera" + "\"" + " button.", "Cannot locate camera", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            //Change PictureFrame Color
+            //Use "DeleteMe" code
+        }
+
+        private void RefreshCameraList()
+        {
+            filterInfoCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo device in filterInfoCollection)
+            {
+                cbbScanCameraList.Items.Add(device.Name);
+                cbbScanCameraList.SelectedIndex = 0;
+            }
         }
 
         private void frmBarcodeApplication_FormClosing(object sender, FormClosingEventArgs e)
@@ -916,6 +962,7 @@ namespace Barcode_Application
                                     //Increase counted quantity
                                     excelWorksheetStocktake.Cells["D" + rowCounter].Value = Convert.ToInt32(excelWorksheetStocktake.Cells["D" + rowCounter].Value) + 1;//Counted Quantity
                                     foundOnStocktake = true;
+                                    //TODO TOGGLE A BOOL THAT STOPS THE "i == stockTakeIndex" INNER IF STATEMENT FROM RUNNING
                                 }
                             }
                             rowCounter++;
