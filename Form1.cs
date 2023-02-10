@@ -366,6 +366,26 @@ namespace Barcode_Application
             tabControl.TabPages.Remove(tbsSale);
         }
 
+        private void btnPrimeScanner_Click(object sender, EventArgs e)
+        {
+            //Refresh Camera List
+            RefreshCameraList();
+            isBusyScanning = false;
+
+            //Check if there are cameras in the dropdown
+            if (cbbScanCameraList.Items.Count <= 0)
+            {
+                MessageBox.Show("No cameras active. Activate camera's to continue." + "\n" + "Then press the " + "\"" + "Prime Camera" + "\"" + " button.", "Cannot locate camera", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            //Change PictureFrame Color
+            //Use "DeleteMe" code
+
+            //Enable the Scan button
+            btnScanScan.Enabled = true;
+        }
+
         bool isBusyScanning = false;//TODO Figure out how to incorperate this
         private void btnScan_Click(object sender, EventArgs e)
         {
@@ -385,6 +405,7 @@ namespace Barcode_Application
 
         private void VideoCaptureDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
+            //Code that constantly checks if there is a QR Code infront of the camera
             if (isBusyScanning == true) { return; }
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
             BarcodeReader reader = new BarcodeReader();
@@ -398,8 +419,7 @@ namespace Barcode_Application
 
                     //TODO Search DB for code
                     FromStockTakeOrScanner("Scanner", result.ToString());
-
-
+                    isBusyScanning = true;
                 }));
             }
             picbxScanImage.Image = null;
@@ -418,22 +438,6 @@ namespace Barcode_Application
 
             //When combobox is populated and camera variable isn't null acttivate camera
             //TODO how to set the image of a 
-        }
-
-        private void btnPrimeScanner_Click(object sender, EventArgs e)
-        {
-            //Refresh Camera List
-            RefreshCameraList();
-
-            //Check if there are cameras in the dropdown
-            if (cbbScanCameraList.Items.Count <= 0)
-            {
-                MessageBox.Show("No cameras active. Activate camera's to continue." + "\n" + "Then press the " + "\"" + "Prime Camera" + "\"" + " button.", "Cannot locate camera", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
-            //Change PictureFrame Color
-            //Use "DeleteMe" code
         }
 
         private void RefreshCameraList()
@@ -591,73 +595,6 @@ namespace Barcode_Application
 
             //file is not locked
             return false;
-        }
-
-        private void btnSTOpenFile_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                //Select the correct excell File
-                string fileName = openFileDialog1.FileName;
-
-                int k = fileName.Length;
-                string fileExtension = "";
-
-                while (fileName[k] != '.')
-                {
-                    fileExtension = fileExtension + fileName[k];
-                }
-
-                if (fileExtension == ".xlsx")
-                {
-                    using (ExcelPackage excelPackage = new ExcelPackage(fileName))
-                    {
-                        //Set Excel Variables
-                        ExcelWorkbook excelWorkBook = excelPackage.Workbook;
-                        ExcelWorksheet excelWorksheetInventoryItemSummary = excelWorkBook.Worksheets[0];
-                        ExcelWorksheet excelWorksheetFrames = excelWorkBook.Worksheets[1];
-                        ExcelWorksheet excelWorksheetSunglasses = excelWorkBook.Worksheets[2];
-                        ExcelWorksheet excelWorksheetSolutions = excelWorkBook.Worksheets[3];
-
-                        MessageBox.Show("Worksheet 0 : " + excelWorksheetInventoryItemSummary.Name + "\n" + "Worksheet 1 : " + excelWorksheetFrames.Name
-                            + "\n" + "Worksheet 2 : " + excelWorksheetSunglasses.Name + "\n" + "Worksheet 3 : " + excelWorksheetSolutions.Name);
-
-                        if (MessageBox.Show("Is this the first stocktake this month?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes) //It is the first time this stocktake is happening
-                        {
-                            stocktakeWorksheet = excelWorkBook.Worksheets.Add("Stocktake " + DateTime.Today);
-                            stocktakeWorksheet.Cells["A1"].Value = "Stocktake " + DateTime.Today;
-                        }
-                        //else
-                        //Set last sheet as active sheet
-
-                        //Scan with phone
-                        //Search 4 sheets for itemcode
-                        //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Wrong File Type only .xlsx allowed", "FileType Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-
-
-
-
-            }
-
-            /*
-             * OpenFileDialog openfileDialog1 = new OpenFileDialog();
-  if (openfileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-  {
-    this.btnChoose2.Text = openfileDialog1.FileName;
-    String filename = DialogResult.ToString();
-
-    var excelApp = new Excel.Application();
-    excelApp.Visible = true;
-    excelApp.Workbooks.Open(btnChoose2.Text);
-            //The excel does not show without excelApp.Visible = true. 
-  }
-             */
         }
 
         ExcelWorksheet stocktakeWorksheet;
@@ -822,28 +759,6 @@ namespace Barcode_Application
         string stockOrScanRecordAddedMessage;
         private void FromStockTakeOrScanner(string location,  string localScannedQR = "")
         {
-            /*if(excelPackage == null) { MessageBox.Show("ExcelPackage is null."); }
-            if (excelPackage.Workbook == null) { MessageBox.Show("ExcelWorkbook is null."); }
-            if (excelPackage.Workbook.Worksheets["Inventory Item Summary"] == null) { MessageBox.Show("ExcelSheet is null."); }
-            if (excelPackage.Workbook.Worksheets["FRAMES"] == null) { MessageBox.Show("ExcelSheet FRAMES is null."); }
-            if (excelPackage.Workbook.Worksheets["SUN"] == null) { MessageBox.Show("ExcelSheet SUN is null."); }
-            if (excelPackage.Workbook.Worksheets["SOLUTION"] == null) { MessageBox.Show("ExcelSheet SOLUTION is null."); }
-            if (excelPackage.Workbook.Worksheets[stockOrScanStocktakeWorksheet.Name] == null) { MessageBox.Show("ExcelSheet SOLUTION is null."); }
-
-            if (excelPackage.Workbook.Worksheets["Inventory Item Summary"] != null) { MessageBox.Show("ExcelSheet SUMMARY is NOT null."); }
-            if (excelPackage.Workbook.Worksheets["FRAMES"] != null) { MessageBox.Show("ExcelSheet FRAMES is NOT null."); }
-            if (excelPackage.Workbook.Worksheets["SUN"] != null) { MessageBox.Show("ExcelSheet SUN is NOT null."); }
-            if (excelPackage.Workbook.Worksheets["SOLUTION"] != null) { MessageBox.Show("ExcelSheet SOLUTION is NOT null."); }
-            if (excelPackage.Workbook.Worksheets[stockOrScanStocktakeWorksheet.Name] != null) { MessageBox.Show("ExcelSheet STOCKTAKE is NOT null."); }
-
-            worksheets.Clear();
-            worksheets.Add(excelPackage.Workbook.Worksheets["Inventory Item Summary"]);
-            worksheets.Add(excelPackage.Workbook.Worksheets["FRAMES"]);
-            worksheets.Add(excelPackage.Workbook.Worksheets["SUN"]);
-            worksheets.Add(excelPackage.Workbook.Worksheets["SOLUTION"]);
-            worksheets.Add(excelPackage.Workbook.Worksheets[stockOrScanStocktakeWorksheet.Name]);*/
-
-
             if (location == "StockTake") 
             {
                 //Display the Scannerscreen
@@ -898,6 +813,7 @@ namespace Barcode_Application
                         {
                             rowCounter = 1;
                             currentCell = "A" + rowCounter.ToString();
+                            //Add a new Row to the stocktake sheet
                             while (rowCounter <= totalRows + 1 && isBlank == false)
                             {
                                 currentCell = "A" + rowCounter.ToString();
@@ -970,6 +886,7 @@ namespace Barcode_Application
                         sheetCounter++;
                     }
 
+                    //Populate the new Row to the stocktake sheet
                     if (foundOnStocktake == false)
                     {
                         //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
