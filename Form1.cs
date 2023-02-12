@@ -855,31 +855,32 @@ namespace Barcode_Application
                                         seperator = "/";
                                     }
 
+                                    //POSSIBLE TODO GET THE REGIONAL FORMAT SEPERATOR FOR THE CLOSINGQUANTITYCELL
                                     if (sheetCounter == 0)
                                     {
                                         foundedSheets = foundedSheets + seperator + "InventoryItemSummary";
-                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
                                         closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                         //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
                                     else if (sheetCounter == 1)
                                     {
                                         foundedSheets = foundedSheets + seperator + "Frames";
-                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
                                         closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                         //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
                                     else if (sheetCounter == 2)
                                     {
                                         foundedSheets = foundedSheets + seperator + "Sunglasses";
-                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
                                         closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                         //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
                                     else if (sheetCounter == 3)
                                     {
                                         foundedSheets = foundedSheets + seperator + "Solutions";
-                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
                                         closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                     }
 
@@ -888,7 +889,7 @@ namespace Barcode_Application
                                     {
                                         //Increase counted quantity
                                         excelWorksheetStocktake.Cells["D" + rowCounter].Value = Convert.ToInt32(excelWorksheetStocktake.Cells["D" + rowCounter].Value) + 1;//Counted Quantity
-                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
                                         closingQuantity = Convert.ToInt32(worksheets[i].Cells[closingQuantityCell].Value);//ToString() does not allow for formatting
                                         foundOnStocktake = true;
                                         MessageBox.Show("Item already on stocktake sheet. " + "\n" + "\"" + "foundOnStocktake variable is: " + "\"" + foundOnStocktake);
@@ -930,7 +931,7 @@ namespace Barcode_Application
                             //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
                             excelWorksheetStocktake.Cells["A" + stockRow].Value = localScannedQR;//itemCode
                             excelWorksheetStocktake.Cells["B" + stockRow].Value = itemName;//ItemName
-                            excelWorksheetStocktake.Cells["C" + stockRow].Style.Numberformat.Format = "# ##0,0000";//Closing Quantity Formatting
+                            excelWorksheetStocktake.Cells["C" + stockRow].Style.Numberformat.Format = "#,##0.0000";//Closing Quantity Formatting
                             string closingQuantityString = "";
                             if (closingQuantity == -1f) 
                             {
