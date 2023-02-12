@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using Demo_Library;
 using OfficeOpenXml;
 using QRCoder;
 using ZXing;
+using Microsoft.VisualBasic;
 
 namespace Barcode_Application
 {
@@ -816,7 +818,7 @@ namespace Barcode_Application
 
                         string foundedSheets = "";
                         string itemName = "";
-                        string closingQuantity = "";
+                        float closingQuantity = -1f;
                         bool foundOnStocktake = false;
 
 
@@ -842,7 +844,6 @@ namespace Barcode_Application
                                 {
                                     hasFoundQR = true;
                                     itemName = worksheets[i].Cells[nameCell].Value.ToString();
-                                    closingQuantity = worksheets[i].Cells[closingQuantityCell].Value.ToString();
                                     string seperator;
 
                                     if (foundedSheets == "")
@@ -857,18 +858,29 @@ namespace Barcode_Application
                                     if (sheetCounter == 0)
                                     {
                                         foundedSheets = foundedSheets + seperator + "InventoryItemSummary";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
+                                        //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
                                     else if (sheetCounter == 1)
                                     {
                                         foundedSheets = foundedSheets + seperator + "Frames";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
+                                        //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
                                     else if (sheetCounter == 2)
                                     {
                                         foundedSheets = foundedSheets + seperator + "Sunglasses";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
+                                        //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
                                     else if (sheetCounter == 3)
                                     {
                                         foundedSheets = foundedSheets + seperator + "Solutions";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                     }
 
                                     //Found on Stocktake Sheet
@@ -876,6 +888,8 @@ namespace Barcode_Application
                                     {
                                         //Increase counted quantity
                                         excelWorksheetStocktake.Cells["D" + rowCounter].Value = Convert.ToInt32(excelWorksheetStocktake.Cells["D" + rowCounter].Value) + 1;//Counted Quantity
+                                        worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "# ##0,0000";
+                                        closingQuantity = Convert.ToInt32(worksheets[i].Cells[closingQuantityCell].Value);//ToString() does not allow for formatting
                                         foundOnStocktake = true;
                                         MessageBox.Show("Item already on stocktake sheet. " + "\n" + "\"" + "foundOnStocktake variable is: " + "\"" + foundOnStocktake);
                                         //TODO TOGGLE A BOOL THAT STOPS THE "i == stockTakeIndex" INNER IF STATEMENT FROM RUNNING
@@ -916,9 +930,19 @@ namespace Barcode_Application
                             //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
                             excelWorksheetStocktake.Cells["A" + stockRow].Value = localScannedQR;//itemCode
                             excelWorksheetStocktake.Cells["B" + stockRow].Value = itemName;//ItemName
-                            excelWorksheetStocktake.Cells["C" + stockRow].Value = closingQuantity;
+                            excelWorksheetStocktake.Cells["C" + stockRow].Style.Numberformat.Format = "# ##0,0000";//Closing Quantity Formatting
+                            string closingQuantityString = "";
+                            if (closingQuantity == -1f) 
+                            {
+                                closingQuantityString = Interaction.InputBox("Enter the closing quantity for " + itemName, "Closing Quantity", "0");
+                                closingQuantity = float.Parse(closingQuantityString, CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
+                            }
+                            else 
+                            {
+                                excelWorksheetStocktake.Cells["C" + stockRow].Value = closingQuantity;//Closing Quantity
+                            }
                             excelWorksheetStocktake.Cells["D" + stockRow].Value = Convert.ToInt32(worksheets[4].Cells["D" + stockRow].Value) + 1;//Counted Quantity
-                            //excelWorksheetStocktake.Cells["E" + stockRow].Value = worksheets[4].Cells["E" + stockRow].Value /*+ InputBox "What rack was this found*/;//Rack/Shelf
+                            //excelWorksheetStocktake.Cells["E" + stockRow].Value = worksheets[4].Cells["E" + stockRow].Value /*+ Interaction.InputBox("On what rack number was " + itemName + " found?" , "Rack Number", "1");//Rack/Shelf
                             excelWorksheetStocktake.Cells["E" + stockRow].Value = foundedSheets;//Found on other sheet
                         }
                         excelPackage.Save();
