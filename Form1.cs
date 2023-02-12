@@ -310,6 +310,12 @@ namespace Barcode_Application
         {
             tabControl.SelectedIndex = 0;
         }
+
+        private void btnWelClose_Click(object sender, EventArgs e)
+        {
+            TerminateApplication();
+        }
+
         #endregion
 
         #region Generate QR Code
@@ -409,7 +415,7 @@ namespace Barcode_Application
         private void VideoCaptureDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
             //Code that constantly checks if there is a QR Code infront of the camera
-            if (isBusyScanning == true) { return; }
+            if (isBusyScanning == true) { /*MessageBox.Show("Scanning busy NewFrame");*/ return; }
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
             BarcodeReader reader = new BarcodeReader();
             var result = reader.Decode(bitmap);
@@ -803,19 +809,22 @@ namespace Barcode_Application
                     if (MessageBox.Show("Is the code you are scanning " + "\"" + txtScanQRCode.Text +"\"" + "?", "Itemcode Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes) 
                     {
                         int sheetCounter = 0;
+                        bool isBlank = false;
+                        int rowCounter;
+                        int totalRows = worksheetsRows[sheetCounter];
+                        string currentCell = "";
+
                         string foundedSheets = "";
                         string itemName = "";
                         string closingQuantity = "";
                         bool foundOnStocktake = false;
 
+
                         //Search 4 sheets for itemcode
                         for (int i = 0; i < worksheets.Count; i++)
                         {
-                            int rowCounter;
                             bool hasFoundQR = false;
-                            bool isBlank = false;
-                            int totalRows = worksheetsRows[sheetCounter];
-                            string currentCell = "";
+                            currentCell = "";
 
                             rowCounter = 1;
                             while (rowCounter < totalRows && hasFoundQR == false)
@@ -868,6 +877,7 @@ namespace Barcode_Application
                                         //Increase counted quantity
                                         excelWorksheetStocktake.Cells["D" + rowCounter].Value = Convert.ToInt32(excelWorksheetStocktake.Cells["D" + rowCounter].Value) + 1;//Counted Quantity
                                         foundOnStocktake = true;
+                                        MessageBox.Show("Item already on stocktake sheet. " + "\n" + "\"" + "foundOnStocktake variable is: " + "\"" + foundOnStocktake);
                                         //TODO TOGGLE A BOOL THAT STOPS THE "i == stockTakeIndex" INNER IF STATEMENT FROM RUNNING
                                     }
                                 }
@@ -877,20 +887,7 @@ namespace Barcode_Application
                             //MessageBox.Show("Found on " + worksheets[i] + ":" + foundOnStocktake);
                             if (i == stocktakeIndex && foundOnStocktake == false)
                             {
-                                rowCounter = 1;
-                                currentCell = "A" + rowCounter.ToString();
-                                //Add a new Row to the stocktake sheet
-                                while (rowCounter <= totalRows + 1 && isBlank == false)
-                                {
-                                    currentCell = "A" + rowCounter.ToString();
-                                    if (excelWorksheetStocktake.Cells[currentCell].Value == null && rowCounter > 4)
-                                    {
-                                        isBlank = true;
-                                        stockRow = rowCounter;
-                                        MessageBox.Show("Found blank Row at: " + stockRow);
-                                    }
-                                    rowCounter++;
-                                }
+                                
                             }
 
                             sheetCounter++;
@@ -899,6 +896,23 @@ namespace Barcode_Application
                         //Populate the new Row to the stocktake sheet
                         if (foundOnStocktake == false)
                         {
+                            //Search for Blank Row
+                            rowCounter = 1;
+                            currentCell = "A" + rowCounter.ToString();
+                            //Add a new Row to the stocktake sheet
+                            while (rowCounter <= totalRows + 1 && isBlank == false)
+                            {
+                                if (rowCounter <= totalRows/*== 5*/) { MessageBox.Show("Enter Rowcounter: " + rowCounter); }
+                                currentCell = "A" + rowCounter.ToString();
+                                if (excelWorksheetStocktake.Cells[currentCell].Value == null && rowCounter > 4) //TODO revisit rowCounter > 4 parameter
+                                {
+                                    isBlank = true;
+                                    stockRow = rowCounter;
+                                    MessageBox.Show("Found blank Row at: " + stockRow);
+                                }
+                                rowCounter++;
+                            }
+
                             //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
                             excelWorksheetStocktake.Cells["A" + stockRow].Value = localScannedQR;//itemCode
                             excelWorksheetStocktake.Cells["B" + stockRow].Value = itemName;//ItemName
@@ -921,6 +935,11 @@ namespace Barcode_Application
                 }
 
             }
+        }
+
+        private void TerminateApplication()
+        {
+            Application.Exit();
         }
 
         #endregion

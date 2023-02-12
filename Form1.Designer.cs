@@ -104,6 +104,7 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.btnWelClose = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -134,6 +135,7 @@ namespace Barcode_Application
             // 
             // tbsWelcome
             // 
+            this.tbsWelcome.Controls.Add(this.btnWelClose);
             this.tbsWelcome.Controls.Add(this.btnWelStocktake);
             this.tbsWelcome.Controls.Add(this.btnWelAddRemoveDB);
             this.tbsWelcome.Controls.Add(this.btnWelSale);
@@ -161,7 +163,7 @@ namespace Barcode_Application
             // btnWelAddRemoveDB
             // 
             this.btnWelAddRemoveDB.Enabled = false;
-            this.btnWelAddRemoveDB.Location = new System.Drawing.Point(22, 224);
+            this.btnWelAddRemoveDB.Location = new System.Drawing.Point(22, 284);
             this.btnWelAddRemoveDB.Name = "btnWelAddRemoveDB";
             this.btnWelAddRemoveDB.Size = new System.Drawing.Size(345, 30);
             this.btnWelAddRemoveDB.TabIndex = 15;
@@ -173,7 +175,7 @@ namespace Barcode_Application
             // btnWelSale
             // 
             this.btnWelSale.Enabled = false;
-            this.btnWelSale.Location = new System.Drawing.Point(22, 284);
+            this.btnWelSale.Location = new System.Drawing.Point(22, 344);
             this.btnWelSale.Name = "btnWelSale";
             this.btnWelSale.Size = new System.Drawing.Size(345, 30);
             this.btnWelSale.TabIndex = 14;
@@ -983,6 +985,16 @@ namespace Barcode_Application
             // 
             this.prntDlg.UseEXDialog = true;
             // 
+            // btnWelClose
+            // 
+            this.btnWelClose.Location = new System.Drawing.Point(20, 224);
+            this.btnWelClose.Name = "btnWelClose";
+            this.btnWelClose.Size = new System.Drawing.Size(345, 30);
+            this.btnWelClose.TabIndex = 17;
+            this.btnWelClose.Text = "Close";
+            this.btnWelClose.UseVisualStyleBackColor = true;
+            this.btnWelClose.Click += new System.EventHandler(this.btnWelClose_Click);
+            // 
             // frmBarcodeApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1093,6 +1105,7 @@ namespace Barcode_Application
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.CheckBox cbxSTDebugMode;
         private System.Windows.Forms.Button btnPrimeScanner;
+        private System.Windows.Forms.Button btnWelClose;
     }
 }
 
