@@ -627,7 +627,9 @@ namespace Barcode_Application
             StockTake(stockWBName, "Added to Continued Sheet!");
         }
 
-        
+
+        /*TODO add cell formatting for header on line before adding text.*/
+
         private void StockTake(string stockTakeWorkbookName, string recordAddedMessage)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -706,23 +708,50 @@ namespace Barcode_Application
                                 }
                             }
 
+                            excelWorksheetStocktake.Cells["A1"].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["A1"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["A1"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["A1"].Value = "Stocktake " + DateTime.Today;
+                            
+                            excelWorksheetStocktake.Cells["A2"].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["A2"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["A2"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["A2"].Value = excelWorksheetFrames.Cells["A2"].Value;
+    
+                            excelWorksheetStocktake.Cells["A3"].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["A3"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["A3"].Style.Font.Bold = true;
                             string periodStart = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
                             string periodEnd = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
                             excelWorksheetStocktake.Cells["A3"].Value = "For the period " + periodStart + " to " + periodEnd;
+                            
+                            excelWorksheetStocktake.Cells["A4"].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["A4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["A4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["A4"].Value = excelWorksheetFrames.Cells["A4"].Value;
+
+                            excelWorksheetStocktake.Cells["B4"].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["B4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["B4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["B4"].Value = excelWorksheetFrames.Cells["B4"].Value;
+
+                            excelWorksheetStocktake.Cells["C4"].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["C4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["C4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["C4"].Value = excelWorksheetFrames.Cells["C4"].Value;
+
+                            excelWorksheetStocktake.Cells["D4"].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["D4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["D4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["D4"].Value = "Counted/Shelf Number";
+
+                            excelWorksheetStocktake.Cells["E4"].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["E4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["E4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["E4"].Value = "Found on Sheet:";
 
-                            excelWorksheetStocktake.Cells["A1:A4"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["A1:A4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A1:A4"].Style.Font.Size = 10;
-                            excelWorksheetStocktake.Cells["B4:E4"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["B4:E4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["B4:E4"].Style.Font.Size = 10;
+
+
 
                             /*if (File being used) 
                             {
