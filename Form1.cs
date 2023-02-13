@@ -313,8 +313,6 @@ namespace Barcode_Application
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            /*TODO make all the columns in the spreadsheet as wide as the longest item.
-            or keep it as is if the current length is greater*/
             tabControl.SelectedIndex = 0;
         }
 
@@ -714,6 +712,13 @@ namespace Barcode_Application
                                     return;
                                 }
                             }
+
+                            //Set Column Widths
+                            excelWorksheetStocktake.Column(1).Width = 46;//Column A
+                            excelWorksheetStocktake.Column(2).Width = 36;//Column B
+                            excelWorksheetStocktake.Column(3).Width = 16;//Column C
+                            excelWorksheetStocktake.Column(4).Width = 21;//Column D
+                            excelWorksheetStocktake.Column(5).Width = 45;//Column E
 
                             excelWorksheetStocktake.Cells["A1"].StyleName = "Arial";
                             excelWorksheetStocktake.Cells["A1"].Style.Font.Size = headerFontSize;
