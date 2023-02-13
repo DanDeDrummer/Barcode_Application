@@ -153,6 +153,9 @@ namespace Barcode_Application
             InitializeComponent();
 
             //LoadInventoryItemsList();
+            string TODOListString = "btnBack_Click: make all the columns in the spreadsheet as wide as the longest item or keep it as is if the current length is greater." + "\n" 
+                + "StockTake(): Remove line counter variable." + "\n" + "Next TODO" + "\n";
+            MessageBox.Show(TODOListString, "TODO LIST", MessageBoxButtons.OK);
         }
 
 
@@ -310,6 +313,8 @@ namespace Barcode_Application
 
         private void btnBack_Click(object sender, EventArgs e)
         {
+            /*TODO make all the columns in the spreadsheet as wide as the longest item.
+            or keep it as is if the current length is greater*/
             tabControl.SelectedIndex = 0;
         }
 
@@ -629,6 +634,8 @@ namespace Barcode_Application
 
 
         /*TODO add cell formatting for header on line before adding text.*/
+        int headerFontSize = 11;
+        int contentFontSize = 10;
 
         private void StockTake(string stockTakeWorkbookName, string recordAddedMessage)
         {
@@ -709,44 +716,44 @@ namespace Barcode_Application
                             }
 
                             excelWorksheetStocktake.Cells["A1"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A1"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["A1"].Style.Font.Size = headerFontSize;
                             excelWorksheetStocktake.Cells["A1"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["A1"].Value = "Stocktake " + DateTime.Today;
                             
                             excelWorksheetStocktake.Cells["A2"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A2"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["A2"].Style.Font.Size = headerFontSize;
                             excelWorksheetStocktake.Cells["A2"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["A2"].Value = excelWorksheetFrames.Cells["A2"].Value;
     
                             excelWorksheetStocktake.Cells["A3"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A3"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["A3"].Style.Font.Size = headerFontSize;
                             excelWorksheetStocktake.Cells["A3"].Style.Font.Bold = true;
                             string periodStart = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
                             string periodEnd = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
                             excelWorksheetStocktake.Cells["A3"].Value = "For the period " + periodStart + " to " + periodEnd;
                             
                             excelWorksheetStocktake.Cells["A4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["A4"].Style.Font.Size = headerFontSize;
                             excelWorksheetStocktake.Cells["A4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["A4"].Value = excelWorksheetFrames.Cells["A4"].Value;
 
                             excelWorksheetStocktake.Cells["B4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["B4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["B4"].Style.Font.Size = headerFontSize;
                             excelWorksheetStocktake.Cells["B4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["B4"].Value = excelWorksheetFrames.Cells["B4"].Value;
 
                             excelWorksheetStocktake.Cells["C4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["C4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["C4"].Style.Font.Size = headerFontSize;
                             excelWorksheetStocktake.Cells["C4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["C4"].Value = excelWorksheetFrames.Cells["C4"].Value;
 
                             excelWorksheetStocktake.Cells["D4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["D4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["D4"].Style.Font.Size = headerFontSize;
                             excelWorksheetStocktake.Cells["D4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["D4"].Value = "Counted/Shelf Number";
 
                             excelWorksheetStocktake.Cells["E4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["E4"].Style.Font.Size = 10;
+                            excelWorksheetStocktake.Cells["E4"].Style.Font.Size = headerFontSize;
                             excelWorksheetStocktake.Cells["E4"].Style.Font.Bold = true;
                             excelWorksheetStocktake.Cells["E4"].Value = "Found on Sheet:";
 
@@ -889,6 +896,8 @@ namespace Barcode_Application
                                     {
                                         foundedSheets = foundedSheets + seperator + "InventoryItemSummary";
                                         worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
+                                        worksheets[i].Cells[closingQuantityCell].StyleName = "Arial";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Font.Size = contentFontSize;
                                         closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                         //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
@@ -896,6 +905,8 @@ namespace Barcode_Application
                                     {
                                         foundedSheets = foundedSheets + seperator + "Frames";
                                         worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
+                                        worksheets[i].Cells[closingQuantityCell].StyleName = "Arial";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Font.Size = contentFontSize;
                                         closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                         //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
@@ -903,6 +914,8 @@ namespace Barcode_Application
                                     {
                                         foundedSheets = foundedSheets + seperator + "Sunglasses";
                                         worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
+                                        worksheets[i].Cells[closingQuantityCell].StyleName = "Arial";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Font.Size = contentFontSize;
                                         closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                         //closingQuantity = worksheets[i].Cells[closingQuantityCell].Value;//ToString() does not allow for formatting
                                     }
@@ -910,6 +923,8 @@ namespace Barcode_Application
                                     {
                                         foundedSheets = foundedSheets + seperator + "Solutions";
                                         worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
+                                        worksheets[i].Cells[closingQuantityCell].StyleName = "Arial";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Font.Size = contentFontSize;
                                         closingQuantity = float.Parse(worksheets[i].Cells[closingQuantityCell].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);//ToString() does not allow for formatting
                                     }
 
@@ -919,6 +934,8 @@ namespace Barcode_Application
                                         //Increase counted quantity
                                         excelWorksheetStocktake.Cells["D" + rowCounter].Value = Convert.ToInt32(excelWorksheetStocktake.Cells["D" + rowCounter].Value) + 1;//Counted Quantity
                                         worksheets[i].Cells[closingQuantityCell].Style.Numberformat.Format = "#,##0.0000";
+                                        worksheets[i].Cells[closingQuantityCell].StyleName = "Arial";
+                                        worksheets[i].Cells[closingQuantityCell].Style.Font.Size = contentFontSize;
                                         closingQuantity = Convert.ToInt32(worksheets[i].Cells[closingQuantityCell].Value);//ToString() does not allow for formatting
                                         foundOnStocktake = true;
                                         MessageBox.Show("Item already on stocktake sheet. " + "\n" + "\"" + "foundOnStocktake variable is: " + "\"" + foundOnStocktake);
@@ -958,8 +975,14 @@ namespace Barcode_Application
                             }
 
                             //add all details to stocktake worksheet and a tab that says what rack, if it was fiund on another sheet.
+                            excelWorksheetStocktake.Cells["A" + stockRow].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["A" + stockRow].Style.Font.Size = contentFontSize;
                             excelWorksheetStocktake.Cells["A" + stockRow].Value = localScannedQR;//itemCode
+
+                            excelWorksheetStocktake.Cells["B" + stockRow].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["B" + stockRow].Style.Font.Size = contentFontSize;
                             excelWorksheetStocktake.Cells["B" + stockRow].Value = itemName;//ItemName
+
                             excelWorksheetStocktake.Cells["C" + stockRow].Style.Numberformat.Format = "#,##0.0000";//Closing Quantity Formatting
                             string closingQuantityString = "";
                             if (closingQuantity == -1f) 
@@ -969,10 +992,18 @@ namespace Barcode_Application
                             }
                             else 
                             {
+                                excelWorksheetStocktake.Cells["C" + stockRow].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["C" + stockRow].Style.Font.Size = contentFontSize;
                                 excelWorksheetStocktake.Cells["C" + stockRow].Value = closingQuantity;//Closing Quantity
                             }
+
+                            excelWorksheetStocktake.Cells["D" + stockRow].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["D" + stockRow].Style.Font.Size = contentFontSize;
                             excelWorksheetStocktake.Cells["D" + stockRow].Value = Convert.ToInt32(worksheets[4].Cells["D" + stockRow].Value) + 1;//Counted Quantity
+
                             //excelWorksheetStocktake.Cells["E" + stockRow].Value = worksheets[4].Cells["E" + stockRow].Value /*+ Interaction.InputBox("On what rack number was " + itemName + " found?" , "Rack Number", "1");//Rack/Shelf
+                            excelWorksheetStocktake.Cells["E" + stockRow].StyleName = "Arial";
+                            excelWorksheetStocktake.Cells["E" + stockRow].Style.Font.Size = contentFontSize;
                             excelWorksheetStocktake.Cells["E" + stockRow].Value = foundedSheets;//Found on other sheet
                         }
                         excelPackage.Save();
