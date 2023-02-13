@@ -153,8 +153,7 @@ namespace Barcode_Application
             InitializeComponent();
 
             //LoadInventoryItemsList();
-            string TODOListString = "btnBack_Click: make all the columns in the spreadsheet as wide as the longest item or keep it as is if the current length is greater." + "\n" 
-                + "StockTake(): Remove line counter variable." + "\n" + "Next TODO" + "\n";
+            string TODOListString = "Next TODO" + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n";
             MessageBox.Show(TODOListString, "TODO LIST", MessageBoxButtons.OK);
         }
 
@@ -968,7 +967,6 @@ namespace Barcode_Application
                             //Add a new Row to the stocktake sheet
                             while (rowCounter <= totalRows + 1 && isBlank == false)
                             {
-                                if (rowCounter <= totalRows/*== 5*/) { MessageBox.Show("Enter Rowcounter: " + rowCounter); }
                                 currentCell = "A" + rowCounter.ToString();
                                 if (excelWorksheetStocktake.Cells[currentCell].Value == null && rowCounter > 4) //TODO revisit rowCounter > 4 parameter
                                 {
@@ -988,7 +986,7 @@ namespace Barcode_Application
                             excelWorksheetStocktake.Cells["B" + stockRow].Style.Font.Size = contentFontSize;
                             excelWorksheetStocktake.Cells["B" + stockRow].Value = itemName;//ItemName
 
-                            excelWorksheetStocktake.Cells["C" + stockRow].Style.Numberformat.Format = "#,##0.0000";//Closing Quantity Formatting
+                            excelWorksheetStocktake.Cells["C" + stockRow].Style.Numberformat.Format = "#.####0,0000";//Closing Quantity Formatting
                             string closingQuantityString = "";
                             if (closingQuantity == -1f) 
                             {
