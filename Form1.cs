@@ -641,8 +641,6 @@ namespace Barcode_Application
                 //Select the correct excell File
                 fileName = openFileDialog1.FileName;
 
-                //CHECK IF THE FILE IS OPEN IF IT IS, CLOSE IT
-
                 int k = fileName.Length - 1;
                 string fileExtension = "";
 
@@ -772,7 +770,18 @@ namespace Barcode_Application
                             {
                                 excelPackage.Save();
                             }*/
-                            excelPackage.Save();
+                            //CHECK IF THE FILE IS OPEN IF IT IS, CLOSE IT
+                            try
+                            {
+                                excelPackage.Save();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message + "\n" + "File me be open or in use by another program.", "File Saving Error");
+                                return;
+                            }
+
+                            
 
                             worksheets.Add(excelWorksheetStocktake);
                             worksheetsRows.Add(excelWorksheetStocktake.Dimension.End.Row);
