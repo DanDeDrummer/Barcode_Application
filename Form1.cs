@@ -154,7 +154,7 @@ namespace Barcode_Application
             InitializeComponent();
 
             //LoadInventoryItemsList();
-            string TODOListString = "Next TODO" + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n";
+            string TODOListString = "Code Continue Stock take button." + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n";
             MessageBox.Show(TODOListString, "TODO LIST", MessageBoxButtons.OK);
         }
 
@@ -1156,7 +1156,17 @@ namespace Barcode_Application
                             excelWorksheetStocktake.Cells["E" + stockRow].Style.Font.Size = contentFontSize;
                             excelWorksheetStocktake.Cells["E" + stockRow].Value = foundedSheets;//Found on other sheet
                         }
-                        excelPackage.Save();
+
+                        //CHECK IF THE FILE IS OPEN IF IT IS, CLOSE IT
+                        try
+                        {
+                            excelPackage.Save();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message + "\n" + "File me be open or in use by another program.", "File Saving Error");
+                            return;
+                        }
                         MessageBox.Show(stockOrScanRecordAddedMessage);
                     }
                     else 
