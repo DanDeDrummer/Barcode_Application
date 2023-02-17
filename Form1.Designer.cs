@@ -40,6 +40,7 @@ namespace Barcode_Application
             this.lblWelHead = new System.Windows.Forms.Label();
             this.btnWelGenerate = new System.Windows.Forms.Button();
             this.tbsGenerateQR = new System.Windows.Forms.TabPage();
+            this.progBarGenSaveQR = new System.Windows.Forms.ProgressBar();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button1 = new System.Windows.Forms.Button();
             this.lblGenQRCodeOut = new System.Windows.Forms.Label();
@@ -105,7 +106,6 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.progBarGenSaveQR = new System.Windows.Forms.ProgressBar();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -247,6 +247,14 @@ namespace Barcode_Application
             this.tbsGenerateQR.TabIndex = 1;
             this.tbsGenerateQR.Text = "Generate QR";
             this.tbsGenerateQR.UseVisualStyleBackColor = true;
+            // 
+            // progBarGenSaveQR
+            // 
+            this.progBarGenSaveQR.Location = new System.Drawing.Point(192, 397);
+            this.progBarGenSaveQR.Name = "progBarGenSaveQR";
+            this.progBarGenSaveQR.Size = new System.Drawing.Size(172, 23);
+            this.progBarGenSaveQR.TabIndex = 18;
+            this.progBarGenSaveQR.Visible = false;
             // 
             // numericUpDown1
             // 
@@ -994,14 +1002,6 @@ namespace Barcode_Application
             // prntDlg
             // 
             this.prntDlg.UseEXDialog = true;
-            // 
-            // progBarGenSaveQR
-            // 
-            this.progBarGenSaveQR.Location = new System.Drawing.Point(192, 397);
-            this.progBarGenSaveQR.Name = "progBarGenSaveQR";
-            this.progBarGenSaveQR.Size = new System.Drawing.Size(172, 23);
-            this.progBarGenSaveQR.TabIndex = 18;
-            this.progBarGenSaveQR.Visible = false;
             // 
             // frmBarcodeApplication
             // 

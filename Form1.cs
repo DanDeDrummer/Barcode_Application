@@ -754,17 +754,17 @@ namespace Barcode_Application
         //string scannedQR = "T-FRA-AHI-1431-07A";
         bool fromStocktake = false;
         string stockWBName, fileName;
-        int stocktakeIndex, stockRow;
+        int stocktakeSheetIndex, stockRow;
         private void btnSTNewStocktake_Click(object sender, EventArgs e)
         {
             stockWBName = "Stocktake " + DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
-            StockTake(stockWBName, "Added to Sheet!");
+            StockTake(stockWBName, "Added to Sheet!", 0);
         }
 
         private void btnSTContinue_Click(object sender, EventArgs e)
         {
             stockWBName = "Stocktake " + dtpSTPreviousStocktake.Value.Day + " " + Months[dtpSTPreviousStocktake.Value.Month - 1] + " " + dtpSTPreviousStocktake.Value.Year;
-            StockTake(stockWBName, "Added to Continued Sheet!");
+            StockTake(stockWBName, "Added to Continued Sheet!" , 1);
         }
 
 
@@ -772,7 +772,7 @@ namespace Barcode_Application
         int headerFontSize = 11;
         int contentFontSize = 10;
 
-        private void StockTake(string stockTakeWorkbookName, string recordAddedMessage)
+        private void StockTake(string stockTakeWorkbookName, string recordAddedMessage, int newContinue)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -823,123 +823,206 @@ namespace Barcode_Application
                         /*MessageBox.Show("Worksheet 0 : " + excelWorksheetInventoryItemSummary.Name + "\n" + "Worksheet 1 : " + excelWorksheetFrames.Name
                             + "\n" + "Worksheet 2 : " + excelWorksheetSunglasses.Name + "\n" + "Worksheet 3 : " + excelWorksheetSolutions.Name);*/
 
-                        if (MessageBox.Show("Is this the first stocktake this month?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes) //It is the first time this stocktake is happening
+                        #region New Stocktake
+                        if (newContinue == 0)
                         {
-                            //If the sheet doesn't exist then add it.
-                            if (excelWorksheetStocktake == null)
+                            if (MessageBox.Show("Is this the first stocktake this month?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes) //It is the first time this stocktake is happening
                             {
-                                excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
-                                stocktakeIndex = excelWorkBook.Worksheets.Count() - 1;
-                            }
-                            else
-                            {
-                                if (cbxSTDebugMode.Checked)
+                                //If the sheet doesn't exist then add it.
+                                if (excelWorksheetStocktake == null)
                                 {
-                                    //Remove the sheet
-                                    excelWorkBook.Worksheets.Delete(stockTakeWorkbookName);
-                                    MessageBox.Show("Sheet Deleted!");
                                     excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
-                                    stocktakeIndex = excelWorkBook.Worksheets.Count() - 1;
+                                    stocktakeSheetIndex = excelWorkBook.Worksheets.Count() - 1;
                                 }
                                 else
                                 {
-                                    MessageBox.Show("A Stocktake sheet for that date already exists." + "\n" + "Use the " + "\"" + btnSTContinue.Text + "\"" + " button instead.");
+                                    if (cbxSTDebugMode.Checked)
+                                    {
+                                        //Remove the sheet
+                                        excelWorkBook.Worksheets.Delete(stockTakeWorkbookName);
+                                        MessageBox.Show("Sheet Deleted!");
+                                        excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
+                                        stocktakeSheetIndex = excelWorkBook.Worksheets.Count() - 1;
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("A Stocktake sheet for that date already exists." + "\n" + "Use the " + "\"" + btnSTContinue.Text + "\"" + " button instead.");
+                                        return;
+                                    }
+                                }
+
+                                //Set Column Widths
+                                excelWorksheetStocktake.Column(1).Width = 46;//Column A
+                                excelWorksheetStocktake.Column(2).Width = 36;//Column B
+                                excelWorksheetStocktake.Column(3).Width = 16;//Column C
+                                excelWorksheetStocktake.Column(4).Width = 21;//Column D
+                                excelWorksheetStocktake.Column(5).Width = 45;//Column E
+
+                                excelWorksheetStocktake.Cells["A1"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["A1"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["A1"].Style.Font.Bold = true;
+                                excelWorksheetStocktake.Cells["A1"].Value = "Stocktake " + DateTime.Today;
+
+                                excelWorksheetStocktake.Cells["A2"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["A2"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["A2"].Style.Font.Bold = true;
+                                excelWorksheetStocktake.Cells["A2"].Value = excelWorksheetFrames.Cells["A2"].Value;
+
+                                excelWorksheetStocktake.Cells["A3"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["A3"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["A3"].Style.Font.Bold = true;
+                                string periodStart = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
+                                string periodEnd = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
+                                excelWorksheetStocktake.Cells["A3"].Value = "For the period " + periodStart + " to " + periodEnd;
+
+                                excelWorksheetStocktake.Cells["A4"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["A4"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["A4"].Style.Font.Bold = true;
+                                excelWorksheetStocktake.Cells["A4"].Value = excelWorksheetFrames.Cells["A4"].Value;
+
+                                excelWorksheetStocktake.Cells["B4"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["B4"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["B4"].Style.Font.Bold = true;
+                                excelWorksheetStocktake.Cells["B4"].Value = excelWorksheetFrames.Cells["B4"].Value;
+
+                                excelWorksheetStocktake.Cells["C4"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["C4"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["C4"].Style.Font.Bold = true;
+                                excelWorksheetStocktake.Cells["C4"].Value = excelWorksheetFrames.Cells["C4"].Value;
+
+                                excelWorksheetStocktake.Cells["D4"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["D4"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["D4"].Style.Font.Bold = true;
+                                excelWorksheetStocktake.Cells["D4"].Value = "Counted/Shelf Number";
+
+                                excelWorksheetStocktake.Cells["E4"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["E4"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["E4"].Style.Font.Bold = true;
+                                excelWorksheetStocktake.Cells["E4"].Value = "Found on Sheet:";
+
+
+
+
+                                /*if (File being used) 
+                                {
+                                    MessageBox.Show("File being used by another program, close the file to continue.");
+                                }
+                                else 
+                                {
+                                    excelPackage.Save();
+                                }*/
+                                //CHECK IF THE FILE IS OPEN IF IT IS, CLOSE IT
+                                try
+                                {
+                                    excelPackage.Save();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message + "\n" + "File may be open or in use by another program.", "File Saving Error");
                                     return;
                                 }
+
+
+
+                                worksheets.Add(excelWorksheetStocktake);
+                                worksheetsRows.Add(excelWorksheetStocktake.Dimension.End.Row);
+
+                                MessageBox.Show("Stocktake will begin.");
+                                /*MessageBox.Show("Returning...");
+                                return;*/
+                                //DoStocktake(true, worksheets, null);
+                                fromStocktake = false;
+
+
+                                int stockRow = 5;//worksheets[4].Rows.Count() + 1;
+                                stockOrScanStocktakeWorksheet = excelWorksheetStocktake;
+                                stockOrScanRecordAddedMessage = recordAddedMessage;
+                                FromStockTakeOrScanner("StockTake");
                             }
-
-                            //Set Column Widths
-                            excelWorksheetStocktake.Column(1).Width = 46;//Column A
-                            excelWorksheetStocktake.Column(2).Width = 36;//Column B
-                            excelWorksheetStocktake.Column(3).Width = 16;//Column C
-                            excelWorksheetStocktake.Column(4).Width = 21;//Column D
-                            excelWorksheetStocktake.Column(5).Width = 45;//Column E
-
-                            excelWorksheetStocktake.Cells["A1"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A1"].Style.Font.Size = headerFontSize;
-                            excelWorksheetStocktake.Cells["A1"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["A1"].Value = "Stocktake " + DateTime.Today;
-                            
-                            excelWorksheetStocktake.Cells["A2"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A2"].Style.Font.Size = headerFontSize;
-                            excelWorksheetStocktake.Cells["A2"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["A2"].Value = excelWorksheetFrames.Cells["A2"].Value;
-    
-                            excelWorksheetStocktake.Cells["A3"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A3"].Style.Font.Size = headerFontSize;
-                            excelWorksheetStocktake.Cells["A3"].Style.Font.Bold = true;
-                            string periodStart = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
-                            string periodEnd = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
-                            excelWorksheetStocktake.Cells["A3"].Value = "For the period " + periodStart + " to " + periodEnd;
-                            
-                            excelWorksheetStocktake.Cells["A4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["A4"].Style.Font.Size = headerFontSize;
-                            excelWorksheetStocktake.Cells["A4"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["A4"].Value = excelWorksheetFrames.Cells["A4"].Value;
-
-                            excelWorksheetStocktake.Cells["B4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["B4"].Style.Font.Size = headerFontSize;
-                            excelWorksheetStocktake.Cells["B4"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["B4"].Value = excelWorksheetFrames.Cells["B4"].Value;
-
-                            excelWorksheetStocktake.Cells["C4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["C4"].Style.Font.Size = headerFontSize;
-                            excelWorksheetStocktake.Cells["C4"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["C4"].Value = excelWorksheetFrames.Cells["C4"].Value;
-
-                            excelWorksheetStocktake.Cells["D4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["D4"].Style.Font.Size = headerFontSize;
-                            excelWorksheetStocktake.Cells["D4"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["D4"].Value = "Counted/Shelf Number";
-
-                            excelWorksheetStocktake.Cells["E4"].StyleName = "Arial";
-                            excelWorksheetStocktake.Cells["E4"].Style.Font.Size = headerFontSize;
-                            excelWorksheetStocktake.Cells["E4"].Style.Font.Bold = true;
-                            excelWorksheetStocktake.Cells["E4"].Value = "Found on Sheet:";
-
-
-
-
-                            /*if (File being used) 
+                            else
                             {
-                                MessageBox.Show("File being used by another program, close the file to continue.");
+                                MessageBox.Show("Use the " + "\"" + btnSTContinue.Text + "\"" + " button.");
                             }
-                            else 
-                            {
-                                excelPackage.Save();
-                            }*/
-                            //CHECK IF THE FILE IS OPEN IF IT IS, CLOSE IT
-                            try
-                            {
-                                excelPackage.Save();
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message + "\n" + "File me be open or in use by another program.", "File Saving Error");
-                                return;
-                            }
-
-                            
-
-                            worksheets.Add(excelWorksheetStocktake);
-                            worksheetsRows.Add(excelWorksheetStocktake.Dimension.End.Row);
-
-                            MessageBox.Show("Stocktake will begin.");
-                            /*MessageBox.Show("Returning...");
-                            return;*/
-                            //DoStocktake(true, worksheets, null);
-                            fromStocktake = false;
-
-
-                            int stockRow = 5;//worksheets[4].Rows.Count() + 1;
-                            stockOrScanStocktakeWorksheet = excelWorksheetStocktake;
-                            stockOrScanRecordAddedMessage = recordAddedMessage;
-                            FromStockTakeOrScanner("StockTake");
                         }
-                        else
+                        #endregion
+
+                        #region Continue Stocktake
+                        //Search if there is a stocktake sheet for the chosen date
+                        if (newContinue == 1)
                         {
-                            MessageBox.Show("Use the " + "\"" + btnSTContinue.Text + "\"" + " button.");
+                            if (MessageBox.Show("Are you continuing the stocktake for " + dtpSTPreviousStocktake.Text + "?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            {
+                                stockTakeWorkbookName = "Stocktake " + dtpSTPreviousStocktake.Text;
+
+                                //If the sheet doesn't exist then add it.
+                                if (excelWorksheetStocktake == null)
+                                {
+                                    excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
+                                    stocktakeSheetIndex = excelWorkBook.Worksheets.Count() - 1;
+                                }
+                                else
+                                {
+                                    if (cbxSTDebugMode.Checked)
+                                    {
+                                        //Remove the sheet
+                                        excelWorkBook.Worksheets.Delete(stockTakeWorkbookName);
+                                        MessageBox.Show("Sheet Deleted!");
+                                        excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
+                                        stocktakeSheetIndex = excelWorkBook.Worksheets.Count() - 1;
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("A Stocktake sheet for that date already exists." + "\n" + "Use the " + "\"" + btnSTContinue.Text + "\"" + " button instead.");
+                                        return;
+                                    }
+                                }
+
+                                //Set the Stocktake period
+                                excelWorksheetStocktake.Cells["A3"].StyleName = "Arial";
+                                excelWorksheetStocktake.Cells["A3"].Style.Font.Size = headerFontSize;
+                                excelWorksheetStocktake.Cells["A3"].Style.Font.Bold = true;
+
+                                string periodStart = stockTakeWorkbookName.Substring(10); //What was on the existing thing [Name of sheet][Stocktake 16 February 2023]
+                                string periodEnd = DateTime.Today.Day + " " + Months[DateTime.Today.Month - 1] + " " + DateTime.Today.Year;
+
+                                excelWorksheetStocktake.Cells["A3"].Value = "For the period " + periodStart + " to " + periodEnd;
+
+
+                                //CHECK IF THE FILE IS OPEN IF IT IS, CLOSE IT
+                                try
+                                {
+                                    excelPackage.Save();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message + "\n" + "File may be open or in use by another program.", "File Saving Error");
+                                    return;
+                                }
+
+
+
+                                worksheets.Add(excelWorksheetStocktake);
+                                worksheetsRows.Add(excelWorksheetStocktake.Dimension.End.Row);
+
+                                MessageBox.Show("Stocktake will begin.");
+                                /*MessageBox.Show("Returning...");
+                                return;*/
+                                //DoStocktake(true, worksheets, null);
+                                fromStocktake = false;
+
+
+                                int stockRow = 5;//worksheets[4].Rows.Count() + 1;
+                                stockOrScanStocktakeWorksheet = excelWorksheetStocktake;
+                                stockOrScanRecordAddedMessage = recordAddedMessage;
+                                FromStockTakeOrScanner("StockTake");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Use the " + "\"" + btnSTNewStocktake.Text + "\"" + " button.");
+                            }
                         }
+                        #endregion
+
 
                         //string periodCellValue = stocktakeWorksheet.Cells["A3"].Value;
 
@@ -986,7 +1069,7 @@ namespace Barcode_Application
                     worksheets.Add(excelWorksheetSunglasses);
                     worksheets.Add(excelWorksheetSolutions);
                     worksheets.Add(excelWorksheetStocktake);
-                    stocktakeIndex = 4;
+                    stocktakeSheetIndex = 4;
 
                     worksheetsRows.Clear();
                     worksheetsRows.Add(excelWorksheetInventoryItemSummary.Dimension.End.Row);
@@ -1080,7 +1163,7 @@ namespace Barcode_Application
                                     }
 
                                     //Found on Stocktake Sheet
-                                    else if (sheetCounter == stocktakeIndex)
+                                    else if (sheetCounter == stocktakeSheetIndex)
                                     {
                                         //Increase counted quantity
                                         excelWorksheetStocktake.Cells["D" + rowCounter].Value = Convert.ToInt32(excelWorksheetStocktake.Cells["D" + rowCounter].Value) + 1;//Counted Quantity
@@ -1089,7 +1172,7 @@ namespace Barcode_Application
                                         worksheets[i].Cells[closingQuantityCell].Style.Font.Size = contentFontSize;
                                         closingQuantity = Convert.ToInt32(worksheets[i].Cells[closingQuantityCell].Value);//ToString() does not allow for formatting
                                         foundOnStocktake = true;
-                                        MessageBox.Show("Item already on stocktake sheet. " + "\n" + "\"" + "foundOnStocktake variable is: " + "\"" + foundOnStocktake);
+                                        //MessageBox.Show("Item already on stocktake sheet. " + "\n" + "\"" + "foundOnStocktake variable is: " + "\"" + foundOnStocktake);
                                         //TODO TOGGLE A BOOL THAT STOPS THE "i == stockTakeIndex" INNER IF STATEMENT FROM RUNNING
                                     }
                                 }
@@ -1097,7 +1180,7 @@ namespace Barcode_Application
                             }
                             //if(debugItemCount == 2) { MessageBox.Show("Enter"); }
                             //MessageBox.Show("Found on " + worksheets[i] + ":" + foundOnStocktake);
-                            if (i == stocktakeIndex && foundOnStocktake == false)
+                            if (i == stocktakeSheetIndex && foundOnStocktake == false)
                             {
                                 
                             }
@@ -1119,7 +1202,7 @@ namespace Barcode_Application
                                 {
                                     isBlank = true;
                                     stockRow = rowCounter;
-                                    MessageBox.Show("Found blank Row at: " + stockRow);
+                                    //MessageBox.Show("Found blank Row at: " + stockRow);
                                 }
                                 rowCounter++;
                             }
@@ -1164,7 +1247,7 @@ namespace Barcode_Application
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.Message + "\n" + "File me be open or in use by another program.", "File Saving Error");
+                            MessageBox.Show(ex.Message + "\n" + "File may be open or in use by another program.", "File Saving Error");
                             return;
                         }
                         MessageBox.Show(stockOrScanRecordAddedMessage);
