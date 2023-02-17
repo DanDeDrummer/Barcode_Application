@@ -105,6 +105,7 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.progBarGenSaveQR = new System.Windows.Forms.ProgressBar();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -228,6 +229,7 @@ namespace Barcode_Application
             // 
             // tbsGenerateQR
             // 
+            this.tbsGenerateQR.Controls.Add(this.progBarGenSaveQR);
             this.tbsGenerateQR.Controls.Add(this.numericUpDown1);
             this.tbsGenerateQR.Controls.Add(this.button1);
             this.tbsGenerateQR.Controls.Add(this.lblGenQRCodeOut);
@@ -466,7 +468,7 @@ namespace Barcode_Application
             this.tbsSale.Location = new System.Drawing.Point(4, 22);
             this.tbsSale.Name = "tbsSale";
             this.tbsSale.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsSale.Size = new System.Drawing.Size(385, 599);
+            this.tbsSale.Size = new System.Drawing.Size(385, 618);
             this.tbsSale.TabIndex = 3;
             this.tbsSale.Text = "Sale";
             this.tbsSale.UseVisualStyleBackColor = true;
@@ -541,7 +543,7 @@ namespace Barcode_Application
             this.tbsAddRemoveFromDatabase.Location = new System.Drawing.Point(4, 22);
             this.tbsAddRemoveFromDatabase.Name = "tbsAddRemoveFromDatabase";
             this.tbsAddRemoveFromDatabase.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsAddRemoveFromDatabase.Size = new System.Drawing.Size(385, 599);
+            this.tbsAddRemoveFromDatabase.Size = new System.Drawing.Size(385, 618);
             this.tbsAddRemoveFromDatabase.TabIndex = 4;
             this.tbsAddRemoveFromDatabase.Text = "Add/Remove from Database";
             this.tbsAddRemoveFromDatabase.UseVisualStyleBackColor = true;
@@ -908,7 +910,7 @@ namespace Barcode_Application
             this.tbsStockTake.Location = new System.Drawing.Point(4, 22);
             this.tbsStockTake.Name = "tbsStockTake";
             this.tbsStockTake.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsStockTake.Size = new System.Drawing.Size(385, 599);
+            this.tbsStockTake.Size = new System.Drawing.Size(385, 618);
             this.tbsStockTake.TabIndex = 5;
             this.tbsStockTake.Text = "Stock Take";
             this.tbsStockTake.UseVisualStyleBackColor = true;
@@ -992,6 +994,14 @@ namespace Barcode_Application
             // prntDlg
             // 
             this.prntDlg.UseEXDialog = true;
+            // 
+            // progBarGenSaveQR
+            // 
+            this.progBarGenSaveQR.Location = new System.Drawing.Point(192, 397);
+            this.progBarGenSaveQR.Name = "progBarGenSaveQR";
+            this.progBarGenSaveQR.Size = new System.Drawing.Size(172, 23);
+            this.progBarGenSaveQR.TabIndex = 18;
+            this.progBarGenSaveQR.Visible = false;
             // 
             // frmBarcodeApplication
             // 
@@ -1104,6 +1114,7 @@ namespace Barcode_Application
         private System.Windows.Forms.CheckBox cbxSTDebugMode;
         private System.Windows.Forms.Button btnPrimeScanner;
         private System.Windows.Forms.Button btnWelClose;
+        private System.Windows.Forms.ProgressBar progBarGenSaveQR;
     }
 }
 
