@@ -952,9 +952,7 @@ namespace Barcode_Application
                         {
                             if (MessageBox.Show("Are you continuing the stocktake for " + dtpSTPreviousStocktake.Text + "?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes)
                             {
-                                stockTakeWorkbookName = "Stocktake " + dtpSTPreviousStocktake.Text;
-
-                                //If the sheet doesn't exist then add it.
+                                /*//Add Sheet to array
                                 if (excelWorksheetStocktake == null)
                                 {
                                     excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
@@ -975,7 +973,7 @@ namespace Barcode_Application
                                         MessageBox.Show("A Stocktake sheet for that date already exists." + "\n" + "Use the " + "\"" + btnSTContinue.Text + "\"" + " button instead.");
                                         return;
                                     }
-                                }
+                                }*/
 
                                 //Set the Stocktake period
                                 excelWorksheetStocktake.Cells["A3"].StyleName = "Arial";
@@ -1004,10 +1002,7 @@ namespace Barcode_Application
                                 worksheets.Add(excelWorksheetStocktake);
                                 worksheetsRows.Add(excelWorksheetStocktake.Dimension.End.Row);
 
-                                MessageBox.Show("Stocktake will begin.");
-                                /*MessageBox.Show("Returning...");
-                                return;*/
-                                //DoStocktake(true, worksheets, null);
+                                MessageBox.Show("Stocktake will continue...");
                                 fromStocktake = false;
 
 
