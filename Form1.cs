@@ -15,6 +15,7 @@ using OfficeOpenXml;
 using QRCoder;
 using ZXing;
 using Microsoft.VisualBasic;
+using System.Drawing.Printing;
 
 namespace Barcode_Application
 {
@@ -341,7 +342,7 @@ namespace Barcode_Application
                 lblGenQRCodeOut.Visible = true;
                 lblGenQRCodeOut.Text = qrCodeInput;
 
-                btnGenPrint.Enabled = true;
+                btnGenSaveToPDF.Enabled = true;
                 txtGenQRCode.Clear();
             }
             else
@@ -558,31 +559,168 @@ namespace Barcode_Application
 
         }
 
+        private Font printFont;
+        DateTime printStartTime;
         private void btnGenPrint_Click(object sender, EventArgs e)
         {
-            prntDlg.Document = prntDoc;
-            //printedImage = QRImages[0];
-
             if (QRImages.Count > 0)
             {
-                if (prntDlg.ShowDialog() == DialogResult.OK && prntPrvDlg.ShowDialog() == DialogResult.OK)
+                int textSize = 8;
+                try
                 {
-                    prntDoc.Print();
+                    printStartTime = DateTime.Now;
+                    printFont = new Font("Arial", textSize);//8
+                    PrintDocument pd = new PrintDocument();
+                    pd.PrintPage += new PrintPageEventHandler
+                       (this.pd_PrintPageQR); //(this.pd_PrintPage);
+                    pd.Print();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
             else
             {
                 MessageBox.Show(QRImages.Count + " QR Code(s) were not printed.", "Aborted Print", MessageBoxButtons.OK);
             }
+        }
+
+        int listIndex = 0;
+        int pageNum = 0;
+        private void pd_PrintPageQR(object sender, PrintPageEventArgs ev)
+        {
+            pageNum++;
+            //MessageBox.Show("Start of pd_PrintPageQR");
+            float linesPerPage = 0;
+            float yPos = 0;
+            float yPosPadding = 0;
+            int count = 0;//Sets to 0 every time a new page gets created
+            float leftMargin = ev.MarginBounds.Left;
+            float topMargin = ev.MarginBounds.Top;//100
+            string line = ItemCodes[listIndex];//Initial while variable commit
+            float leftMarginPadding = 0;//Initial while variable commit
+            int itemsInRow = 0;
+            bool newPage;
 
 
+            // Calculate the number of lines per page.
+            linesPerPage = ev.MarginBounds.Height /
+               (QRImages[listIndex].Height + 15);//Max 5 QR code lines per page
 
-            /*//FoxLearnCode
-            Graphics g = this.CreateGraphics();
-            bmp = new Bitmap(this.Size.Height, this.Size.Width, g);
-            Graphics mg = Graphics.FromImage(bmp);
-            mg.CopyFromScreen(this.Location.X, this.Location.Y, 0, 0, this.Size);
-            prntPrvDlg.ShowDialog(); */
+            //Yes 5 codes get displayed, but it does not take into accout  that some of those codes are next to eachother.
+
+            /*First attempt: QR gets draw then space of 15 units between QR images.
+             String gets drawn then space of 15 units + QR height gets left for the next row
+            yPos + QRImages[count].Height + 15*/
+
+            //Van die eerste een af plus 3 kry die totale breedte deel deaur 3
+            int columnQRWidthChecker = 0;
+            int testItemsInRow = (int)numericUpDown1.Value;//3
+            int rowImagesWidth = 0, rowTextWidth = 0, rowTotalWhiteSpace = 200;
+            if (listIndex % testItemsInRow == 0)
+            {
+                for (int i = 0; i < testItemsInRow; i++)
+                {
+                    rowImagesWidth += QRImages[listIndex + i].Width;
+                    rowTextWidth += TextRenderer.MeasureText(ItemCodes[listIndex + i], printFont).Width;
+                }
+                //var rowImagesWidth = QRImages[listIndex].Width + QRImages[listIndex + 1].Width + QRImages[listIndex + 2].Width + QRImages[listIndex + 3].Width;
+                //var rowTextWidth = TextRenderer.MeasureText(ItemCodes[listIndex], printFont).Width + TextRenderer.MeasureText(ItemCodes[listIndex + 1], printFont).Width + TextRenderer.MeasureText(ItemCodes[listIndex + 2], printFont).Width;
+
+                if (rowImagesWidth >= rowTextWidth)
+                {
+                    columnQRWidthChecker = (rowImagesWidth + rowTotalWhiteSpace) / testItemsInRow; //100 was 45
+                }
+                else
+                {
+                    columnQRWidthChecker = (rowTextWidth + rowTotalWhiteSpace) / testItemsInRow; //100 was 45
+                }
+                int columnQRWidth = columnQRWidthChecker / testItemsInRow;
+
+                /*MessageBox.Show("rowImagesWidth: " + rowImagesWidth + "\n" +
+                                "rowTextWidth: " + rowTextWidth + "\n" +
+                                "columnQRWidthChecker: " + columnQRWidthChecker + "\n" +
+                                "testItemsInRow: " + testItemsInRow + "\n" +
+                                "columnQRWidth: " + columnQRWidth + "\n");*/
+            }
+
+            // Print each line of the file.
+            yPos = topMargin + (0 * printFont.GetHeight(ev.Graphics));
+            yPosPadding = yPos + QRImages[listIndex].Height + 15;
+            int staggerAmount = 0;
+            while (yPos < ev.MarginBounds.Height/*count < linesPerPage*/ && (line != null) && listIndex < QRImages.Count())//lines per page is 56.4???? which caused the bug with not making the other 3
+            {
+                /*//Makes it a new line in the PDF the height of the text graphic
+                yPos = topMargin + (count *printFont.GetHeight(ev.Graphics));*/
+
+
+                //QR Image at yPos, item Code at ypos + padding
+                ev.Graphics.DrawImage(QRImages[listIndex], leftMargin + leftMarginPadding, yPos);//8,13,15
+                ev.Graphics.DrawString((listIndex + 1) + ". " + line, printFont, Brushes.Black, leftMargin + leftMarginPadding /*+ 15*/, yPosPadding + staggerAmount, new StringFormat());
+                //ev.Graphics.DrawString((listIndex + 1) + ". " + line, printFont, Brushes.Black, new PointF(leftMargin + leftMarginPadding + 15, yPosPadding + staggerAmount));
+                listIndex++;
+                itemsInRow++;
+                if (listIndex < QRImages.Count())
+                {
+                    line = ItemCodes[listIndex];//Increment variable in loop
+                    Size textSize = TextRenderer.MeasureText(line, printFont);
+                    float codeLength = line.Length * textSize.Width; //The characters in the string multiplied by the size of one character
+                    int imageWidth = QRImages[listIndex].Width + 15;
+                    //leftMarginPadding = leftMarginPadding + QRImages[listIndex].Width + 15;//Increment variable in loop
+
+                    if (listIndex % 2 == 0)
+                    {
+                        staggerAmount = 0;
+                        //leftmarginpadding = leftmarginpadding + imagewidth;//increment variable in loop
+                        //messagebox.show(listindex + " image larger than codelength leftmarginpadding: " + leftmarginpadding);*/
+                    }
+                    else
+                    {
+                        staggerAmount = textSize.Height + 5;
+                        //image width plus (the width of the text - the width of the image)
+                        //leftmarginpadding = leftmarginpadding + textsize.width;//increment variable in loop
+                        //messagebox.show(line + " text width: " + textsize.width);
+                    }
+
+                    leftMarginPadding = leftMarginPadding + columnQRWidthChecker;
+
+                    if (/*leftMargin + leftMarginPadding >= ev.MarginBounds.Width*/itemsInRow == testItemsInRow)
+                    {
+                        itemsInRow = 0;
+                        //increase y position.
+                        yPos += topMargin + (QRImages[listIndex].Height + 15 + textSize.Height/*printFont.GetHeight(ev.Graphics)*/);//(count * printFont.GetHeight(ev.Graphics));
+                        yPosPadding = yPos + QRImages[listIndex].Height + 15;
+                        leftMargin = ev.MarginBounds.Left;
+                        leftMarginPadding = 0;
+                        //MessageBox.Show("Reset leftMarginPadding for item: " + (listIndex + 1));
+                        //MessageBox.Show("Y position: " + yPos + "\n" + "Y position padding: " + yPosPadding);
+                        count++;//total line counter
+                    }
+                }
+            }
+
+
+            // If more lines exist, print another page.
+            if (yPos >= ev.MarginBounds.Height/*line != null*/ && listIndex < QRImages.Count())
+            {
+                ev.HasMorePages = true;
+                newPage = false;
+                //MessageBox.Show("New Page after " + count);
+                /*MessageBox.Show("Array count: " + QRImages.Count());
+                MessageBox.Show("var listCount: " + listIndex);*/
+            }
+            else
+            {
+                ev.HasMorePages = false;
+                DateTime endTime = DateTime.Now;
+
+                TimeSpan durationTime = endTime - printStartTime;
+                MessageBox.Show("Finished Printing " + QRImages.Count + " items." + "\n" + "On " + pageNum + " pages.");
+
+                MessageBox.Show("Population took: " + durationTime);
+            }
+
         }
         #endregion
 
@@ -1065,7 +1203,7 @@ namespace Barcode_Application
 
             }
             MessageBox.Show("Quick created QR. Length: " + QRImages.Count);
-            btnGenPrint.Enabled = true;
+            btnGenSaveToPDF.Enabled = true;
         }
 
         private void btnBugStockTake_Click(object sender, EventArgs e)

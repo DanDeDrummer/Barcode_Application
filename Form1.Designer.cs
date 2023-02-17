@@ -32,6 +32,7 @@ namespace Barcode_Application
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBarcodeApplication));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tbsWelcome = new System.Windows.Forms.TabPage();
+            this.btnWelClose = new System.Windows.Forms.Button();
             this.btnWelStocktake = new System.Windows.Forms.Button();
             this.btnWelAddRemoveDB = new System.Windows.Forms.Button();
             this.btnWelSale = new System.Windows.Forms.Button();
@@ -42,7 +43,7 @@ namespace Barcode_Application
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button1 = new System.Windows.Forms.Button();
             this.lblGenQRCodeOut = new System.Windows.Forms.Label();
-            this.btnGenPrint = new System.Windows.Forms.Button();
+            this.btnGenSaveToPDF = new System.Windows.Forms.Button();
             this.btnGenBack = new System.Windows.Forms.Button();
             this.lblGenProductCode = new System.Windows.Forms.Label();
             this.picbxGenImage = new System.Windows.Forms.PictureBox();
@@ -104,7 +105,6 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.btnWelClose = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -130,7 +130,7 @@ namespace Barcode_Application
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(393, 625);
+            this.tabControl.Size = new System.Drawing.Size(393, 644);
             this.tabControl.TabIndex = 4;
             // 
             // tbsWelcome
@@ -145,10 +145,20 @@ namespace Barcode_Application
             this.tbsWelcome.Location = new System.Drawing.Point(4, 22);
             this.tbsWelcome.Name = "tbsWelcome";
             this.tbsWelcome.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsWelcome.Size = new System.Drawing.Size(385, 599);
+            this.tbsWelcome.Size = new System.Drawing.Size(385, 618);
             this.tbsWelcome.TabIndex = 0;
             this.tbsWelcome.Text = "Welcome";
             this.tbsWelcome.UseVisualStyleBackColor = true;
+            // 
+            // btnWelClose
+            // 
+            this.btnWelClose.Location = new System.Drawing.Point(20, 224);
+            this.btnWelClose.Name = "btnWelClose";
+            this.btnWelClose.Size = new System.Drawing.Size(345, 30);
+            this.btnWelClose.TabIndex = 17;
+            this.btnWelClose.Text = "Close";
+            this.btnWelClose.UseVisualStyleBackColor = true;
+            this.btnWelClose.Click += new System.EventHandler(this.btnWelClose_Click);
             // 
             // btnWelStocktake
             // 
@@ -221,7 +231,7 @@ namespace Barcode_Application
             this.tbsGenerateQR.Controls.Add(this.numericUpDown1);
             this.tbsGenerateQR.Controls.Add(this.button1);
             this.tbsGenerateQR.Controls.Add(this.lblGenQRCodeOut);
-            this.tbsGenerateQR.Controls.Add(this.btnGenPrint);
+            this.tbsGenerateQR.Controls.Add(this.btnGenSaveToPDF);
             this.tbsGenerateQR.Controls.Add(this.btnGenBack);
             this.tbsGenerateQR.Controls.Add(this.lblGenProductCode);
             this.tbsGenerateQR.Controls.Add(this.picbxGenImage);
@@ -231,14 +241,14 @@ namespace Barcode_Application
             this.tbsGenerateQR.Location = new System.Drawing.Point(4, 22);
             this.tbsGenerateQR.Name = "tbsGenerateQR";
             this.tbsGenerateQR.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsGenerateQR.Size = new System.Drawing.Size(385, 599);
+            this.tbsGenerateQR.Size = new System.Drawing.Size(385, 618);
             this.tbsGenerateQR.TabIndex = 1;
             this.tbsGenerateQR.Text = "Generate QR";
             this.tbsGenerateQR.UseVisualStyleBackColor = true;
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(227, 400);
+            this.numericUpDown1.Location = new System.Drawing.Point(223, 18);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(38, 20);
             this.numericUpDown1.TabIndex = 17;
@@ -250,7 +260,7 @@ namespace Barcode_Application
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(183, 397);
+            this.button1.Location = new System.Drawing.Point(174, 18);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(43, 23);
             this.button1.TabIndex = 16;
@@ -267,20 +277,20 @@ namespace Barcode_Application
             this.lblGenQRCodeOut.TabIndex = 15;
             this.lblGenQRCodeOut.Visible = false;
             // 
-            // btnGenPrint
+            // btnGenSaveToPDF
             // 
-            this.btnGenPrint.Enabled = false;
-            this.btnGenPrint.Location = new System.Drawing.Point(264, 397);
-            this.btnGenPrint.Name = "btnGenPrint";
-            this.btnGenPrint.Size = new System.Drawing.Size(100, 23);
-            this.btnGenPrint.TabIndex = 14;
-            this.btnGenPrint.Text = "Print QR Code(s)";
-            this.btnGenPrint.UseVisualStyleBackColor = true;
-            this.btnGenPrint.Click += new System.EventHandler(this.btnGenPrint_Click);
+            this.btnGenSaveToPDF.Enabled = false;
+            this.btnGenSaveToPDF.Location = new System.Drawing.Point(19, 540);
+            this.btnGenSaveToPDF.Name = "btnGenSaveToPDF";
+            this.btnGenSaveToPDF.Size = new System.Drawing.Size(345, 30);
+            this.btnGenSaveToPDF.TabIndex = 14;
+            this.btnGenSaveToPDF.Text = "Save QR Code(s) to PDF";
+            this.btnGenSaveToPDF.UseVisualStyleBackColor = true;
+            this.btnGenSaveToPDF.Click += new System.EventHandler(this.btnGenPrint_Click);
             // 
             // btnGenBack
             // 
-            this.btnGenBack.Location = new System.Drawing.Point(19, 539);
+            this.btnGenBack.Location = new System.Drawing.Point(19, 580);
             this.btnGenBack.Name = "btnGenBack";
             this.btnGenBack.Size = new System.Drawing.Size(345, 30);
             this.btnGenBack.TabIndex = 13;
@@ -328,7 +338,7 @@ namespace Barcode_Application
             // 
             // btnGenGenerate
             // 
-            this.btnGenGenerate.Location = new System.Drawing.Point(19, 503);
+            this.btnGenGenerate.Location = new System.Drawing.Point(19, 500);
             this.btnGenGenerate.Name = "btnGenGenerate";
             this.btnGenGenerate.Size = new System.Drawing.Size(345, 30);
             this.btnGenGenerate.TabIndex = 8;
@@ -350,7 +360,7 @@ namespace Barcode_Application
             this.tbsScanQR.Location = new System.Drawing.Point(4, 22);
             this.tbsScanQR.Name = "tbsScanQR";
             this.tbsScanQR.Padding = new System.Windows.Forms.Padding(3);
-            this.tbsScanQR.Size = new System.Drawing.Size(385, 599);
+            this.tbsScanQR.Size = new System.Drawing.Size(385, 618);
             this.tbsScanQR.TabIndex = 2;
             this.tbsScanQR.Text = "Scan QR";
             this.tbsScanQR.UseVisualStyleBackColor = true;
@@ -413,8 +423,6 @@ namespace Barcode_Application
             this.txtScanQRCode.ReadOnly = true;
             this.txtScanQRCode.Size = new System.Drawing.Size(345, 61);
             this.txtScanQRCode.TabIndex = 16;
-            this.txtScanQRCode.Text = "Drag spreadsheet in. Search Spreadsheet vir QR Code as text, increase count table" +
-    "";
             // 
             // picbxScanImage
             // 
@@ -985,21 +993,11 @@ namespace Barcode_Application
             // 
             this.prntDlg.UseEXDialog = true;
             // 
-            // btnWelClose
-            // 
-            this.btnWelClose.Location = new System.Drawing.Point(20, 224);
-            this.btnWelClose.Name = "btnWelClose";
-            this.btnWelClose.Size = new System.Drawing.Size(345, 30);
-            this.btnWelClose.TabIndex = 17;
-            this.btnWelClose.Text = "Close";
-            this.btnWelClose.UseVisualStyleBackColor = true;
-            this.btnWelClose.Click += new System.EventHandler(this.btnWelClose_Click);
-            // 
             // frmBarcodeApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(416, 649);
+            this.ClientSize = new System.Drawing.Size(416, 668);
             this.Controls.Add(this.tabControl);
             this.Name = "frmBarcodeApplication";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1057,7 +1055,7 @@ namespace Barcode_Application
         private System.Windows.Forms.ComboBox cbbSaleHold;
         private System.Windows.Forms.Button btnConfirm;
         private System.Windows.Forms.Label lblTODO;
-        private System.Windows.Forms.Button btnGenPrint;
+        private System.Windows.Forms.Button btnGenSaveToPDF;
         private System.Drawing.Printing.PrintDocument prntDoc;
         private System.Windows.Forms.PrintPreviewDialog prntPrvDlg;
         private System.Windows.Forms.PrintDialog prntDlg;
