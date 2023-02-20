@@ -157,6 +157,12 @@ namespace Barcode_Application
             string TODOListString = "Code Continue Stock take button." + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n";
             MessageBox.Show(TODOListString, "TODO LIST", MessageBoxButtons.OK);
             #endif
+            #if !DEBUG
+            cbxSTDebugMode.Checked = false;
+            cbxSTDebugMode.Visible = false;
+            button1.Visible = false;
+            btnBugStockTake.Visible = false;
+            #endif
 
             //LoadInventoryItemsList();
 
@@ -460,6 +466,7 @@ namespace Barcode_Application
 
         private void RefreshCameraList()
         {
+            cbbScanCameraList.Items.Clear();
             filterInfoCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo device in filterInfoCollection)
             {
@@ -1256,10 +1263,9 @@ namespace Barcode_Application
             Application.Exit();
         }
 
-        #endregion
+#endregion
 
-#if DEBUG
-        #region Debugging
+#region Debugging
         private void button1_Click(object sender, EventArgs e)
         {
             //T-FRA-AHI-1431-07A
@@ -1296,8 +1302,8 @@ namespace Barcode_Application
 
 
 
-        #endregion
-#endif
+#endregion
+
 
     }
 }

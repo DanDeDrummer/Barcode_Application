@@ -269,7 +269,6 @@ namespace Barcode_Application
             0});
             this.numericUpDown1.Visible = false;
             // 
-#if DEBUG
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(174, 18);
@@ -281,7 +280,6 @@ namespace Barcode_Application
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-#endif
             // lblGenQRCodeOut
             // 
             this.lblGenQRCodeOut.AutoSize = true;
@@ -390,7 +388,6 @@ namespace Barcode_Application
             this.btnPrimeScanner.UseVisualStyleBackColor = true;
             this.btnPrimeScanner.Click += new System.EventHandler(this.btnPrimeScanner_Click);
             // 
-#if DEBUG
             // btnBugStockTake
             // 
             this.btnBugStockTake.Location = new System.Drawing.Point(274, 425);
@@ -402,7 +399,6 @@ namespace Barcode_Application
             this.btnBugStockTake.Visible = false;
             this.btnBugStockTake.Click += new System.EventHandler(this.btnBugStockTake_Click);
             // 
-#endif
             // btnScanBack
             // 
             this.btnScanBack.Location = new System.Drawing.Point(19, 563);
