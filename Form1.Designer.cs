@@ -97,7 +97,6 @@ namespace Barcode_Application
             this.label5 = new System.Windows.Forms.Label();
             this.tbsStockTake = new System.Windows.Forms.TabPage();
             this.cbxSTDebugMode = new System.Windows.Forms.CheckBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.dtpSTPreviousStocktake = new System.Windows.Forms.DateTimePicker();
             this.btnSTContinue = new System.Windows.Forms.Button();
@@ -106,6 +105,7 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lblFileReminder = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -267,6 +267,7 @@ namespace Barcode_Application
             0,
             0,
             0});
+            this.numericUpDown1.Visible = false;
             // 
             // button1
             // 
@@ -276,6 +277,7 @@ namespace Barcode_Application
             this.button1.TabIndex = 16;
             this.button1.Text = "Quick Generate";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // lblGenQRCodeOut
@@ -394,6 +396,7 @@ namespace Barcode_Application
             this.btnBugStockTake.TabIndex = 20;
             this.btnBugStockTake.Text = "Stocktake Test";
             this.btnBugStockTake.UseVisualStyleBackColor = true;
+            this.btnBugStockTake.Visible = false;
             this.btnBugStockTake.Click += new System.EventHandler(this.btnBugStockTake_Click);
             // 
             // btnScanBack
@@ -909,8 +912,8 @@ namespace Barcode_Application
             // 
             // tbsStockTake
             // 
+            this.tbsStockTake.Controls.Add(this.lblFileReminder);
             this.tbsStockTake.Controls.Add(this.cbxSTDebugMode);
-            this.tbsStockTake.Controls.Add(this.listBox1);
             this.tbsStockTake.Controls.Add(this.button3);
             this.tbsStockTake.Controls.Add(this.dtpSTPreviousStocktake);
             this.tbsStockTake.Controls.Add(this.btnSTContinue);
@@ -934,17 +937,6 @@ namespace Barcode_Application
             this.cbxSTDebugMode.TabIndex = 29;
             this.cbxSTDebugMode.Text = "Debug Mode";
             this.cbxSTDebugMode.UseVisualStyleBackColor = true;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "Populate with sheet items.",
-            "Then set the selected ItemIndex to the stocktake sheet"});
-            this.listBox1.Location = new System.Drawing.Point(34, 136);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 95);
-            this.listBox1.TabIndex = 28;
             // 
             // button3
             // 
@@ -1002,6 +994,16 @@ namespace Barcode_Application
             // prntDlg
             // 
             this.prntDlg.UseEXDialog = true;
+            // 
+            // lblFileReminder
+            // 
+            this.lblFileReminder.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFileReminder.Location = new System.Drawing.Point(18, 133);
+            this.lblFileReminder.Name = "lblFileReminder";
+            this.lblFileReminder.Size = new System.Drawing.Size(354, 31);
+            this.lblFileReminder.TabIndex = 30;
+            this.lblFileReminder.Text = "Remember to download the sheet file as a \".xlsx\" file first before starting the s" +
+    "tocktake.";
             // 
             // frmBarcodeApplication
             // 
@@ -1110,11 +1112,11 @@ namespace Barcode_Application
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button btnBugStockTake;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.CheckBox cbxSTDebugMode;
         private System.Windows.Forms.Button btnPrimeScanner;
         private System.Windows.Forms.Button btnWelClose;
         private System.Windows.Forms.ProgressBar progBarGenSaveQR;
+        private System.Windows.Forms.Label lblFileReminder;
     }
 }
 

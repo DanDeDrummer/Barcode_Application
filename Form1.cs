@@ -153,9 +153,13 @@ namespace Barcode_Application
         {
             InitializeComponent();
 
-            //LoadInventoryItemsList();
+            #if DEBUG
             string TODOListString = "Code Continue Stock take button." + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n" + "Next TODO" + "\n";
             MessageBox.Show(TODOListString, "TODO LIST", MessageBoxButtons.OK);
+            #endif
+
+            //LoadInventoryItemsList();
+
         }
 
 
@@ -330,7 +334,7 @@ namespace Barcode_Application
             picbxGenImage.Image = null;
             lblGenQRCodeOut.Visible = false;
             string qrCodeInput = txtGenQRCode.Text;
-            if ((MessageBox.Show("Are you sure you want to create a QR Code for : " /*MAKE TEXT BOLD*/+ "\"" + qrCodeInput + "\"", "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            if ((MessageBox.Show("Are you sure you want to create a QR Code for : " + "\"" + qrCodeInput + "\"", "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
             {
                 QRCodeGenerator qr = new QRCodeGenerator();
                 QRCodeData data = qr.CreateQrCode(qrCodeInput, QRCodeGenerator.ECCLevel.Q);
@@ -638,11 +642,15 @@ namespace Barcode_Application
                 }
                 int columnQRWidth = columnQRWidthChecker / testItemsInRow;
 
-                /*MessageBox.Show("rowImagesWidth: " + rowImagesWidth + "\n" +
-                                "rowTextWidth: " + rowTextWidth + "\n" +
-                                "columnQRWidthChecker: " + columnQRWidthChecker + "\n" +
-                                "testItemsInRow: " + testItemsInRow + "\n" +
-                                "columnQRWidth: " + columnQRWidth + "\n");*/
+                #if DEBUG
+                MessageBox.Show("rowImagesWidth: " + rowImagesWidth + "\n" +
+                "rowTextWidth: " + rowTextWidth + "\n" +
+                "columnQRWidthChecker: " + columnQRWidthChecker + "\n" +
+                "testItemsInRow: " + testItemsInRow + "\n" +
+                "columnQRWidth: " + columnQRWidth + "\n");
+                #endif
+
+
             }
 
             // Print each line of the file.
@@ -1160,13 +1168,6 @@ namespace Barcode_Application
                                 }
                                 rowCounter++;
                             }
-                            //if(debugItemCount == 2) { MessageBox.Show("Enter"); }
-                            //MessageBox.Show("Found on " + worksheets[i] + ":" + foundOnStocktake);
-                            if (i == stocktakeSheetIndex && foundOnStocktake == false)
-                            {
-                                
-                            }
-
                             sheetCounter++;
                         }
 
@@ -1249,11 +1250,15 @@ namespace Barcode_Application
 
         private void TerminateApplication()
         {
+            try { excelPackage.Save(); }
+            catch { }
+            
             Application.Exit();
         }
 
         #endregion
 
+#if DEBUG
         #region Debugging
         private void button1_Click(object sender, EventArgs e)
         {
@@ -1292,6 +1297,7 @@ namespace Barcode_Application
 
 
         #endregion
+#endif
 
     }
 }
