@@ -846,7 +846,7 @@ namespace Barcode_Application
                                     }
                                     else
                                     {
-                                        MessageBox.Show("A Stocktake sheet for that date already exists." + "\n" + "Use the " + "\"" + btnSTContinue.Text + "\"" + " button instead.");
+                                        MessageBox.Show("A Stocktake sheet for selected date already exists." + "\n" + "Use the " + "\"" + btnSTContinue.Text + "\"" + " button instead.");
                                         return;
                                     }
                                 }
@@ -941,7 +941,7 @@ namespace Barcode_Application
                             }
                             else
                             {
-                                MessageBox.Show("Use the " + "\"" + btnSTContinue.Text + "\"" + " button.");
+                                MessageBox.Show("Use the " + "\"" + btnSTContinue.Text + "\"" + " button. To continue a previous stocktake");
                             }
                         }
                         #endregion
@@ -950,32 +950,20 @@ namespace Barcode_Application
                         //Search if there is a stocktake sheet for the chosen date
                         if (newContinue == 1)
                         {
-                            if (MessageBox.Show("Are you continuing the stocktake for " + dtpSTPreviousStocktake.Text + "?", "New Stocktake or Continue", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            //TODO CHECK IF THE SHEET ACTUALLY EXISTS
+                            bool sheetExists = false;
+                            excelWorksheetStocktake = excelWorkBook.Worksheets[stockTakeWorkbookName];
+                            if (excelWorksheetStocktake != null)
                             {
-                                /*//Add Sheet to array
-                                if (excelWorksheetStocktake == null)
-                                {
-                                    excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
-                                    stocktakeSheetIndex = excelWorkBook.Worksheets.Count() - 1;
-                                }
-                                else
-                                {
-                                    if (cbxSTDebugMode.Checked)
-                                    {
-                                        //Remove the sheet
-                                        excelWorkBook.Worksheets.Delete(stockTakeWorkbookName);
-                                        MessageBox.Show("Sheet Deleted!");
-                                        excelWorksheetStocktake = excelWorkBook.Worksheets.Add(stockTakeWorkbookName);
-                                        stocktakeSheetIndex = excelWorkBook.Worksheets.Count() - 1;
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("A Stocktake sheet for that date already exists." + "\n" + "Use the " + "\"" + btnSTContinue.Text + "\"" + " button instead.");
-                                        return;
-                                    }
-                                }*/
+                                sheetExists = true;
+                            }
 
-                                //Set the Stocktake period
+                            //Show MessageBox once.
+                            var messageBoxResult = (MessageBox.Show("Are you continuing the stocktake for " + dtpSTPreviousStocktake.Text + "?", "New Stocktake or Continue", MessageBoxButtons.YesNo));
+
+                            if ((messageBoxResult == DialogResult.Yes) && (sheetExists == true))
+                            {
+                                //Update the Stocktake period
                                 excelWorksheetStocktake.Cells["A3"].StyleName = "Arial";
                                 excelWorksheetStocktake.Cells["A3"].Style.Font.Size = headerFontSize;
                                 excelWorksheetStocktake.Cells["A3"].Style.Font.Bold = true;
@@ -997,11 +985,6 @@ namespace Barcode_Application
                                     return;
                                 }
 
-
-
-                                worksheets.Add(excelWorksheetStocktake);
-                                worksheetsRows.Add(excelWorksheetStocktake.Dimension.End.Row);
-
                                 MessageBox.Show("Stocktake will continue...");
                                 fromStocktake = false;
 
@@ -1011,9 +994,13 @@ namespace Barcode_Application
                                 stockOrScanRecordAddedMessage = recordAddedMessage;
                                 FromStockTakeOrScanner("StockTake");
                             }
-                            else
+                            else if((messageBoxResult == DialogResult.Yes) && (sheetExists == false))
                             {
-                                MessageBox.Show("Use the " + "\"" + btnSTNewStocktake.Text + "\"" + " button.");
+                                MessageBox.Show("A Stocktake sheet for selected date doesn't exists." + "\n" +"Use the " + "\"" + btnSTNewStocktake.Text + "\"" + " button. To start a new Stocktake.", "Sheet not found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else 
+                            {
+                                MessageBox.Show("Stocktake aborted", "Process Aborted", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }
                         #endregion
@@ -1250,7 +1237,7 @@ namespace Barcode_Application
                     else 
                     {
                         //MessageBox Message, MessageBox Caption, MessageBox Buttons, MessageBox Icon
-                        MessageBox.Show("\"" + txtScanQRCode.Text + "\"" + " not added to the database. Rescan the correct QR code to continue.", "QR scan cancelled.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("\"" + txtScanQRCode.Text + "\"" + " not added to the database. Press the " + "\"" + "Prime Scanner" + "\"" + " button and rescan the correct QR code to continue.", "QR scan cancelled.", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     
 
