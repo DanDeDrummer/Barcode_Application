@@ -334,32 +334,137 @@ namespace Barcode_Application
         #endregion
 
         #region Generate QR Code
+        List<string> textFileList = new List<string>();
+        string[] textFileArray;
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            lblGenQRCodeOut.Text = "";
-            picbxGenImage.Image = null;
-            lblGenQRCodeOut.Visible = false;
-            string qrCodeInput = txtGenQRCode.Text;
-            if ((MessageBox.Show("Are you sure you want to create a QR Code for : " + "\"" + qrCodeInput + "\"", "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            if(cbxLoadFromFile.Checked == true) 
             {
+                //Disable textbox
+                txtGenQRCode.Enabled = true;
+                //Open File Expolorer to get textfile
+                if(openFileDialog1.ShowDialog() == DialogResult.OK) 
+                {
+                    //Select the correct text File
+                    fileName = openFileDialog1.FileName;
+
+                    int k = fileName.Length - 1;
+                    string fileExtension = "";
+
+                    for (int i = 1; i < fileName.Length; i++)
+                    {
+                        if (fileName[i] == '.')
+                        {
+                            for (int extensionCount = i; extensionCount < fileName.Length; extensionCount++)
+                            {
+                                fileExtension += fileName[extensionCount];
+                            }
+                        }
+                    }
+
+                    if(fileExtension == ".txt") 
+                    {
+                        //Iterate trough textfile and save all that isn't blank to a list
+                        textFileArray = System.IO.File.ReadAllLines(fileName);
+
+                        foreach (var item in textFileArray)
+                        {
+                            if(item != "" && item != " ") 
+                            {
+                                textFileList.Add(item);
+                            }
+                        }
+
+                        //textFileList = new List<string>(textFileArray);
+                        MessageBox.Show("Textfile items added to the list.", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("\"" + fileExtension + "\"" + "Wrong File Extension only .txt allowed", "FileType Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+
+                //Run throught the list and generate the codes (1)
+                //LoadFromTextFileWithDelay(2000);
+                LoadFromTextFileWithoutDelay();
+            }
+            else 
+            {
+                if(txtGenQRCode.Text == "" || txtGenQRCode.Text == " ") 
+                {
+                    MessageBox.Show("Input cannot be blank!" + "\n" + "Enter a valid input.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                lblGenQRCodeOut.Text = "";
+                picbxGenImage.Image = null;
+                lblGenQRCodeOut.Visible = false;
+                string qrCodeInput = txtGenQRCode.Text;
+                if ((MessageBox.Show("Are you sure you want to create a QR Code for : " + "\"" + qrCodeInput + "\"", "Confirmation", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+                {
+                    QRCodeGenerator qr = new QRCodeGenerator();
+                    QRCodeData data = qr.CreateQrCode(qrCodeInput, QRCodeGenerator.ECCLevel.Q);
+                    QRCode code = new QRCode(data);
+                    int pixelsPerModule = 2; //5
+                    picbxGenImage.Image = code.GetGraphic(5);
+                    AddToPrintQueue(code.GetGraphic(pixelsPerModule), qrCodeInput); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
+
+                    //Display QRCode Above picture
+                    lblGenQRCodeOut.Visible = true;
+                    lblGenQRCodeOut.Text = qrCodeInput;
+
+                    btnGenSaveToPDF.Enabled = true;
+                    txtGenQRCode.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("QR Code was not generated.", "Abort Generate", MessageBoxButtons.OK);
+                }
+            }
+        }
+
+        private void LoadFromTextFileWithoutDelay()
+        {
+            foreach (var item in textFileList)
+            {
+                UseWaitCursor = true;
+                //(1) Update the picturebox and label.
                 QRCodeGenerator qr = new QRCodeGenerator();
-                QRCodeData data = qr.CreateQrCode(qrCodeInput, QRCodeGenerator.ECCLevel.Q);
+                QRCodeData data = qr.CreateQrCode(item, QRCodeGenerator.ECCLevel.Q);
                 QRCode code = new QRCode(data);
                 int pixelsPerModule = 2; //5
-                picbxGenImage.Image = code.GetGraphic(5);
-                AddToPrintQueue(code.GetGraphic(pixelsPerModule), qrCodeInput); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
+                AddToPrintQueue(code.GetGraphic(pixelsPerModule), item); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
 
                 //Display QRCode Above picture
                 lblGenQRCodeOut.Visible = true;
-                lblGenQRCodeOut.Text = qrCodeInput;
+                lblGenQRCodeOut.Text = item;
+                picbxGenImage.Image = code.GetGraphic(5);
+            }
 
-                btnGenSaveToPDF.Enabled = true;
-                txtGenQRCode.Clear();
-            }
-            else
+            btnGenSaveToPDF.Enabled = true;
+            UseWaitCursor = false;
+        }
+
+        async void LoadFromTextFileWithDelay(int delayTime)
+        {
+            foreach (var item in textFileList)
             {
-                MessageBox.Show("QR Code was not generated.", "Abort Generate", MessageBoxButtons.OK);
+                UseWaitCursor = true;
+                //(1) Update the picturebox and label.
+                QRCodeGenerator qr = new QRCodeGenerator();
+                QRCodeData data = qr.CreateQrCode(item, QRCodeGenerator.ECCLevel.Q);
+                QRCode code = new QRCode(data);
+                int pixelsPerModule = 2; //5
+                AddToPrintQueue(code.GetGraphic(pixelsPerModule), item); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
+
+                //Display QRCode Above picture
+                lblGenQRCodeOut.Visible = true;
+                lblGenQRCodeOut.Text = item;
+                picbxGenImage.Image = code.GetGraphic(5);
+                await Task.Delay(delayTime);//Wait a bit then continue{Coroutine/IEnumerable}
             }
+
+            btnGenSaveToPDF.Enabled = true;
+            UseWaitCursor = false;
         }
 
         private void AddToPrintQueue(Image image, String code)

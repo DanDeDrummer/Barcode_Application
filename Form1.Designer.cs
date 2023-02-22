@@ -40,7 +40,6 @@ namespace Barcode_Application
             this.lblWelHead = new System.Windows.Forms.Label();
             this.btnWelGenerate = new System.Windows.Forms.Button();
             this.tbsGenerateQR = new System.Windows.Forms.TabPage();
-            this.progBarGenSaveQR = new System.Windows.Forms.ProgressBar();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button1 = new System.Windows.Forms.Button();
             this.lblGenQRCodeOut = new System.Windows.Forms.Label();
@@ -96,6 +95,7 @@ namespace Barcode_Application
             this.lblARItemCodeHead = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tbsStockTake = new System.Windows.Forms.TabPage();
+            this.lblFileReminder = new System.Windows.Forms.Label();
             this.cbxSTDebugMode = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.dtpSTPreviousStocktake = new System.Windows.Forms.DateTimePicker();
@@ -105,7 +105,7 @@ namespace Barcode_Application
             this.prntPrvDlg = new System.Windows.Forms.PrintPreviewDialog();
             this.prntDlg = new System.Windows.Forms.PrintDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.lblFileReminder = new System.Windows.Forms.Label();
+            this.cbxLoadFromFile = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tbsWelcome.SuspendLayout();
             this.tbsGenerateQR.SuspendLayout();
@@ -229,7 +229,7 @@ namespace Barcode_Application
             // 
             // tbsGenerateQR
             // 
-            this.tbsGenerateQR.Controls.Add(this.progBarGenSaveQR);
+            this.tbsGenerateQR.Controls.Add(this.cbxLoadFromFile);
             this.tbsGenerateQR.Controls.Add(this.numericUpDown1);
             this.tbsGenerateQR.Controls.Add(this.button1);
             this.tbsGenerateQR.Controls.Add(this.lblGenQRCodeOut);
@@ -247,14 +247,6 @@ namespace Barcode_Application
             this.tbsGenerateQR.TabIndex = 1;
             this.tbsGenerateQR.Text = "Generate QR";
             this.tbsGenerateQR.UseVisualStyleBackColor = true;
-            // 
-            // progBarGenSaveQR
-            // 
-            this.progBarGenSaveQR.Location = new System.Drawing.Point(192, 397);
-            this.progBarGenSaveQR.Name = "progBarGenSaveQR";
-            this.progBarGenSaveQR.Size = new System.Drawing.Size(172, 23);
-            this.progBarGenSaveQR.TabIndex = 18;
-            this.progBarGenSaveQR.Visible = false;
             // 
             // numericUpDown1
             // 
@@ -926,6 +918,16 @@ namespace Barcode_Application
             this.tbsStockTake.Text = "Stock Take";
             this.tbsStockTake.UseVisualStyleBackColor = true;
             // 
+            // lblFileReminder
+            // 
+            this.lblFileReminder.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFileReminder.Location = new System.Drawing.Point(18, 133);
+            this.lblFileReminder.Name = "lblFileReminder";
+            this.lblFileReminder.Size = new System.Drawing.Size(354, 31);
+            this.lblFileReminder.TabIndex = 30;
+            this.lblFileReminder.Text = "Remember to download the sheet file as a \".xlsx\" file first before starting the s" +
+    "tocktake.";
+            // 
             // cbxSTDebugMode
             // 
             this.cbxSTDebugMode.AutoSize = true;
@@ -995,15 +997,15 @@ namespace Barcode_Application
             // 
             this.prntDlg.UseEXDialog = true;
             // 
-            // lblFileReminder
+            // cbxLoadFromFile
             // 
-            this.lblFileReminder.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFileReminder.Location = new System.Drawing.Point(18, 133);
-            this.lblFileReminder.Name = "lblFileReminder";
-            this.lblFileReminder.Size = new System.Drawing.Size(354, 31);
-            this.lblFileReminder.TabIndex = 30;
-            this.lblFileReminder.Text = "Remember to download the sheet file as a \".xlsx\" file first before starting the s" +
-    "tocktake.";
+            this.cbxLoadFromFile.AutoSize = true;
+            this.cbxLoadFromFile.Location = new System.Drawing.Point(205, 399);
+            this.cbxLoadFromFile.Name = "cbxLoadFromFile";
+            this.cbxLoadFromFile.Size = new System.Drawing.Size(147, 17);
+            this.cbxLoadFromFile.TabIndex = 18;
+            this.cbxLoadFromFile.Text = "Load QR Codes From File";
+            this.cbxLoadFromFile.UseVisualStyleBackColor = true;
             // 
             // frmBarcodeApplication
             // 
@@ -1115,8 +1117,8 @@ namespace Barcode_Application
         private System.Windows.Forms.CheckBox cbxSTDebugMode;
         private System.Windows.Forms.Button btnPrimeScanner;
         private System.Windows.Forms.Button btnWelClose;
-        private System.Windows.Forms.ProgressBar progBarGenSaveQR;
         private System.Windows.Forms.Label lblFileReminder;
+        private System.Windows.Forms.CheckBox cbxLoadFromFile;
     }
 }
 
