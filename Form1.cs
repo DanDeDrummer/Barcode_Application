@@ -345,8 +345,9 @@ namespace Barcode_Application
                 QRCodeGenerator qr = new QRCodeGenerator();
                 QRCodeData data = qr.CreateQrCode(qrCodeInput, QRCodeGenerator.ECCLevel.Q);
                 QRCode code = new QRCode(data);
+                int pixelsPerModule = 2; //5
                 picbxGenImage.Image = code.GetGraphic(5);
-                AddToPrintQueue(picbxGenImage.Image, qrCodeInput); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
+                AddToPrintQueue(code.GetGraphic(pixelsPerModule), qrCodeInput); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
 
                 //Display QRCode Above picture
                 lblGenQRCodeOut.Visible = true;
@@ -504,7 +505,7 @@ namespace Barcode_Application
         String drawnString;
         private void prntDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            //MessageBox.Show("Start Margins are: " + e.MarginBounds/*x=100, y=100, width=650, height=900*/);
+            MessageBox.Show("prntDoc_PrintPage are running ");
             int printedImageX = 0;
             int printedImageY = 0;
             int itemCodesX = 0;
@@ -627,14 +628,25 @@ namespace Barcode_Application
 
             //Van die eerste een af plus 3 kry die totale breedte deel deaur 3
             int columnQRWidthChecker = 0;
-            int testItemsInRow = (int)numericUpDown1.Value;//3
+            int testItemsInRow = 4;//3
             int rowImagesWidth = 0, rowTextWidth = 0, rowTotalWhiteSpace = 200;
+            int lastIndex = 0;
             if (listIndex % testItemsInRow == 0)
             {
                 for (int i = 0; i < testItemsInRow; i++)
                 {
-                    rowImagesWidth += QRImages[listIndex + i].Width;
-                    rowTextWidth += TextRenderer.MeasureText(ItemCodes[listIndex + i], printFont).Width;
+                    
+                    if (i < QRImages.Count()) 
+                    {
+                        rowImagesWidth += QRImages[listIndex + i].Width;
+                        rowTextWidth += TextRenderer.MeasureText(ItemCodes[listIndex + i], printFont).Width;
+                        lastIndex = i;
+                    }
+                    else //Add whaitespace the size of some "ghost items"
+                    {
+                        rowImagesWidth += QRImages[listIndex + lastIndex].Width;
+                        rowTextWidth += TextRenderer.MeasureText(ItemCodes[listIndex + lastIndex], printFont).Width;
+                    }
                 }
                 //var rowImagesWidth = QRImages[listIndex].Width + QRImages[listIndex + 1].Width + QRImages[listIndex + 2].Width + QRImages[listIndex + 3].Width;
                 //var rowTextWidth = TextRenderer.MeasureText(ItemCodes[listIndex], printFont).Width + TextRenderer.MeasureText(ItemCodes[listIndex + 1], printFont).Width + TextRenderer.MeasureText(ItemCodes[listIndex + 2], printFont).Width;
