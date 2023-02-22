@@ -408,6 +408,16 @@ namespace Barcode_Application
                     picbxGenImage.Image = code.GetGraphic(5);
                     AddToPrintQueue(code.GetGraphic(pixelsPerModule), qrCodeInput); //Uses BitMap: (code.GetGraphic(5), code) //Uses Image: (picbxGenImage.Image, code)
 
+                    //SAVE TO TEXTFILE
+                    /*Creates TextFile if it doesn't exist*/
+                    string filePath = ".\\Barcode_TextFile.txt";
+                    using (StreamWriter writer = File.AppendText(filePath))
+                    {
+                        writer.WriteLine(qrCodeInput);
+                    }
+
+                    MessageBox.Show("Added item to file");
+
                     //Display QRCode Above picture
                     lblGenQRCodeOut.Visible = true;
                     lblGenQRCodeOut.Text = qrCodeInput;
