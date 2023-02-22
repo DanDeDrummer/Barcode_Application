@@ -452,6 +452,7 @@ namespace Barcode_Application
 
             btnGenSaveToPDF.Enabled = true;
             UseWaitCursor = false;
+            MessageBox.Show(textFileList.Count + " QR Codes created from textfile.", "Task Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         async void LoadFromTextFileWithDelay(int delayTime)
@@ -1035,7 +1036,7 @@ namespace Barcode_Application
                                 excelWorksheetStocktake.Cells["D4"].StyleName = "Arial";
                                 excelWorksheetStocktake.Cells["D4"].Style.Font.Size = headerFontSize;
                                 excelWorksheetStocktake.Cells["D4"].Style.Font.Bold = true;
-                                excelWorksheetStocktake.Cells["D4"].Value = "Counted/Shelf Number";
+                                excelWorksheetStocktake.Cells["D4"].Value = "Counted";
 
                                 excelWorksheetStocktake.Cells["E4"].StyleName = "Arial";
                                 excelWorksheetStocktake.Cells["E4"].Style.Font.Size = headerFontSize;
